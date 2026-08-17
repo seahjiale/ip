@@ -28,6 +28,7 @@ public class Bobby {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String command = scanner.nextLine();
+            System.out.println(SEPARATOR);
             if (command.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(SEPARATOR);

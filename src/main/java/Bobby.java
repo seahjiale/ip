@@ -60,6 +60,10 @@ public class Bobby {
                 String[] deadlineParts = command.substring(9).split(" /by ", 2);
                 tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
                 addTaskMessage(tasks[taskCount], ++taskCount);
+            } else if (command.startsWith("event ") && taskCount < MAX_TASKS) {
+                String[] eventParts = command.substring(6).split(" /from | /to ", 3);
+                tasks[taskCount] = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                addTaskMessage(tasks[taskCount], ++taskCount);
             } else if (taskCount < MAX_TASKS) {
                 tasks[taskCount] = new Task(command);
                 taskCount++;
@@ -82,6 +86,8 @@ public class Bobby {
             return ((ToDo) task).toString();
         } else if (task instanceof Deadline) {
             return ((Deadline) task).toString();
+        } else if (task instanceof Event) {
+            return ((Event) task).toString();
         }
         Task basicTask = (Task) task;
         return "[" + basicTask.getStatusIcon() + "] " + basicTask.getDescription();
@@ -93,6 +99,8 @@ public class Bobby {
             ((ToDo) task).markAsDone();
         } else if (task instanceof Deadline) {
             ((Deadline) task).markAsDone();
+        } else if (task instanceof Event) {
+            ((Event) task).markAsDone();
         } else {
             ((Task) task).markAsDone();
         }
@@ -104,6 +112,8 @@ public class Bobby {
             ((ToDo) task).unmarkAsDone();
         } else if (task instanceof Deadline) {
             ((Deadline) task).unmarkAsDone();
+        } else if (task instanceof Event) {
+            ((Event) task).unmarkAsDone();
         } else {
             ((Task) task).unmarkAsDone();
         }

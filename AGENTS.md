@@ -28,6 +28,14 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## UI testing
+
+After every code update, review `test/ui-test-plan.md` and update it when the
+changed behavior needs new or revised UI coverage. Then invoke the project
+`test-ui` skill to run the plan before reporting the implementation complete.
+If a test fails, report the failure and its expected versus actual output; do
+not claim that the update is verified.
+
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.

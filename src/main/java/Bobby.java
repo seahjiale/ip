@@ -56,6 +56,10 @@ public class Bobby {
             } else if (command.startsWith("todo ") && taskCount < MAX_TASKS) {
                 tasks[taskCount] = new ToDo(command.substring(5));
                 addTaskMessage(tasks[taskCount], ++taskCount);
+            } else if (command.startsWith("deadline ") && taskCount < MAX_TASKS) {
+                String[] deadlineParts = command.substring(9).split(" /by ", 2);
+                tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
+                addTaskMessage(tasks[taskCount], ++taskCount);
             } else if (taskCount < MAX_TASKS) {
                 tasks[taskCount] = new Task(command);
                 taskCount++;
@@ -76,6 +80,8 @@ public class Bobby {
     private static String getTaskDisplay(Object task) {
         if (task instanceof ToDo) {
             return ((ToDo) task).toString();
+        } else if (task instanceof Deadline) {
+            return ((Deadline) task).toString();
         }
         Task basicTask = (Task) task;
         return "[" + basicTask.getStatusIcon() + "] " + basicTask.getDescription();
@@ -85,6 +91,8 @@ public class Bobby {
     private static void markTaskAsDone(Object task) {
         if (task instanceof ToDo) {
             ((ToDo) task).markAsDone();
+        } else if (task instanceof Deadline) {
+            ((Deadline) task).markAsDone();
         } else {
             ((Task) task).markAsDone();
         }
@@ -94,6 +102,8 @@ public class Bobby {
     private static void unmarkTaskAsDone(Object task) {
         if (task instanceof ToDo) {
             ((ToDo) task).unmarkAsDone();
+        } else if (task instanceof Deadline) {
+            ((Deadline) task).unmarkAsDone();
         } else {
             ((Task) task).unmarkAsDone();
         }

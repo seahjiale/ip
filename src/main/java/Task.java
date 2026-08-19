@@ -42,4 +42,15 @@ public class Task {
     public void unmarkAsDone() {
         isDone = false;
     }
+
+    /**
+     * Returns this task's completion marker and description.
+     * Subclasses extend this representation with their task type and details.
+     *
+     * @return the task display text
+     */
+    @Override
+    public String toString() {
+        return "[" + getStatusIcon() + "] " + description;
+    }
 }

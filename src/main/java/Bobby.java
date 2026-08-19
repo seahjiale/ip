@@ -26,7 +26,7 @@ public class Bobby {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        Object[] tasks = new Object[MAX_TASKS];
+        Task[] tasks = new Task[MAX_TASKS];
         int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -45,12 +45,12 @@ public class Bobby {
                 }
             } else if (command.startsWith("mark ")) {
                 int taskIndex = Integer.parseInt(command.substring(5)) - 1;
-                markTaskAsDone(tasks[taskIndex]);
+                tasks[taskIndex].markAsDone();
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
             } else if (command.startsWith("unmark ")) {
                 int taskIndex = Integer.parseInt(command.substring(7)) - 1;
-                unmarkTaskAsDone(tasks[taskIndex]);
+                tasks[taskIndex].unmarkAsDone();
                 System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
             } else if (command.startsWith("todo ") && taskCount < MAX_TASKS) {
@@ -74,48 +74,14 @@ public class Bobby {
     }
 
     /** Prints the confirmation shown after adding a typed task. */
-    private static void addTaskMessage(Object task, int taskCount) {
+    private static void addTaskMessage(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
         System.out.println(getTaskDisplay(task));
         System.out.println("Now you have " + taskCount + " tasks in the list.");
     }
 
     /** Returns the display text for one supported task type. */
-    private static String getTaskDisplay(Object task) {
-        if (task instanceof ToDo) {
-            return ((ToDo) task).toString();
-        } else if (task instanceof Deadline) {
-            return ((Deadline) task).toString();
-        } else if (task instanceof Event) {
-            return ((Event) task).toString();
-        }
-        Task basicTask = (Task) task;
-        return "[" + basicTask.getStatusIcon() + "] " + basicTask.getDescription();
-    }
-
-    /** Marks one supported task type as complete. */
-    private static void markTaskAsDone(Object task) {
-        if (task instanceof ToDo) {
-            ((ToDo) task).markAsDone();
-        } else if (task instanceof Deadline) {
-            ((Deadline) task).markAsDone();
-        } else if (task instanceof Event) {
-            ((Event) task).markAsDone();
-        } else {
-            ((Task) task).markAsDone();
-        }
-    }
-
-    /** Marks one supported task type as incomplete. */
-    private static void unmarkTaskAsDone(Object task) {
-        if (task instanceof ToDo) {
-            ((ToDo) task).unmarkAsDone();
-        } else if (task instanceof Deadline) {
-            ((Deadline) task).unmarkAsDone();
-        } else if (task instanceof Event) {
-            ((Event) task).unmarkAsDone();
-        } else {
-            ((Task) task).unmarkAsDone();
-        }
+    private static String getTaskDisplay(Task task) {
+        return task.toString();
     }
 }

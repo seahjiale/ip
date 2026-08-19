@@ -26,7 +26,7 @@ public class Bobby {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        Task[] tasks = new Task[MAX_TASKS];
+        Object[] tasks = new Object[MAX_TASKS];
         int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -41,25 +41,61 @@ public class Bobby {
             if (command.equals("list")) {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] "
-                            + tasks[i].getDescription());
+                    System.out.println((i + 1) + "." + getTaskDisplay(tasks[i]));
                 }
             } else if (command.startsWith("mark ")) {
                 int taskIndex = Integer.parseInt(command.substring(5)) - 1;
-                tasks[taskIndex].markAsDone();
+                markTaskAsDone(tasks[taskIndex]);
                 System.out.println("Nice! I've marked this task as done:");
-                System.out.println("  [X] " + tasks[taskIndex].getDescription());
+                System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
             } else if (command.startsWith("unmark ")) {
                 int taskIndex = Integer.parseInt(command.substring(7)) - 1;
-                tasks[taskIndex].unmarkAsDone();
+                unmarkTaskAsDone(tasks[taskIndex]);
                 System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println("  [ ] " + tasks[taskIndex].getDescription());
+                System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
+            } else if (command.startsWith("todo ") && taskCount < MAX_TASKS) {
+                tasks[taskCount] = new ToDo(command.substring(5));
+                addTaskMessage(tasks[taskCount], ++taskCount);
             } else if (taskCount < MAX_TASKS) {
                 tasks[taskCount] = new Task(command);
                 taskCount++;
                 System.out.println("added: " + command);
             }
             System.out.println(SEPARATOR);
+        }
+    }
+
+    /** Prints the confirmation shown after adding a typed task. */
+    private static void addTaskMessage(Object task, int taskCount) {
+        System.out.println("Got it. I've added this task:");
+        System.out.println(getTaskDisplay(task));
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    /** Returns the display text for one supported task type. */
+    private static String getTaskDisplay(Object task) {
+        if (task instanceof ToDo) {
+            return ((ToDo) task).toString();
+        }
+        Task basicTask = (Task) task;
+        return "[" + basicTask.getStatusIcon() + "] " + basicTask.getDescription();
+    }
+
+    /** Marks one supported task type as complete. */
+    private static void markTaskAsDone(Object task) {
+        if (task instanceof ToDo) {
+            ((ToDo) task).markAsDone();
+        } else {
+            ((Task) task).markAsDone();
+        }
+    }
+
+    /** Marks one supported task type as incomplete. */
+    private static void unmarkTaskAsDone(Object task) {
+        if (task instanceof ToDo) {
+            ((ToDo) task).unmarkAsDone();
+        } else {
+            ((Task) task).unmarkAsDone();
         }
     }
 }

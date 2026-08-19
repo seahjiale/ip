@@ -8,7 +8,7 @@ public class Bobby {
     private static final int MAX_TASKS = 100;
 
     /**
-     * Prints Bobby's welcome message, stores tasks, marks tasks as done, lists tasks, and exits on {@code bye}.
+     * Prints Bobby's welcome message, stores tasks, changes task completion states, lists tasks, and exits on {@code bye}.
      *
      * @param args command-line arguments, which are not used
      */
@@ -50,6 +50,11 @@ public class Bobby {
                 isDone[taskIndex] = true;
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println("  [X] " + tasks[taskIndex]);
+            } else if (command.startsWith("unmark ")) {
+                int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+                isDone[taskIndex] = false;
+                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println("  [ ] " + tasks[taskIndex]);
             } else if (taskCount < MAX_TASKS) {
                 tasks[taskCount] = command;
                 taskCount++;

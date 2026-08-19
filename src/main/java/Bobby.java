@@ -5,9 +5,10 @@ import java.util.Scanner;
  */
 public class Bobby {
     private static final String SEPARATOR = "____________________________________________________________";
+    private static final int MAX_TASKS = 100;
 
     /**
-     * Prints Bobby's welcome message, echoes each entered command, and exits on {@code bye}.
+     * Prints Bobby's welcome message, stores entered tasks, lists them on request, and exits on {@code bye}.
      *
      * @param args command-line arguments, which are not used
      */
@@ -25,6 +26,8 @@ public class Bobby {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
+        String[] tasks = new String[MAX_TASKS];
+        int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String command = scanner.nextLine();
@@ -35,7 +38,15 @@ public class Bobby {
                 break;
             }
 
-            System.out.println(" " + command);
+            if (command.equals("list")) {
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println((i + 1) + ". " + tasks[i]);
+                }
+            } else if (taskCount < MAX_TASKS) {
+                tasks[taskCount] = command;
+                taskCount++;
+                System.out.println("added: " + command);
+            }
             System.out.println(SEPARATOR);
         }
     }

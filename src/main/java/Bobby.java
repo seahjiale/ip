@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -5,10 +7,10 @@ import java.util.Scanner;
  */
 public class Bobby {
     private static final String SEPARATOR = "____________________________________________________________";
-    private static final int MAX_TASKS = 100;
 
     /**
-     * Prints Bobby's welcome message, stores tasks, changes task completion states, lists tasks, and exits on {@code bye}.
+     * Prints Bobby's welcome message, stores tasks, changes task completion states, deletes tasks,
+     * lists tasks, and exits on {@code bye}.
      *
      * @param args command-line arguments, which are not used
      */
@@ -26,8 +28,7 @@ public class Bobby {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        Task[] tasks = new Task[MAX_TASKS];
-        int taskCount = 0;
+        List<Task> tasks = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String command = scanner.nextLine();
@@ -41,26 +42,33 @@ public class Bobby {
             try {
                 if (command.equals("list")) {
                     System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + getTaskDisplay(tasks[i]));
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + getTaskDisplay(tasks.get(i)));
                     }
                 } else if (command.startsWith("mark ")) {
                     int taskIndex = Integer.parseInt(command.substring(5)) - 1;
-                    tasks[taskIndex].markAsDone();
+                    tasks.get(taskIndex).markAsDone();
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
+                    System.out.println("  " + getTaskDisplay(tasks.get(taskIndex)));
                 } else if (command.startsWith("unmark ")) {
                     int taskIndex = Integer.parseInt(command.substring(7)) - 1;
-                    tasks[taskIndex].unmarkAsDone();
+                    tasks.get(taskIndex).unmarkAsDone();
                     System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
+                    System.out.println("  " + getTaskDisplay(tasks.get(taskIndex)));
+                } else if (command.startsWith("delete ")) {
+                    int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+                    Task deletedTask = tasks.remove(taskIndex);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println(getTaskDisplay(deletedTask));
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (command.equals("todo") || command.startsWith("todo ")) {
                     String description = command.length() > 5 ? command.substring(5) : "";
                     if (description.trim().isEmpty()) {
                         throw new BobbyException("Error! The description of a todo cannot be empty!");
-                    } else if (taskCount < MAX_TASKS) {
-                        tasks[taskCount] = new ToDo(description);
-                        addTaskMessage(tasks[taskCount], ++taskCount);
+                    } else {
+                        Task task = new ToDo(description);
+                        tasks.add(task);
+                        addTaskMessage(task, tasks.size());
                     }
                 } else if (command.equals("deadline") || command.startsWith("deadline ")) {
                     String deadlineDetails = command.length() > 9 ? command.substring(9) : "";
@@ -72,9 +80,10 @@ public class Bobby {
                         throw new BobbyException("Error! The description of a deadline cannot be empty!");
                     } else if (deadlineParts.length < 2 || deadlineParts[1].trim().isEmpty()) {
                         throw new BobbyException("Error! The date of a deadline cannot be empty!");
-                    } else if (taskCount < MAX_TASKS) {
-                        tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
-                        addTaskMessage(tasks[taskCount], ++taskCount);
+                    } else {
+                        Task task = new Deadline(deadlineParts[0], deadlineParts[1]);
+                        tasks.add(task);
+                        addTaskMessage(task, tasks.size());
                     }
                 } else if (command.equals("event") || command.startsWith("event ")) {
                     String eventDetails = command.length() > 6 ? command.substring(6).trim() : "";
@@ -106,9 +115,10 @@ public class Bobby {
                         throw new BobbyException("Error! Start time of an event cannot be empty. Try again!");
                     } else if (to.isEmpty()) {
                         throw new BobbyException("Error! End time of an event cannot be empty. Try again!");
-                    } else if (taskCount < MAX_TASKS) {
-                        tasks[taskCount] = new Event(description, from, to);
-                        addTaskMessage(tasks[taskCount], ++taskCount);
+                    } else {
+                        Task task = new Event(description, from, to);
+                        tasks.add(task);
+                        addTaskMessage(task, tasks.size());
                     }
                 } else {
                     throw new BobbyException("No such task type available. Try again!");

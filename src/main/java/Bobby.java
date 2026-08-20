@@ -75,10 +75,40 @@ public class Bobby {
                     tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
                     addTaskMessage(tasks[taskCount], ++taskCount);
                 }
-            } else if (command.startsWith("event ") && taskCount < MAX_TASKS) {
-                String[] eventParts = command.substring(6).split(" /from | /to ", 3);
-                tasks[taskCount] = new Event(eventParts[0], eventParts[1], eventParts[2]);
-                addTaskMessage(tasks[taskCount], ++taskCount);
+            } else if (command.equals("event") || command.startsWith("event ")) {
+                String eventDetails = command.length() > 6 ? command.substring(6).trim() : "";
+                int fromMarkerIndex = eventDetails.indexOf("/from");
+                int toMarkerIndex = eventDetails.indexOf("/to");
+
+                String description;
+                String from = "";
+                String to = "";
+                if (fromMarkerIndex >= 0) {
+                    description = eventDetails.substring(0, fromMarkerIndex).trim();
+                    if (toMarkerIndex > fromMarkerIndex) {
+                        from = eventDetails.substring(fromMarkerIndex + 5, toMarkerIndex).trim();
+                    } else {
+                        from = eventDetails.substring(fromMarkerIndex + 5).trim();
+                    }
+                } else if (toMarkerIndex >= 0) {
+                    description = eventDetails.substring(0, toMarkerIndex).trim();
+                } else {
+                    description = eventDetails;
+                }
+                if (toMarkerIndex >= 0) {
+                    to = eventDetails.substring(toMarkerIndex + 3).trim();
+                }
+
+                if (description.isEmpty()) {
+                    printEmptyEventDescriptionMessage();
+                } else if (from.isEmpty()) {
+                    printEmptyEventStartTimeMessage();
+                } else if (to.isEmpty()) {
+                    printEmptyEventEndTimeMessage();
+                } else if (taskCount < MAX_TASKS) {
+                    tasks[taskCount] = new Event(description, from, to);
+                    addTaskMessage(tasks[taskCount], ++taskCount);
+                }
             } else {
                 printUnknownCommandMessage();
             }
@@ -93,17 +123,32 @@ public class Bobby {
 
     /** Prints the error shown when a to-do has no description. */
     private static void printEmptyDescriptionMessage() {
-        System.out.println("OOPS!!! The description of a todo cannot be empty.");
+        System.out.println("Error! The description of a todo cannot be empty!");
     }
 
     /** Prints the error shown when a deadline has no description. */
     private static void printEmptyDeadlineDescriptionMessage() {
-        System.out.println("OOPS!!! The description of a deadline cannot be empty.");
+        System.out.println("Error! The description of a deadline cannot be empty!");
     }
 
     /** Prints the error shown when a deadline has no date. */
     private static void printEmptyDeadlineDateMessage() {
-        System.out.println("OOPS!!! The date of a deadline cannot be empty.");
+        System.out.println("Error! The date of a deadline cannot be empty!");
+    }
+
+    /** Prints the error shown when an event has no description. */
+    private static void printEmptyEventDescriptionMessage() {
+        System.out.println("Error! The description of an event cannot be empty!");
+    }
+
+    /** Prints the error shown when an event has no start time. */
+    private static void printEmptyEventStartTimeMessage() {
+        System.out.println("Error! Start time of an event cannot be empty. Try again!");
+    }
+
+    /** Prints the error shown when an event has no end time. */
+    private static void printEmptyEventEndTimeMessage() {
+        System.out.println("Error! End time of an event cannot be empty. Try again!");
     }
 
     /** Prints the confirmation shown after adding a typed task. */

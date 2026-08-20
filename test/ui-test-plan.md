@@ -249,7 +249,7 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a todo cannot be empty.
+Error! The description of a todo cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -284,7 +284,7 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a deadline cannot be empty.
+Error! The description of a deadline cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -319,7 +319,286 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The date of a deadline cannot be empty.
+Error! The date of a deadline cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 9: Reject an event without a description
+
+### Aim
+
+Verify that an event with no description is rejected without causing the
+program to crash.
+
+### Input
+
+```text
+event /from Mon 2pm /to 4pm
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Error! The description of an event cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 10: Reject an event without a start time
+
+### Aim
+
+Verify that an event with no `/from` start time is rejected without causing
+the program to crash.
+
+### Input
+
+```text
+event project meeting /from /to 4pm
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Error! Start time of an event cannot be empty. Try again!
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 11: Reject an event without an end time
+
+### Aim
+
+Verify that an event with no `/to` end time is rejected without causing the
+program to crash.
+
+### Input
+
+```text
+event project meeting /from Mon 2pm /to
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Error! End time of an event cannot be empty. Try again!
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 12: Preserve state after an invalid to-do
+
+### Aim
+
+Verify that an invalid empty `todo` does not add a task or change the task
+count, and that a later valid task is stored correctly.
+
+### Input
+
+```text
+todo write report
+todo
+list
+todo submit report
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] write report
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error! The description of a todo cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] write report
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] submit report
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] write report
+2.[T][ ] submit report
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 13: Preserve state after an invalid deadline
+
+### Aim
+
+Verify that a deadline with no date does not add a task or change the task
+count, and that a later valid deadline is stored correctly.
+
+### Input
+
+```text
+deadline submit report /by Friday
+deadline submit slides /by
+list
+deadline submit slides /by Monday
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] submit report (by: Friday)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error! The date of a deadline cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[D][ ] submit report (by: Friday)
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] submit slides (by: Monday)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[D][ ] submit report (by: Friday)
+2.[D][ ] submit slides (by: Monday)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 14: Preserve state after an invalid event
+
+### Aim
+
+Verify that an event with no end time does not add a task or change the task
+count, and that a later valid event is stored correctly.
+
+### Input
+
+```text
+event team meeting /from Mon /to Tue
+event planning /from Mon /to
+list
+event planning /from Tue /to Wed
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[E][ ] team meeting (from: Mon to: Tue)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error! End time of an event cannot be empty. Try again!
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[E][ ] team meeting (from: Mon to: Tue)
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[E][ ] planning (from: Tue to: Wed)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[E][ ] team meeting (from: Mon to: Tue)
+2.[E][ ] planning (from: Tue to: Wed)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!

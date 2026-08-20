@@ -61,10 +61,20 @@ public class Bobby {
                     tasks[taskCount] = new ToDo(description);
                     addTaskMessage(tasks[taskCount], ++taskCount);
                 }
-            } else if (command.startsWith("deadline ") && taskCount < MAX_TASKS) {
-                String[] deadlineParts = command.substring(9).split(" /by ", 2);
-                tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
-                addTaskMessage(tasks[taskCount], ++taskCount);
+            } else if (command.equals("deadline") || command.startsWith("deadline ")) {
+                String deadlineDetails = command.length() > 9 ? command.substring(9) : "";
+                String[] deadlineParts = deadlineDetails.split(" /by ", 2);
+                boolean hasNoDescription = deadlineDetails.trim().isEmpty()
+                        || deadlineDetails.trim().startsWith("/by")
+                        || (deadlineParts.length > 1 && deadlineParts[0].trim().isEmpty());
+                if (hasNoDescription) {
+                    printEmptyDeadlineDescriptionMessage();
+                } else if (deadlineParts.length < 2 || deadlineParts[1].trim().isEmpty()) {
+                    printEmptyDeadlineDateMessage();
+                } else if (taskCount < MAX_TASKS) {
+                    tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
+                    addTaskMessage(tasks[taskCount], ++taskCount);
+                }
             } else if (command.startsWith("event ") && taskCount < MAX_TASKS) {
                 String[] eventParts = command.substring(6).split(" /from | /to ", 3);
                 tasks[taskCount] = new Event(eventParts[0], eventParts[1], eventParts[2]);
@@ -84,6 +94,16 @@ public class Bobby {
     /** Prints the error shown when a to-do has no description. */
     private static void printEmptyDescriptionMessage() {
         System.out.println("OOPS!!! The description of a todo cannot be empty.");
+    }
+
+    /** Prints the error shown when a deadline has no description. */
+    private static void printEmptyDeadlineDescriptionMessage() {
+        System.out.println("OOPS!!! The description of a deadline cannot be empty.");
+    }
+
+    /** Prints the error shown when a deadline has no date. */
+    private static void printEmptyDeadlineDateMessage() {
+        System.out.println("OOPS!!! The date of a deadline cannot be empty.");
     }
 
     /** Prints the confirmation shown after adding a typed task. */

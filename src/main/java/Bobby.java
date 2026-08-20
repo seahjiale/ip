@@ -64,13 +64,16 @@ public class Bobby {
                 String[] eventParts = command.substring(6).split(" /from | /to ", 3);
                 tasks[taskCount] = new Event(eventParts[0], eventParts[1], eventParts[2]);
                 addTaskMessage(tasks[taskCount], ++taskCount);
-            } else if (taskCount < MAX_TASKS) {
-                tasks[taskCount] = new Task(command);
-                taskCount++;
-                System.out.println("added: " + command);
+            } else {
+                printUnknownCommandMessage();
             }
             System.out.println(SEPARATOR);
         }
+    }
+
+    /** Prints the error shown when the input does not use a supported command. */
+    private static void printUnknownCommandMessage() {
+        System.out.println("No such task type available. Try again!");
     }
 
     /** Prints the confirmation shown after adding a typed task. */

@@ -1,0 +1,122 @@
+"""Compile Bobby and run the console UI cases defined in test/ui-test-plan.md."""
+
+from __future__ import annotations
+
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[4]
+PLAN_PATH = ROOT / "test" / "ui-test-plan.md"
+SOURCE_DIRECTORY = ROOT / "src" / "main" / "java"
+
+
+def extract_section(case_text: str, title: str) -> str:
+    """Return a fenced text section from one test case."""
+    pattern = rf"^### {re.escape(title)}\n(?:\n)?```text\n(.*?)\n```"
+    match = re.search(pattern, case_text, flags=re.MULTILINE | re.DOTALL)
+    if match is None:
+        raise ValueError(f"Missing or invalid '{title}' section")
+    return match.group(1)
+
+
+def extract_aim(case_text: str) -> str:
+    """Return the aim text that follows the Aim heading."""
+    match = re.search(r"^### Aim\n(.*?)(?=^### |\Z)", case_text, flags=re.MULTILINE | re.DOTALL)
+    if match is None:
+        raise ValueError("Missing 'Aim' section")
+    return match.group(1).strip()
+
+
+def read_test_cases() -> list[tuple[str, str, str, str]]:
+    """Read titles, aims, inputs, and expected outputs from the test plan."""
+    plan = PLAN_PATH.read_text(encoding="utf-8").replace("\r\n", "\n")
+    headings = list(re.finditer(r"^## Test Case \d+: (.+)$", plan, flags=re.MULTILINE))
+    if not headings:
+        raise ValueError("The test plan contains no test cases")
+
+    cases = []
+    for index, heading in enumerate(headings):
+        end = headings[index + 1].start() if index + 1 < len(headings) else len(plan)
+        case_text = plan[heading.end():end]
+        cases.append((
+            heading.group(1),
+            extract_aim(case_text),
+            extract_section(case_text, "Input"),
+            extract_section(case_text, "Expected Output"),
+        ))
+    return cases
+
+
+def normalise(text: str) -> str:
+    """Normalise line endings and an optional final newline before comparison."""
+    return text.replace("\r\n", "\n").rstrip("\n")
+
+
+def compile_program(class_directory: Path) -> None:
+    """Compile all Java source files into the supplied temporary directory."""
+    sources = sorted(str(source) for source in SOURCE_DIRECTORY.glob("*.java"))
+    if not sources:
+        raise FileNotFoundError("No Java files were found in src/main/java")
+    result = subprocess.run(
+        ["javac", "-encoding", "UTF-8", "-d", str(class_directory), *sources],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Compilation failed:\n{result.stdout}{result.stderr}")
+
+
+def print_transcript(title: str, aim: str, test_input: str, actual_output: str) -> None:
+    """Print a readable record of one completed console test session."""
+    print(f"\n=== {title} ===")
+    print(f"Aim: {aim}")
+    print("Console input:")
+    print(test_input)
+    print("Console output:")
+    print(actual_output, end="" if actual_output.endswith("\n") else "\n")
+
+
+def main() -> int:
+    """Run every planned test, stopping after the first failure."""
+    sys.stdout.reconfigure(encoding="utf-8")
+    try:
+        test_cases = read_test_cases()
+        with tempfile.TemporaryDirectory(prefix="bobby-ui-tests-") as temporary_directory:
+            class_directory = Path(temporary_directory)
+            compile_program(class_directory)
+            for title, aim, test_input, expected_output in test_cases:
+                result = subprocess.run(
+                    ["java", "-Dfile.encoding=UTF-8", "-cp", str(class_directory), "Bobby"],
+                    input=test_input + "\n",
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                )
+                actual_output = result.stdout
+                print_transcript(title, aim, test_input, actual_output)
+                if result.returncode != 0 or normalise(actual_output) != normalise(expected_output):
+                    print("FAILED: testing stopped at the first failing test case.")
+                    if result.returncode != 0:
+                        print(f"Program exit code: {result.returncode}")
+                        print(f"Program error output:\n{result.stderr}")
+                    print("Expected output:")
+                    print(expected_output)
+                    print("Actual output:")
+                    print(actual_output, end="" if actual_output.endswith("\n") else "\n")
+                    return 1
+                print("PASSED")
+    except (FileNotFoundError, RuntimeError, ValueError) as error:
+        print(f"FAILED: {error}")
+        return 1
+
+    print("\nAll UI test cases passed.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

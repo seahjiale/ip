@@ -8,17 +8,17 @@ python .codex/skills/test-ui/scripts/run_ui_tests.py
 
 Each expected-output block contains the complete console output for its input.
 
-## Test Case 1: Mark and unmark a task
+## Test Case 1: Mark and unmark a to-do task
 
 ### Aim
 
-Verify that a new task is shown as incomplete, can be marked done, and can be
-changed back to incomplete.
+Verify that a new to-do task is shown as incomplete, can be marked done, and
+can be changed back to incomplete.
 
 ### Input
 
 ```text
-read book
+todo read book
 mark 1
 unmark 1
 list
@@ -39,19 +39,21 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-added: read book
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
-  [X] read book
+  [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
 OK, I've marked this task as not done yet:
-  [ ] read book
+  [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[ ] read book
+1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -178,6 +180,41 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 5: Reject an unknown command
+
+### Aim
+
+Verify that input that does not begin with a supported command is rejected
+with a helpful error message and is not added as a task.
+
+### Input
+
+```text
+blah
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!

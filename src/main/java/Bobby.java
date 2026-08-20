@@ -55,8 +55,27 @@ public class Bobby {
                     tasks.get(taskIndex).unmarkAsDone();
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + getTaskDisplay(tasks.get(taskIndex)));
-                } else if (command.startsWith("delete ")) {
-                    int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+                } else if (command.equals("delete") || command.startsWith("delete ")) {
+                    if (tasks.isEmpty()) {
+                        throw new BobbyException("No tasks available to delete.");
+                    }
+
+                    String taskNumber = command.length() > 7 ? command.substring(7).trim() : "";
+                    if (taskNumber.isEmpty()) {
+                        throw new BobbyException("Error! The task number cannot be empty!");
+                    }
+
+                    int taskIndex;
+                    try {
+                        taskIndex = Integer.parseInt(taskNumber) - 1;
+                    } catch (NumberFormatException exception) {
+                        throw new BobbyException("Error! The task number must be a valid integer.");
+                    }
+                    if (taskIndex < 0 || taskIndex >= tasks.size()) {
+                        throw new BobbyException("Error! The task number must be between 1 and "
+                                + tasks.size() + ".");
+                    }
+
                     Task deletedTask = tasks.remove(taskIndex);
                     System.out.println("Noted. I've removed this task:");
                     System.out.println(getTaskDisplay(deletedTask));

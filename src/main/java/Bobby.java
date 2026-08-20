@@ -53,9 +53,14 @@ public class Bobby {
                 tasks[taskIndex].unmarkAsDone();
                 System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println("  " + getTaskDisplay(tasks[taskIndex]));
-            } else if (command.startsWith("todo ") && taskCount < MAX_TASKS) {
-                tasks[taskCount] = new ToDo(command.substring(5));
-                addTaskMessage(tasks[taskCount], ++taskCount);
+            } else if (command.equals("todo") || command.startsWith("todo ")) {
+                String description = command.length() > 5 ? command.substring(5) : "";
+                if (description.trim().isEmpty()) {
+                    printEmptyDescriptionMessage();
+                } else if (taskCount < MAX_TASKS) {
+                    tasks[taskCount] = new ToDo(description);
+                    addTaskMessage(tasks[taskCount], ++taskCount);
+                }
             } else if (command.startsWith("deadline ") && taskCount < MAX_TASKS) {
                 String[] deadlineParts = command.substring(9).split(" /by ", 2);
                 tasks[taskCount] = new Deadline(deadlineParts[0], deadlineParts[1]);
@@ -74,6 +79,11 @@ public class Bobby {
     /** Prints the error shown when the input does not use a supported command. */
     private static void printUnknownCommandMessage() {
         System.out.println("No such task type available. Try again!");
+    }
+
+    /** Prints the error shown when a to-do has no description. */
+    private static void printEmptyDescriptionMessage() {
+        System.out.println("OOPS!!! The description of a todo cannot be empty.");
     }
 
     /** Prints the confirmation shown after adding a typed task. */

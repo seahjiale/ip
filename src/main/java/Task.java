@@ -33,6 +33,11 @@ public class Task {
         return isDone ? "X" : " ";
     }
 
+    /** Returns this task's completion state in the storage format. */
+    public String getStorageStatus() {
+        return isDone ? "1" : "0";
+    }
+
     /** Marks this task as complete. */
     public void markAsDone() {
         isDone = true;
@@ -41,6 +46,11 @@ public class Task {
     /** Marks this task as incomplete. */
     public void unmarkAsDone() {
         isDone = false;
+    }
+
+    /** Returns this task in the format used when saving tasks to disk. */
+    public String toStorageString() {
+        return "T | " + getStorageStatus() + " | " + description;
     }
 
     /**

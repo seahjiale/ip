@@ -1,12 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
  */
 public class Bobby {
     private static final String SEPARATOR = "____________________________________________________________";
+    private static final Path TASK_FILE = Paths.get("data", "duke.txt");
 
     /**
      * Prints Bobby's welcome message, stores tasks, changes task completion states, deletes tasks,
@@ -48,11 +54,13 @@ public class Bobby {
                 } else if (command.startsWith("mark ")) {
                     int taskIndex = Integer.parseInt(command.substring(5)) - 1;
                     tasks.get(taskIndex).markAsDone();
+                    saveTasks(tasks);
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + getTaskDisplay(tasks.get(taskIndex)));
                 } else if (command.startsWith("unmark ")) {
                     int taskIndex = Integer.parseInt(command.substring(7)) - 1;
                     tasks.get(taskIndex).unmarkAsDone();
+                    saveTasks(tasks);
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + getTaskDisplay(tasks.get(taskIndex)));
                 } else if (command.equals("delete") || command.startsWith("delete ")) {
@@ -77,6 +85,7 @@ public class Bobby {
                     }
 
                     Task deletedTask = tasks.remove(taskIndex);
+                    saveTasks(tasks);
                     System.out.println("Noted. I've removed this task:");
                     System.out.println(getTaskDisplay(deletedTask));
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -87,6 +96,7 @@ public class Bobby {
                     } else {
                         Task task = new ToDo(description);
                         tasks.add(task);
+                        saveTasks(tasks);
                         addTaskMessage(task, tasks.size());
                     }
                 } else if (command.equals("deadline") || command.startsWith("deadline ")) {
@@ -102,6 +112,7 @@ public class Bobby {
                     } else {
                         Task task = new Deadline(deadlineParts[0], deadlineParts[1]);
                         tasks.add(task);
+                        saveTasks(tasks);
                         addTaskMessage(task, tasks.size());
                     }
                 } else if (command.equals("event") || command.startsWith("event ")) {
@@ -137,6 +148,7 @@ public class Bobby {
                     } else {
                         Task task = new Event(description, from, to);
                         tasks.add(task);
+                        saveTasks(tasks);
                         addTaskMessage(task, tasks.size());
                     }
                 } else {
@@ -154,6 +166,20 @@ public class Bobby {
         System.out.println("Got it. I've added this task:");
         System.out.println(getTaskDisplay(task));
         System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    /** Writes the current task list to disk in a format that can be loaded later. */
+    private static void saveTasks(List<Task> tasks) throws BobbyException {
+        try {
+            Files.createDirectories(TASK_FILE.getParent());
+            List<String> taskLines = new ArrayList<>();
+            for (Task task : tasks) {
+                taskLines.add(task.toStorageString());
+            }
+            Files.write(TASK_FILE, taskLines, StandardCharsets.UTF_8);
+        } catch (IOException exception) {
+            throw new BobbyException("Error! Could not save tasks to disk.");
+        }
     }
 
     /** Returns the display text for one supported task type. */

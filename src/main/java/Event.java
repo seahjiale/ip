@@ -15,4 +15,10 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
+
+    /** Returns this event in the format used when saving tasks to disk. */
+    @Override
+    public String toStorageString() {
+        return "E | " + getStorageStatus() + " | " + getDescription() + " | " + from + " | " + to;
+    }
 }

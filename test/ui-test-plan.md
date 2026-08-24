@@ -834,3 +834,74 @@ ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+## Test Case 19: Save task changes to disk
+
+### Aim
+
+Verify that adding, marking, unmarking, and deleting tasks complete normally
+while exercising the automatic task-list save path.
+
+### Input
+
+```text
+todo read book
+deadline return book /by June 6th
+event project meeting /from Aug 6th 2pm /to 4pm
+mark 1
+unmark 1
+delete 2
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] return book (by: June 6th)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this task as done:
+  [T][X] read book
+____________________________________________________________
+____________________________________________________________
+OK, I've marked this task as not done yet:
+  [T][ ] read book
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this task:
+[D][ ] return book (by: June 6th)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```

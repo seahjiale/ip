@@ -7,13 +7,11 @@ import java.nio.file.StandardOpenOption;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
  */
 public class Bobby {
-    private static final String SEPARATOR = "____________________________________________________________";
     private static final Path TASK_FILE = Paths.get("data", "duke.txt");
 
     /**
@@ -23,38 +21,27 @@ public class Bobby {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
-        String banner = "██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗\n"
-                + "██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝\n"
-                + "██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝\n"
-                + "██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝\n"
-                + "██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║\n"
-                + "╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝\n";
-
-        System.out.println(SEPARATOR);
-        System.out.print(banner);
-        System.out.println("Hello! I'm Bobby.");
-        System.out.println("What can I do for you?");
-        System.out.println(SEPARATOR);
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         List<Task> tasks;
         try {
             tasks = loadTasks();
         } catch (BobbyException exception) {
             tasks = new ArrayList<>();
-            System.out.println(exception.getMessage());
+            ui.showError(exception.getMessage());
         }
-        Scanner scanner = new Scanner(System.in);
         while (true) {
-            if (!scanner.hasNextLine()) {
-                System.out.println(SEPARATOR);
-                printGoodbyeMessage();
+            String command = ui.readCommand();
+            if (command == null) {
+                ui.showSeparator();
+                ui.showGoodbye();
                 break;
             }
 
-            String command = scanner.nextLine().trim();
-            System.out.println(SEPARATOR);
+            ui.showSeparator();
             if (command.equalsIgnoreCase("bye")) {
-                printGoodbyeMessage();
+                ui.showGoodbye();
                 break;
             }
 
@@ -62,10 +49,7 @@ public class Bobby {
                 if (command.isEmpty()) {
                     throw new BobbyException("Error! The command cannot be empty!");
                 } else if (command.equals("list")) {
-                    System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + "." + getTaskDisplay(tasks.get(i)));
-                    }
+                    ui.showTaskList(tasks);
                 } else if (isCommand(command, "mark")) {
                     int taskIndex = parseTaskIndex(command, "mark", tasks.size());
                     Task task = tasks.get(taskIndex);
@@ -77,8 +61,7 @@ public class Bobby {
                         restoreTaskStatus(task, wasDone);
                         throw exception;
                     }
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + getTaskDisplay(task));
+                    ui.showTaskMarkedDone(task);
                 } else if (isCommand(command, "unmark")) {
                     int taskIndex = parseTaskIndex(command, "unmark", tasks.size());
                     Task task = tasks.get(taskIndex);
@@ -90,8 +73,7 @@ public class Bobby {
                         restoreTaskStatus(task, wasDone);
                         throw exception;
                     }
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("  " + getTaskDisplay(task));
+                    ui.showTaskMarkedNotDone(task);
                 } else if (isCommand(command, "delete")) {
                     int taskIndex = parseTaskIndex(command, "delete", tasks.size());
                     Task deletedTask = tasks.remove(taskIndex);
@@ -101,9 +83,7 @@ public class Bobby {
                         tasks.add(taskIndex, deletedTask);
                         throw exception;
                     }
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println(getTaskDisplay(deletedTask));
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskDeleted(deletedTask, tasks.size());
                 } else if (isCommand(command, "todo")) {
                     String description = getCommandArgument(command, "todo");
                     if (description.trim().isEmpty()) {
@@ -118,7 +98,7 @@ public class Bobby {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
                         }
-                        addTaskMessage(task, tasks.size());
+                        ui.showTaskAdded(task, tasks.size());
                     }
                 } else if (isCommand(command, "deadline")) {
                     String deadlineDetails = getCommandArgument(command, "deadline");
@@ -147,7 +127,7 @@ public class Bobby {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
                         }
-                        addTaskMessage(task, tasks.size());
+                        ui.showTaskAdded(task, tasks.size());
                     }
                 } else if (isCommand(command, "event")) {
                     String eventDetails = getCommandArgument(command, "event");
@@ -191,29 +171,16 @@ public class Bobby {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
                         }
-                        addTaskMessage(task, tasks.size());
+                        ui.showTaskAdded(task, tasks.size());
                     }
                 } else {
                     throw new BobbyException("No such task type available. Try again!");
                 }
             } catch (BobbyException exception) {
-                System.out.println(exception.getMessage());
+                ui.showError(exception.getMessage());
             }
-            System.out.println(SEPARATOR);
+            ui.showSeparator();
         }
-    }
-
-    /** Prints the confirmation shown after adding a typed task. */
-    private static void addTaskMessage(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(getTaskDisplay(task));
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-    }
-
-    /** Prints the message used when Bobby exits normally or reaches end of input. */
-    private static void printGoodbyeMessage() {
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(SEPARATOR);
     }
 
     /** Returns whether an input is a command or has whitespace-separated arguments. */
@@ -342,8 +309,4 @@ public class Bobby {
         }
     }
 
-    /** Returns the display text for one supported task type. */
-    private static String getTaskDisplay(Task task) {
-        return task.toString();
-    }
 }

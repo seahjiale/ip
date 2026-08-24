@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -132,7 +133,13 @@ public class Bobby {
                     } else {
                         validateStorageField(deadlineParts[0]);
                         validateStorageField(deadlineParts[1]);
-                        Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
+                        Task task;
+                        try {
+                            task = Deadline.fromInput(deadlineParts[0].trim(), deadlineParts[1].trim());
+                        } catch (DateTimeParseException exception) {
+                            throw new BobbyException("Error! The deadline must be a valid date. "
+                                    + "Use yyyy-MM-dd or d/M/yyyy HHmm.");
+                        }
                         tasks.add(task);
                         try {
                             saveTasks(tasks);
@@ -300,7 +307,11 @@ public class Bobby {
         if (taskType.equals("T") && parts.length == 3) {
             task = new ToDo(description);
         } else if (taskType.equals("D") && parts.length == 4) {
-            task = new Deadline(description, parts[3].trim());
+            try {
+                task = Deadline.fromInput(description, parts[3].trim());
+            } catch (DateTimeParseException exception) {
+                throw new BobbyException("Error! Could not load tasks from disk.");
+            }
         } else if (taskType.equals("E") && parts.length == 5) {
             task = new Event(description, parts[3].trim(), parts[4].trim());
         } else {

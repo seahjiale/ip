@@ -106,13 +106,13 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that the `deadline` command creates a task with its deadline text and
-displays it with the `[D]` type marker.
+Verify that the `deadline` command parses an ISO date, stores it as a typed
+date, and displays it in a human-friendly format.
 
 ### Input
 
 ```text
-deadline return book /by Sunday
+deadline return book /by 2019-10-15
 list
 bye
 ```
@@ -132,12 +132,12 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Oct 15 2019)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] return book (by: Sunday)
+1.[D][ ] return book (by: Oct 15 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -499,10 +499,10 @@ count, and that a later valid deadline is stored correctly.
 ### Input
 
 ```text
-deadline submit report /by Friday
+deadline submit report /by 2019-11-29
 deadline submit slides /by
 list
-deadline submit slides /by Monday
+deadline submit slides /by 2019-12-02
 list
 bye
 ```
@@ -522,7 +522,7 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] submit report (by: Friday)
+[D][ ] submit report (by: Nov 29 2019)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -530,17 +530,17 @@ Error! The date of a deadline cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] submit report (by: Friday)
+1.[D][ ] submit report (by: Nov 29 2019)
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] submit slides (by: Monday)
+[D][ ] submit slides (by: Dec 02 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] submit report (by: Friday)
-2.[D][ ] submit slides (by: Monday)
+1.[D][ ] submit report (by: Nov 29 2019)
+2.[D][ ] submit slides (by: Dec 02 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -617,7 +617,7 @@ removed task, updates the task count, and renumbers the remaining tasks.
 
 ```text
 todo read book
-deadline return book /by June 6th
+deadline return book /by 2019-06-06
 event project meeting /from Aug 6th 2pm /to 4pm
 todo join sports club
 todo borrow book
@@ -650,7 +650,7 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] return book (by: June 6th)
+[D][ ] return book (by: Jun 06 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -674,7 +674,7 @@ Nice! I've marked this task as done:
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
-  [D][X] return book (by: June 6th)
+  [D][X] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
@@ -683,7 +683,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][X] return book (by: June 6th)
+2.[D][X] return book (by: Jun 06 2019)
 3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 4.[T][X] join sports club
 5.[T][ ] borrow book
@@ -696,7 +696,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][X] return book (by: June 6th)
+2.[D][X] return book (by: Jun 06 2019)
 3.[T][X] join sports club
 4.[T][ ] borrow book
 ____________________________________________________________
@@ -846,7 +846,7 @@ while exercising the automatic task-list save path.
 
 ```text
 todo read book
-deadline return book /by June 6th
+deadline return book /by 2019-06-06
 event project meeting /from Aug 6th 2pm /to 4pm
 mark 1
 unmark 1
@@ -875,7 +875,7 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] return book (by: June 6th)
+[D][ ] return book (by: Jun 06 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -893,7 +893,7 @@ OK, I've marked this task as not done yet:
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this task:
-[D][ ] return book (by: June 6th)
+[D][ ] return book (by: Jun 06 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1116,6 +1116,48 @@ ____________________________________________________________
 Got it. I've added this task:
 [T][ ] read book
 Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 25: Parse a deadline date and time
+
+### Aim
+
+Verify that a deadline in `d/M/yyyy HHmm` format is parsed as a real date and
+time, then displayed as `MMM dd yyyy h:mm a`.
+
+### Input
+
+```text
+deadline return book /by 2/12/2019 1800
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
+██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝
+██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝
+██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║
+╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] return book (by: Dec 02 2019 6:00 PM)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[D][ ] return book (by: Dec 02 2019 6:00 PM)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!

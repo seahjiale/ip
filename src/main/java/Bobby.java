@@ -1,11 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
@@ -34,7 +34,13 @@ public class Bobby {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        List<Task> tasks = new ArrayList<>();
+        List<Task> tasks;
+        try {
+            tasks = loadTasks();
+        } catch (BobbyException exception) {
+            tasks = new ArrayList<>();
+            System.out.println(exception.getMessage());
+        }
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String command = scanner.nextLine();
@@ -166,6 +172,55 @@ public class Bobby {
         System.out.println("Got it. I've added this task:");
         System.out.println(getTaskDisplay(task));
         System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    /** Loads the saved task list, or returns an empty list if no save file exists. */
+    private static List<Task> loadTasks() throws BobbyException {
+        List<Task> tasks = new ArrayList<>();
+        if (!Files.exists(TASK_FILE)) {
+            return tasks;
+        }
+
+        try {
+            List<String> taskLines = Files.readAllLines(TASK_FILE, StandardCharsets.UTF_8);
+            for (String taskLine : taskLines) {
+                if (!taskLine.trim().isEmpty()) {
+                    tasks.add(parseTask(taskLine));
+                }
+            }
+            return tasks;
+        } catch (IOException exception) {
+            throw new BobbyException("Error! Could not load tasks from disk.");
+        }
+    }
+
+    /** Recreates one task from a line in the task storage format. */
+    private static Task parseTask(String taskLine) throws BobbyException {
+        String[] parts = taskLine.split("\\s*\\|\\s*", -1);
+        if (parts.length < 3) {
+            throw new BobbyException("Error! Could not load tasks from disk.");
+        }
+
+        String taskType = parts[0].trim();
+        String status = parts[1].trim();
+        String description = parts[2].trim();
+        Task task;
+        if (taskType.equals("T") && parts.length == 3) {
+            task = new ToDo(description);
+        } else if (taskType.equals("D") && parts.length == 4) {
+            task = new Deadline(description, parts[3].trim());
+        } else if (taskType.equals("E") && parts.length == 5) {
+            task = new Event(description, parts[3].trim(), parts[4].trim());
+        } else {
+            throw new BobbyException("Error! Could not load tasks from disk.");
+        }
+
+        if (status.equals("1")) {
+            task.markAsDone();
+        } else if (!status.equals("0")) {
+            throw new BobbyException("Error! Could not load tasks from disk.");
+        }
+        return task;
     }
 
     /** Writes the current task list to disk in a format that can be loaded later. */

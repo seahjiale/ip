@@ -1,9 +1,3 @@
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +6,6 @@ import java.util.List;
  * A minimal chatbot that echoes commands until the user says goodbye.
  */
 public class Bobby {
-    private static final Path TASK_FILE = Paths.get("data", "duke.txt");
-
     /**
      * Prints Bobby's welcome message, stores tasks, changes task completion states, deletes tasks,
      * lists tasks, and exits on {@code bye}.
@@ -22,11 +14,12 @@ public class Bobby {
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
+        Storage storage = new Storage("data/duke.txt");
         ui.showWelcome();
 
         List<Task> tasks;
         try {
-            tasks = loadTasks();
+            tasks = storage.load();
         } catch (BobbyException exception) {
             tasks = new ArrayList<>();
             ui.showError(exception.getMessage());
@@ -56,7 +49,7 @@ public class Bobby {
                     boolean wasDone = task.isDone();
                     task.markAsDone();
                     try {
-                        saveTasks(tasks);
+                        storage.save(tasks);
                     } catch (BobbyException exception) {
                         restoreTaskStatus(task, wasDone);
                         throw exception;
@@ -68,7 +61,7 @@ public class Bobby {
                     boolean wasDone = task.isDone();
                     task.unmarkAsDone();
                     try {
-                        saveTasks(tasks);
+                        storage.save(tasks);
                     } catch (BobbyException exception) {
                         restoreTaskStatus(task, wasDone);
                         throw exception;
@@ -78,7 +71,7 @@ public class Bobby {
                     int taskIndex = parseTaskIndex(command, "delete", tasks.size());
                     Task deletedTask = tasks.remove(taskIndex);
                     try {
-                        saveTasks(tasks);
+                        storage.save(tasks);
                     } catch (BobbyException exception) {
                         tasks.add(taskIndex, deletedTask);
                         throw exception;
@@ -93,7 +86,7 @@ public class Bobby {
                         Task task = new ToDo(description.trim());
                         tasks.add(task);
                         try {
-                            saveTasks(tasks);
+                            storage.save(tasks);
                         } catch (BobbyException exception) {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
@@ -122,7 +115,7 @@ public class Bobby {
                         }
                         tasks.add(task);
                         try {
-                            saveTasks(tasks);
+                            storage.save(tasks);
                         } catch (BobbyException exception) {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
@@ -166,7 +159,7 @@ public class Bobby {
                         Task task = new Event(description, from, to);
                         tasks.add(task);
                         try {
-                            saveTasks(tasks);
+                            storage.save(tasks);
                         } catch (BobbyException exception) {
                             tasks.remove(tasks.size() - 1);
                             throw exception;
@@ -237,75 +230,6 @@ public class Bobby {
     private static void validateStorageField(String field) throws BobbyException {
         if (field.contains("|")) {
             throw new BobbyException("Error! Task details cannot contain the '|' character!");
-        }
-    }
-
-    /** Loads the saved task list, or returns an empty list if no save file exists. */
-    private static List<Task> loadTasks() throws BobbyException {
-        List<Task> tasks = new ArrayList<>();
-        if (!Files.exists(TASK_FILE)) {
-            return tasks;
-        }
-
-        try {
-            List<String> taskLines = Files.readAllLines(TASK_FILE, StandardCharsets.UTF_8);
-            for (String taskLine : taskLines) {
-                if (!taskLine.trim().isEmpty()) {
-                    tasks.add(parseTask(taskLine));
-                }
-            }
-            return tasks;
-        } catch (IOException exception) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-    }
-
-    /** Recreates one task from a line in the task storage format. */
-    private static Task parseTask(String taskLine) throws BobbyException {
-        String[] parts = taskLine.split("\\s*\\|\\s*", -1);
-        if (parts.length < 3) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-
-        String taskType = parts[0].trim();
-        String status = parts[1].trim();
-        String description = parts[2].trim();
-        Task task;
-        if (taskType.equals("T") && parts.length == 3) {
-            task = new ToDo(description);
-        } else if (taskType.equals("D") && parts.length == 4) {
-            try {
-                task = Deadline.fromInput(description, parts[3].trim());
-            } catch (DateTimeParseException exception) {
-                throw new BobbyException("Error! Could not load tasks from disk.");
-            }
-        } else if (taskType.equals("E") && parts.length == 5) {
-            task = new Event(description, parts[3].trim(), parts[4].trim());
-        } else {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-
-        if (status.equals("1")) {
-            task.markAsDone();
-        } else if (!status.equals("0")) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-        return task;
-    }
-
-    /** Writes the current task list to disk in a format that can be loaded later. */
-    private static void saveTasks(List<Task> tasks) throws BobbyException {
-        try {
-            Files.createDirectories(TASK_FILE.getParent());
-            List<String> taskLines = new ArrayList<>();
-            for (Task task : tasks) {
-                taskLines.add(task.toStorageString());
-            }
-            Files.write(TASK_FILE, taskLines, StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-                    StandardOpenOption.WRITE);
-        } catch (IOException exception) {
-            throw new BobbyException("Error! Could not save tasks to disk.");
         }
     }
 

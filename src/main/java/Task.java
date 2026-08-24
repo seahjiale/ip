@@ -38,6 +38,11 @@ public class Task {
         return isDone ? "1" : "0";
     }
 
+    /** Returns whether this task is complete. */
+    public boolean isDone() {
+        return isDone;
+    }
+
     /** Marks this task as complete. */
     public void markAsDone() {
         isDone = true;

@@ -1,3 +1,5 @@
+package bobby.model;
+
 /**
  * Represents a task and whether it has been completed.
  */

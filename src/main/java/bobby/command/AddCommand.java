@@ -1,3 +1,11 @@
+package bobby.command;
+
+import bobby.exception.BobbyException;
+import bobby.model.Task;
+import bobby.model.TaskList;
+import bobby.storage.Storage;
+import bobby.ui.Ui;
+
 /** Adds a parsed task to the task list and persists the change. */
 public class AddCommand extends Command {
     private final Task task;

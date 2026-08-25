@@ -1,3 +1,5 @@
+package bobby.model;
+
 import java.util.ArrayList;
 import java.util.List;
 

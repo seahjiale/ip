@@ -1,3 +1,7 @@
+package bobby.ui;
+
+import bobby.model.Task;
+import bobby.model.TaskList;
 import java.util.Scanner;
 
 /** Handles all console input and output for Bobby. */

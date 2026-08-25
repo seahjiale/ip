@@ -1,3 +1,9 @@
+package bobby.command;
+
+import bobby.model.TaskList;
+import bobby.storage.Storage;
+import bobby.ui.Ui;
+
 /** Ends Bobby's session and shows the farewell message. */
 public class ExitCommand extends Command {
 

@@ -1,3 +1,5 @@
+package bobby.exception;
+
 /** Represents an error caused by invalid user input in Bobby. */
 public class BobbyException extends Exception {
 

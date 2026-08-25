@@ -1,3 +1,12 @@
+package bobby.command;
+
+import bobby.exception.BobbyException;
+import bobby.model.Task;
+import bobby.model.TaskList;
+import bobby.parser.Parser;
+import bobby.storage.Storage;
+import bobby.ui.Ui;
+
 /** Deletes a selected task and persists the updated task list. */
 public class DeleteCommand extends Command {
     private final String command;

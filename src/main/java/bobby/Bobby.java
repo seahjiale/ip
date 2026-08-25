@@ -1,3 +1,13 @@
+package bobby;
+
+import bobby.command.Command;
+import bobby.command.ExitCommand;
+import bobby.exception.BobbyException;
+import bobby.model.TaskList;
+import bobby.parser.Parser;
+import bobby.storage.Storage;
+import bobby.ui.Ui;
+
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
  */

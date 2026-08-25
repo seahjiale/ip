@@ -1,3 +1,10 @@
+package bobby.command;
+
+import bobby.exception.BobbyException;
+import bobby.model.TaskList;
+import bobby.storage.Storage;
+import bobby.ui.Ui;
+
 /** Represents one executable command entered by a user. */
 public abstract class Command {
 

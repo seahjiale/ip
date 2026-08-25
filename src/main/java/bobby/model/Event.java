@@ -1,3 +1,5 @@
+package bobby.model;
+
 /** Represents a task with a start and end time. */
 public class Event extends Task {
     private final String from;

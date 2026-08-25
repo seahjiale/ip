@@ -26,14 +26,14 @@ public class Parser {
                 || isCommand(command, "event");
     }
 
-    /** Parses a supported task command into a new task. */
-    public Task parseTask(String command) throws BobbyException {
+    /** Parses a supported task command into an executable add command. */
+    public Command parse(String command) throws BobbyException {
         if (isCommand(command, "todo")) {
-            return parseTodo(command);
+            return new AddCommand(parseTodo(command));
         } else if (isCommand(command, "deadline")) {
-            return parseDeadline(command);
+            return new AddCommand(parseDeadline(command));
         } else if (isCommand(command, "event")) {
-            return parseEvent(command);
+            return new AddCommand(parseEvent(command));
         }
         throw new BobbyException("No such task type available. Try again!");
     }

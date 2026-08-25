@@ -75,15 +75,7 @@ public class Bobby {
                     }
                     ui.showTaskDeleted(deletedTask, tasks.size());
                 } else if (parser.isTaskCreationCommand(command)) {
-                    Task task = parser.parseTask(command);
-                    tasks.add(task);
-                    try {
-                        storage.save(tasks);
-                    } catch (BobbyException exception) {
-                        tasks.remove(tasks.size() - 1);
-                        throw exception;
-                    }
-                    ui.showTaskAdded(task, tasks.size());
+                    parser.parse(command).execute(tasks, ui, storage);
                 } else {
                     throw new BobbyException("No such task type available. Try again!");
                 }

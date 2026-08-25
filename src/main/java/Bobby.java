@@ -32,25 +32,14 @@ public class Bobby {
 
             ui.showSeparator();
             try {
-                if (parser.isExitCommand(command)) {
-                    Command exitCommand = parser.parse(command);
-                    exitCommand.execute(tasks, ui, storage);
-                    if (exitCommand.isExit()) {
+                if (command.isEmpty()) {
+                    throw new BobbyException("Error! The command cannot be empty!");
+                } else {
+                    Command parsedCommand = parser.parse(command);
+                    parsedCommand.execute(tasks, ui, storage);
+                    if (parsedCommand.isExit()) {
                         break;
                     }
-                } else if (command.isEmpty()) {
-                    throw new BobbyException("Error! The command cannot be empty!");
-                } else if (command.equals("list")) {
-                    parser.parse(command).execute(tasks, ui, storage);
-                } else if (parser.isCommand(command, "mark")
-                        || parser.isCommand(command, "unmark")) {
-                    parser.parse(command).execute(tasks, ui, storage);
-                } else if (parser.isCommand(command, "delete")) {
-                    parser.parse(command).execute(tasks, ui, storage);
-                } else if (parser.isTaskCreationCommand(command)) {
-                    parser.parse(command).execute(tasks, ui, storage);
-                } else {
-                    throw new BobbyException("No such task type available. Try again!");
                 }
             } catch (BobbyException exception) {
                 ui.showError(exception.getMessage());

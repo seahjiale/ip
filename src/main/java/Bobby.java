@@ -46,15 +46,7 @@ public class Bobby {
                         || parser.isCommand(command, "unmark")) {
                     parser.parse(command).execute(tasks, ui, storage);
                 } else if (parser.isCommand(command, "delete")) {
-                    int taskIndex = parser.parseTaskIndex(command, "delete", tasks.size());
-                    Task deletedTask = tasks.remove(taskIndex);
-                    try {
-                        storage.save(tasks);
-                    } catch (BobbyException exception) {
-                        tasks.add(taskIndex, deletedTask);
-                        throw exception;
-                    }
-                    ui.showTaskDeleted(deletedTask, tasks.size());
+                    parser.parse(command).execute(tasks, ui, storage);
                 } else if (parser.isTaskCreationCommand(command)) {
                     parser.parse(command).execute(tasks, ui, storage);
                 } else {

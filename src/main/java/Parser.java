@@ -41,6 +41,8 @@ public class Parser {
             return new MarkCommand(command);
         } else if (isCommand(command, "unmark")) {
             return new UnmarkCommand(command);
+        } else if (isCommand(command, "delete")) {
+            return new DeleteCommand(command);
         } else if (isCommand(command, "todo")) {
             return new AddCommand(parseTodo(command));
         } else if (isCommand(command, "deadline")) {

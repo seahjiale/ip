@@ -31,8 +31,14 @@ def extract_aim(case_text: str) -> str:
     return match.group(1).strip()
 
 
-def read_test_cases() -> list[tuple[str, str, str, str]]:
-    """Read titles, aims, inputs, and expected outputs from the test plan."""
+def extract_data_scope(case_text: str) -> str | None:
+    """Return an optional shared data scope declared in a test-case comment."""
+    match = re.search(r"<!--\s*data-scope:\s*([\w-]+)\s*-->", case_text)
+    return match.group(1) if match else None
+
+
+def read_test_cases() -> list[tuple[str, str, str, str, str | None]]:
+    """Read test data and optional working-directory scopes from the plan."""
     plan = PLAN_PATH.read_text(encoding="utf-8").replace("\r\n", "\n")
     headings = list(re.finditer(r"^## Test Case \d+: (.+)$", plan, flags=re.MULTILINE))
     if not headings:
@@ -47,6 +53,7 @@ def read_test_cases() -> list[tuple[str, str, str, str]]:
             extract_aim(case_text),
             extract_section(case_text, "Input"),
             extract_section(case_text, "Expected Output"),
+            extract_data_scope(case_text),
         ))
     return cases
 
@@ -89,13 +96,30 @@ def main() -> int:
         with tempfile.TemporaryDirectory(prefix="bobby-ui-tests-") as temporary_directory:
             class_directory = Path(temporary_directory)
             compile_program(class_directory)
-            for title, aim, test_input, expected_output in test_cases:
+            data_directories: dict[str, Path] = {}
+            for case_number, (title, aim, test_input, expected_output, data_scope) in enumerate(
+                    test_cases, start=1):
+                if data_scope is None:
+                    working_directory = Path(temporary_directory) / f"case-{case_number}"
+                else:
+                    working_directory = data_directories.setdefault(
+                        data_scope, Path(temporary_directory) / f"scope-{data_scope}")
+                working_directory.mkdir(parents=True, exist_ok=True)
                 result = subprocess.run(
-                    ["java", "-Dfile.encoding=UTF-8", "-cp", str(class_directory), "Bobby"],
+                    [
+                        "java",
+                        "-Dfile.encoding=UTF-8",
+                        "-Dstdout.encoding=UTF-8",
+                        "-Dstderr.encoding=UTF-8",
+                        "-cp",
+                        str(class_directory),
+                        "Bobby",
+                    ],
                     input=test_input + "\n",
                     capture_output=True,
                     text=True,
                     encoding="utf-8",
+                    cwd=working_directory,
                 )
                 actual_output = result.stdout
                 print_transcript(title, aim, test_input, actual_output)

@@ -15,6 +15,7 @@ public class Bobby {
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage("data/duke.txt");
+        Parser parser = new Parser();
         ui.showWelcome();
 
         List<Task> tasks;
@@ -43,8 +44,8 @@ public class Bobby {
                     throw new BobbyException("Error! The command cannot be empty!");
                 } else if (command.equals("list")) {
                     ui.showTaskList(tasks);
-                } else if (isCommand(command, "mark")) {
-                    int taskIndex = parseTaskIndex(command, "mark", tasks.size());
+                } else if (parser.isCommand(command, "mark")) {
+                    int taskIndex = parser.parseTaskIndex(command, "mark", tasks.size());
                     Task task = tasks.get(taskIndex);
                     boolean wasDone = task.isDone();
                     task.markAsDone();
@@ -55,8 +56,8 @@ public class Bobby {
                         throw exception;
                     }
                     ui.showTaskMarkedDone(task);
-                } else if (isCommand(command, "unmark")) {
-                    int taskIndex = parseTaskIndex(command, "unmark", tasks.size());
+                } else if (parser.isCommand(command, "unmark")) {
+                    int taskIndex = parser.parseTaskIndex(command, "unmark", tasks.size());
                     Task task = tasks.get(taskIndex);
                     boolean wasDone = task.isDone();
                     task.unmarkAsDone();
@@ -67,8 +68,8 @@ public class Bobby {
                         throw exception;
                     }
                     ui.showTaskMarkedNotDone(task);
-                } else if (isCommand(command, "delete")) {
-                    int taskIndex = parseTaskIndex(command, "delete", tasks.size());
+                } else if (parser.isCommand(command, "delete")) {
+                    int taskIndex = parser.parseTaskIndex(command, "delete", tasks.size());
                     Task deletedTask = tasks.remove(taskIndex);
                     try {
                         storage.save(tasks);
@@ -77,8 +78,8 @@ public class Bobby {
                         throw exception;
                     }
                     ui.showTaskDeleted(deletedTask, tasks.size());
-                } else if (isCommand(command, "todo")) {
-                    String description = getCommandArgument(command, "todo");
+                } else if (parser.isCommand(command, "todo")) {
+                    String description = parser.getCommandArgument(command, "todo");
                     if (description.trim().isEmpty()) {
                         throw new BobbyException("Error! The description of a todo cannot be empty!");
                     } else {
@@ -93,8 +94,8 @@ public class Bobby {
                         }
                         ui.showTaskAdded(task, tasks.size());
                     }
-                } else if (isCommand(command, "deadline")) {
-                    String deadlineDetails = getCommandArgument(command, "deadline");
+                } else if (parser.isCommand(command, "deadline")) {
+                    String deadlineDetails = parser.getCommandArgument(command, "deadline");
                     String[] deadlineParts = deadlineDetails.split(" /by ", 2);
                     boolean hasNoDescription = deadlineDetails.trim().isEmpty()
                             || deadlineDetails.trim().startsWith("/by")
@@ -122,8 +123,8 @@ public class Bobby {
                         }
                         ui.showTaskAdded(task, tasks.size());
                     }
-                } else if (isCommand(command, "event")) {
-                    String eventDetails = getCommandArgument(command, "event");
+                } else if (parser.isCommand(command, "event")) {
+                    String eventDetails = parser.getCommandArgument(command, "event");
                     int fromMarkerIndex = eventDetails.indexOf("/from");
                     int toMarkerIndex = eventDetails.indexOf("/to");
 
@@ -174,47 +175,6 @@ public class Bobby {
             }
             ui.showSeparator();
         }
-    }
-
-    /** Returns whether an input is a command or has whitespace-separated arguments. */
-    private static boolean isCommand(String input, String commandName) {
-        return input.equals(commandName)
-                || (input.length() > commandName.length()
-                && input.startsWith(commandName)
-                && Character.isWhitespace(input.charAt(commandName.length())));
-    }
-
-    /** Returns the argument text after a command name. */
-    private static String getCommandArgument(String command, String commandName) {
-        if (command.length() <= commandName.length()) {
-            return "";
-        }
-        return command.substring(commandName.length()).trim();
-    }
-
-    /** Parses and validates a one-based task number from a task command. */
-    private static int parseTaskIndex(String command, String commandName, int taskCount)
-            throws BobbyException {
-        if (taskCount == 0) {
-            throw new BobbyException("No tasks available to " + commandName + ".");
-        }
-
-        String taskNumber = getCommandArgument(command, commandName);
-        if (taskNumber.isEmpty()) {
-            throw new BobbyException("Error! The task number cannot be empty!");
-        }
-
-        int taskIndex;
-        try {
-            taskIndex = Integer.parseInt(taskNumber) - 1;
-        } catch (NumberFormatException exception) {
-            throw new BobbyException("Error! The task number must be a valid integer.");
-        }
-        if (taskIndex < 0 || taskIndex >= taskCount) {
-            throw new BobbyException("Error! The task number must be between 1 and "
-                    + taskCount + ".");
-        }
-        return taskIndex;
     }
 
     /** Restores a task's completion state after a failed save. */

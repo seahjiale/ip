@@ -3,12 +3,11 @@ import java.util.Scanner;
 /** Handles all console input and output for Bobby. */
 public class Ui {
     private static final String SEPARATOR = "____________________________________________________________";
-    private static final String BANNER = "██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗\n"
-            + "██╔══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝\n"
-            + "██████╔╝██║   ██║██████╔╝██████╔╝ ╚████╔╝\n"
-            + "██╔══██╗██║   ██║██╔══██╗██╔══██╗  ╚██╔╝\n"
-            + "██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║\n"
-            + "╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝\n";
+    private static final String BANNER = " ____   ____  ____  ____  __   __\n"
+            + "| __ ) / __ \\| __ )| __ ) \\ \\ / /\n"
+            + "|  _ \\| |  | |  _ \\|  _ \\  \\ V /\n"
+            + "| |_) | |__| | |_) | |_) |   | |\n"
+            + "|____/ \\____/|____/|____/    |_|\n";
 
     private final Scanner scanner;
 

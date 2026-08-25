@@ -1,5 +1,3 @@
-import java.time.format.DateTimeParseException;
-
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
  */
@@ -76,95 +74,16 @@ public class Bobby {
                         throw exception;
                     }
                     ui.showTaskDeleted(deletedTask, tasks.size());
-                } else if (parser.isCommand(command, "todo")) {
-                    String description = parser.getCommandArgument(command, "todo");
-                    if (description.trim().isEmpty()) {
-                        throw new BobbyException("Error! The description of a todo cannot be empty!");
-                    } else {
-                        validateStorageField(description);
-                        Task task = new ToDo(description.trim());
-                        tasks.add(task);
-                        try {
-                            storage.save(tasks);
-                        } catch (BobbyException exception) {
-                            tasks.remove(tasks.size() - 1);
-                            throw exception;
-                        }
-                        ui.showTaskAdded(task, tasks.size());
+                } else if (parser.isTaskCreationCommand(command)) {
+                    Task task = parser.parseTask(command);
+                    tasks.add(task);
+                    try {
+                        storage.save(tasks);
+                    } catch (BobbyException exception) {
+                        tasks.remove(tasks.size() - 1);
+                        throw exception;
                     }
-                } else if (parser.isCommand(command, "deadline")) {
-                    String deadlineDetails = parser.getCommandArgument(command, "deadline");
-                    String[] deadlineParts = deadlineDetails.split(" /by ", 2);
-                    boolean hasNoDescription = deadlineDetails.trim().isEmpty()
-                            || deadlineDetails.trim().startsWith("/by")
-                            || (deadlineParts.length > 1 && deadlineParts[0].trim().isEmpty());
-                    if (hasNoDescription) {
-                        throw new BobbyException("Error! The description of a deadline cannot be empty!");
-                    } else if (deadlineParts.length < 2 || deadlineParts[1].trim().isEmpty()) {
-                        throw new BobbyException("Error! The date of a deadline cannot be empty!");
-                    } else {
-                        validateStorageField(deadlineParts[0]);
-                        validateStorageField(deadlineParts[1]);
-                        Task task;
-                        try {
-                            task = Deadline.fromInput(deadlineParts[0].trim(), deadlineParts[1].trim());
-                        } catch (DateTimeParseException exception) {
-                            throw new BobbyException("Error! The deadline must be a valid date. "
-                                    + "Use yyyy-MM-dd or d/M/yyyy HHmm.");
-                        }
-                        tasks.add(task);
-                        try {
-                            storage.save(tasks);
-                        } catch (BobbyException exception) {
-                            tasks.remove(tasks.size() - 1);
-                            throw exception;
-                        }
-                        ui.showTaskAdded(task, tasks.size());
-                    }
-                } else if (parser.isCommand(command, "event")) {
-                    String eventDetails = parser.getCommandArgument(command, "event");
-                    int fromMarkerIndex = eventDetails.indexOf("/from");
-                    int toMarkerIndex = eventDetails.indexOf("/to");
-
-                    String description;
-                    String from = "";
-                    String to = "";
-                    if (fromMarkerIndex >= 0) {
-                        description = eventDetails.substring(0, fromMarkerIndex).trim();
-                        if (toMarkerIndex > fromMarkerIndex) {
-                            from = eventDetails.substring(fromMarkerIndex + 5, toMarkerIndex).trim();
-                        } else {
-                            from = eventDetails.substring(fromMarkerIndex + 5).trim();
-                        }
-                    } else if (toMarkerIndex >= 0) {
-                        description = eventDetails.substring(0, toMarkerIndex).trim();
-                    } else {
-                        description = eventDetails;
-                    }
-                    if (toMarkerIndex >= 0) {
-                        to = eventDetails.substring(toMarkerIndex + 3).trim();
-                    }
-
-                    if (description.isEmpty()) {
-                        throw new BobbyException("Error! The description of an event cannot be empty!");
-                    } else if (from.isEmpty()) {
-                        throw new BobbyException("Error! Start time of an event cannot be empty. Try again!");
-                    } else if (to.isEmpty()) {
-                        throw new BobbyException("Error! End time of an event cannot be empty. Try again!");
-                    } else {
-                        validateStorageField(description);
-                        validateStorageField(from);
-                        validateStorageField(to);
-                        Task task = new Event(description, from, to);
-                        tasks.add(task);
-                        try {
-                            storage.save(tasks);
-                        } catch (BobbyException exception) {
-                            tasks.remove(tasks.size() - 1);
-                            throw exception;
-                        }
-                        ui.showTaskAdded(task, tasks.size());
-                    }
+                    ui.showTaskAdded(task, tasks.size());
                 } else {
                     throw new BobbyException("No such task type available. Try again!");
                 }
@@ -181,13 +100,6 @@ public class Bobby {
             task.markAsDone();
         } else {
             task.unmarkAsDone();
-        }
-    }
-
-    /** Rejects storage separator characters that would make a saved line ambiguous. */
-    private static void validateStorageField(String field) throws BobbyException {
-        if (field.contains("|")) {
-            throw new BobbyException("Error! Task details cannot contain the '|' character!");
         }
     }
 

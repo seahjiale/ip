@@ -1,6 +1,4 @@
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
@@ -18,11 +16,11 @@ public class Bobby {
         Parser parser = new Parser();
         ui.showWelcome();
 
-        List<Task> tasks;
+        TaskList tasks;
         try {
             tasks = storage.load();
         } catch (BobbyException exception) {
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
             ui.showError(exception.getMessage());
         }
         while (true) {

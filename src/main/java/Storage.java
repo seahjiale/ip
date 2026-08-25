@@ -17,11 +17,11 @@ public class Storage {
         taskFile = Paths.get(filePath);
     }
 
-    /** Loads all saved tasks, or returns an empty list when the file does not exist. */
-    public List<Task> load() throws BobbyException {
+    /** Loads all saved tasks, or returns an empty task list when the file does not exist. */
+    public TaskList load() throws BobbyException {
         List<Task> tasks = new ArrayList<>();
         if (!Files.exists(taskFile)) {
-            return tasks;
+            return new TaskList();
         }
 
         try {
@@ -31,19 +31,19 @@ public class Storage {
                     tasks.add(parseTask(taskLine));
                 }
             }
-            return tasks;
+            return new TaskList(tasks);
         } catch (IOException exception) {
             throw new BobbyException("Error! Could not load tasks from disk.");
         }
     }
 
     /** Saves all tasks using Bobby's stable, line-based storage format. */
-    public void save(List<Task> tasks) throws BobbyException {
+    public void save(TaskList tasks) throws BobbyException {
         try {
             Files.createDirectories(taskFile.getParent());
             List<String> taskLines = new ArrayList<>();
-            for (Task task : tasks) {
-                taskLines.add(task.toStorageString());
+            for (int i = 0; i < tasks.size(); i++) {
+                taskLines.add(tasks.get(i).toStorageString());
             }
             Files.write(taskFile, taskLines, StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,

@@ -25,18 +25,20 @@ public class Bobby {
             String command = ui.readCommand();
             if (command == null) {
                 ui.showSeparator();
-                ui.showGoodbye();
+                ExitCommand exitCommand = new ExitCommand();
+                exitCommand.execute(tasks, ui, storage);
                 break;
             }
 
             ui.showSeparator();
-            if (command.equalsIgnoreCase("bye")) {
-                ui.showGoodbye();
-                break;
-            }
-
             try {
-                if (command.isEmpty()) {
+                if (parser.isExitCommand(command)) {
+                    Command exitCommand = parser.parse(command);
+                    exitCommand.execute(tasks, ui, storage);
+                    if (exitCommand.isExit()) {
+                        break;
+                    }
+                } else if (command.isEmpty()) {
                     throw new BobbyException("Error! The command cannot be empty!");
                 } else if (command.equals("list")) {
                     ui.showTaskList(tasks);

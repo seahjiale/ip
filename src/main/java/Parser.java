@@ -19,6 +19,11 @@ public class Parser {
         return command.substring(commandName.length()).trim();
     }
 
+    /** Returns whether the input requests that Bobby exits. */
+    public boolean isExitCommand(String command) {
+        return command.equalsIgnoreCase("bye");
+    }
+
     /** Returns whether the command creates a to-do, deadline, or event task. */
     public boolean isTaskCreationCommand(String command) {
         return isCommand(command, "todo")
@@ -28,7 +33,9 @@ public class Parser {
 
     /** Parses a supported task command into an executable add command. */
     public Command parse(String command) throws BobbyException {
-        if (isCommand(command, "todo")) {
+        if (isExitCommand(command)) {
+            return new ExitCommand();
+        } else if (isCommand(command, "todo")) {
             return new AddCommand(parseTodo(command));
         } else if (isCommand(command, "deadline")) {
             return new AddCommand(parseDeadline(command));

@@ -42,30 +42,9 @@ public class Bobby {
                     throw new BobbyException("Error! The command cannot be empty!");
                 } else if (command.equals("list")) {
                     parser.parse(command).execute(tasks, ui, storage);
-                } else if (parser.isCommand(command, "mark")) {
-                    int taskIndex = parser.parseTaskIndex(command, "mark", tasks.size());
-                    Task task = tasks.get(taskIndex);
-                    boolean wasDone = task.isDone();
-                    task.markAsDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (BobbyException exception) {
-                        restoreTaskStatus(task, wasDone);
-                        throw exception;
-                    }
-                    ui.showTaskMarkedDone(task);
-                } else if (parser.isCommand(command, "unmark")) {
-                    int taskIndex = parser.parseTaskIndex(command, "unmark", tasks.size());
-                    Task task = tasks.get(taskIndex);
-                    boolean wasDone = task.isDone();
-                    task.unmarkAsDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (BobbyException exception) {
-                        restoreTaskStatus(task, wasDone);
-                        throw exception;
-                    }
-                    ui.showTaskMarkedNotDone(task);
+                } else if (parser.isCommand(command, "mark")
+                        || parser.isCommand(command, "unmark")) {
+                    parser.parse(command).execute(tasks, ui, storage);
                 } else if (parser.isCommand(command, "delete")) {
                     int taskIndex = parser.parseTaskIndex(command, "delete", tasks.size());
                     Task deletedTask = tasks.remove(taskIndex);
@@ -85,15 +64,6 @@ public class Bobby {
                 ui.showError(exception.getMessage());
             }
             ui.showSeparator();
-        }
-    }
-
-    /** Restores a task's completion state after a failed save. */
-    private static void restoreTaskStatus(Task task, boolean wasDone) {
-        if (wasDone) {
-            task.markAsDone();
-        } else {
-            task.unmarkAsDone();
         }
     }
 

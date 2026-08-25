@@ -37,6 +37,10 @@ public class Parser {
             return new ExitCommand();
         } else if (command.equals("list")) {
             return new ListCommand();
+        } else if (isCommand(command, "mark")) {
+            return new MarkCommand(command);
+        } else if (isCommand(command, "unmark")) {
+            return new UnmarkCommand(command);
         } else if (isCommand(command, "todo")) {
             return new AddCommand(parseTodo(command));
         } else if (isCommand(command, "deadline")) {

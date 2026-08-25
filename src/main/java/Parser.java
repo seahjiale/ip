@@ -35,6 +35,8 @@ public class Parser {
     public Command parse(String command) throws BobbyException {
         if (isExitCommand(command)) {
             return new ExitCommand();
+        } else if (command.equals("list")) {
+            return new ListCommand();
         } else if (isCommand(command, "todo")) {
             return new AddCommand(parseTodo(command));
         } else if (isCommand(command, "deadline")) {

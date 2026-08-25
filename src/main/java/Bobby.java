@@ -41,7 +41,7 @@ public class Bobby {
                 } else if (command.isEmpty()) {
                     throw new BobbyException("Error! The command cannot be empty!");
                 } else if (command.equals("list")) {
-                    ui.showTaskList(tasks);
+                    parser.parse(command).execute(tasks, ui, storage);
                 } else if (parser.isCommand(command, "mark")) {
                     int taskIndex = parser.parseTaskIndex(command, "mark", tasks.size());
                     Task task = tasks.get(taskIndex);

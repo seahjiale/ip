@@ -1,13 +1,25 @@
 /** Adds a parsed task to the task list and persists the change. */
 public class AddCommand extends Command {
+    /** Task to add and persist when this command executes. */
     private final Task task;
 
-    /** Creates an add command for the given task. */
+    /**
+     * Creates an add command for the given task.
+     *
+     * @param task task to add
+     */
     public AddCommand(Task task) {
         this.task = task;
     }
 
-    /** Adds the task, saving it and rolling back the addition if saving fails. */
+    /**
+     * Adds the task, saving it and rolling back the addition if saving fails.
+     *
+     * @param tasks current task list to update
+     * @param ui interface used to show the confirmation
+     * @param storage persistence service used to save the updated list
+     * @throws BobbyException if saving the updated list fails
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobbyException {
         tasks.add(task);

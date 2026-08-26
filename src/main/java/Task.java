@@ -2,7 +2,9 @@
  * Represents a task and whether it has been completed.
  */
 public class Task {
+    /** Text describing the task. */
     private final String description;
+    /** Whether the task has been marked complete. */
     private boolean isDone;
 
     /**
@@ -33,12 +35,20 @@ public class Task {
         return isDone ? "X" : " ";
     }
 
-    /** Returns this task's completion state in the storage format. */
+    /**
+     * Returns this task's completion state in the storage format.
+     *
+     * @return {@code "1"} if the task is done, otherwise {@code "0"}
+     */
     public String getStorageStatus() {
         return isDone ? "1" : "0";
     }
 
-    /** Returns whether this task is complete. */
+    /**
+     * Returns whether this task is complete.
+     *
+     * @return {@code true} when the task is done
+     */
     public boolean isDone() {
         return isDone;
     }
@@ -53,7 +63,11 @@ public class Task {
         isDone = false;
     }
 
-    /** Returns this task in the format used when saving tasks to disk. */
+    /**
+     * Returns this task in the format used when saving tasks to disk.
+     *
+     * @return the line representing this task in storage
+     */
     public String toStorageString() {
         return "T | " + getStorageStatus() + " | " + description;
     }

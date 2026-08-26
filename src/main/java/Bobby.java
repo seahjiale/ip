@@ -2,6 +2,10 @@
  * A minimal chatbot that echoes commands until the user says goodbye.
  */
 public class Bobby {
+    /** Creates a Bobby application instance. */
+    public Bobby() {
+    }
+
     /**
      * Prints Bobby's welcome message, stores tasks, changes task completion states, deletes tasks,
      * lists tasks, and exits on {@code bye}.

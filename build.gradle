@@ -52,7 +52,11 @@ jar {
 }
 
 shadowJar {
+    // Package the application and all runtime dependencies into one executable JAR.
     archiveFileName = 'duke.jar'
+    manifest {
+        attributes 'Main-Class': application.mainClass.get()
+    }
 }
 
 run {

@@ -7,35 +7,59 @@ import java.util.Locale;
 
 /** Represents a task with a typed date and optional time deadline. */
 public class Deadline extends Task {
+    /** Strict parser for date-only deadline input. */
     private static final DateTimeFormatter DATE_INPUT_FORMAT =
             DateTimeFormatter.ofPattern("uuuu-MM-dd")
                     .withResolverStyle(ResolverStyle.STRICT);
+    /** Strict parser for deadline input containing a date and time. */
     private static final DateTimeFormatter DATE_TIME_INPUT_FORMAT =
             DateTimeFormatter.ofPattern("d/M/uuuu HHmm")
                     .withResolverStyle(ResolverStyle.STRICT);
+    /** Formatter for displaying the date portion of a deadline. */
     private static final DateTimeFormatter DATE_DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+    /** Formatter for displaying the time portion of a deadline. */
     private static final DateTimeFormatter TIME_DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
 
+    /** Parsed deadline value, using midnight for date-only input. */
     private final LocalDateTime by;
+    /** Whether the original input included an explicit time. */
     private final boolean includesTime;
 
-    /** Creates an incomplete deadline task for a date without a time. */
+    /**
+     * Creates an incomplete deadline task for a date without a time.
+     *
+     * @param description text describing the task
+     * @param by date by which the task should be completed
+     */
     public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by.atStartOfDay();
         this.includesTime = false;
     }
 
-    /** Creates an incomplete deadline task for a date and time. */
+    /**
+     * Creates an incomplete deadline task for a date and time.
+     *
+     * @param description text describing the task
+     * @param by date and time by which the task should be completed
+     */
     public Deadline(String description, LocalDateTime by) {
         super(description);
         this.by = by;
         this.includesTime = true;
     }
 
-    /** Creates a deadline by parsing one of Bobby's supported input formats. */
+    /**
+     * Creates a deadline by parsing one of Bobby's supported input formats.
+     *
+     * @param description text describing the task
+     * @param input date in {@code yyyy-MM-dd} or {@code d/M/yyyy HHmm} format
+     * @return a deadline containing the parsed date and optional time
+     * @throws DateTimeParseException if {@code input} is not a supported date
+     *         or date-time value
+     */
     public static Deadline fromInput(String description, String input)
             throws DateTimeParseException {
         if (input.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -44,18 +68,30 @@ public class Deadline extends Task {
         return new Deadline(description, LocalDateTime.parse(input, DATE_TIME_INPUT_FORMAT));
     }
 
-    /** Returns the deadline as a typed date and time. */
+    /**
+     * Returns the deadline as a typed date and time.
+     *
+     * @return the deadline, using midnight when the input contained only a date
+     */
     public LocalDateTime getBy() {
         return by;
     }
 
-    /** Returns the date in the display format, including a time when one was supplied. */
+    /**
+     * Returns the date in the display format, including a time when one was supplied.
+     *
+     * @return formatted deadline text for display
+     */
     private String getDisplayDate() {
         String date = by.format(DATE_DISPLAY_FORMAT);
         return includesTime ? date + " " + by.format(TIME_DISPLAY_FORMAT) : date;
     }
 
-    /** Returns the date in the canonical format used when saving tasks to disk. */
+    /**
+     * Returns the date in the canonical format used when saving tasks to disk.
+     *
+     * @return formatted deadline text for storage
+     */
     private String getStorageDate() {
         return includesTime
                 ? by.format(DATE_TIME_INPUT_FORMAT)

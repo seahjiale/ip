@@ -10,14 +10,24 @@ import java.util.List;
 
 /** Handles loading tasks from and saving tasks to Bobby's data file. */
 public class Storage {
+    /** File containing one serialized task per line. */
     private final Path taskFile;
 
-    /** Creates storage backed by the file at the given path. */
+    /**
+     * Creates storage backed by the file at the given path.
+     *
+     * @param filePath path to the task data file
+     */
     public Storage(String filePath) {
         taskFile = Paths.get(filePath);
     }
 
-    /** Loads all saved tasks, or returns an empty task list when the file does not exist. */
+    /**
+     * Loads all saved tasks, or returns an empty task list when the file does not exist.
+     *
+     * @return tasks reconstructed from the storage file
+     * @throws BobbyException if the file cannot be read or contains invalid task data
+     */
     public TaskList load() throws BobbyException {
         List<Task> tasks = new ArrayList<>();
         if (!Files.exists(taskFile)) {
@@ -37,7 +47,12 @@ public class Storage {
         }
     }
 
-    /** Saves all tasks using Bobby's stable, line-based storage format. */
+    /**
+     * Saves all tasks using Bobby's stable, line-based storage format.
+     *
+     * @param tasks tasks to serialize
+     * @throws BobbyException if the file or its parent directory cannot be written
+     */
     public void save(TaskList tasks) throws BobbyException {
         try {
             Files.createDirectories(taskFile.getParent());
@@ -53,7 +68,13 @@ public class Storage {
         }
     }
 
-    /** Recreates one task from a line in the task storage format. */
+    /**
+     * Recreates one task from a line in the task storage format.
+     *
+     * @param taskLine serialized task line
+     * @return task represented by {@code taskLine}
+     * @throws BobbyException if the line does not follow the storage format
+     */
     private Task parseTask(String taskLine) throws BobbyException {
         String[] parts = taskLine.split("\\s*\\|\\s*", -1);
         if (parts.length < 3) {

@@ -1,8 +1,11 @@
+package bobby;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /** Owns Bobby's ordered collection of tasks and its basic list operations. */
 public class TaskList {
+    /** Ordered tasks currently managed by this list. */
     private final List<Task> tasks;
 
     /** Creates an empty task list. */

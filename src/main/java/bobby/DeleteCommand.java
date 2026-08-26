@@ -1,3 +1,5 @@
+package bobby;
+
 /** Deletes a selected task and persists the updated task list. */
 public class DeleteCommand extends Command {
     /** Original user input, including the command and task number. */

@@ -1,3 +1,5 @@
+package bobby;
+
 /** Represents a task with a start and end time. */
 public class Event extends Task {
     /** Text describing when the event starts. */

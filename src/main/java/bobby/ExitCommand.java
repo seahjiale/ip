@@ -1,3 +1,5 @@
+package bobby;
+
 /** Ends Bobby's session and shows the farewell message. */
 public class ExitCommand extends Command {
 

@@ -1,3 +1,5 @@
+package bobby;
+
 /**
  * A minimal chatbot that echoes commands until the user says goodbye.
  */

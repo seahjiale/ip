@@ -1,3 +1,5 @@
+package bobby;
+
 /** Displays all tasks currently stored by Bobby. */
 public class ListCommand extends Command {
 

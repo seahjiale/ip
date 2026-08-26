@@ -1,3 +1,5 @@
+package bobby;
+
 import java.util.Scanner;
 
 /** Handles all console input and output for Bobby. */

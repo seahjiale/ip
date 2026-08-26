@@ -71,6 +71,12 @@ public class Parser {
             return new ExitCommand();
         } else if (command.equals("list")) {
             return new ListCommand();
+        } else if (isCommand(command, "find")) {
+            String keyword = getCommandArgument(command, "find");
+            if (keyword.isEmpty()) {
+                throw new BobbyException("Error! The search keyword cannot be empty!");
+            }
+            return new FindCommand(keyword);
         } else if (isCommand(command, "mark")) {
             return new MarkCommand(command);
         } else if (isCommand(command, "unmark")) {

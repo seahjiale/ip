@@ -1,5 +1,6 @@
 package bobby;
 
+import java.util.List;
 import java.util.Scanner;
 
 /** Handles all console input and output for Bobby. */
@@ -65,6 +66,22 @@ public class Ui {
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
+        }
+    }
+
+    /**
+     * Shows tasks whose descriptions match a search keyword.
+     *
+     * @param matchingTasks tasks found by the search, in their original order
+     */
+    public void showMatchingTasks(List<Task> matchingTasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+            return;
+        }
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + "." + matchingTasks.get(i));
         }
     }
 

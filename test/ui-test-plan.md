@@ -1140,3 +1140,138 @@ ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+## Test Case 26: Find tasks by a keyword in their descriptions
+
+### Aim
+
+Verify that `find` displays all tasks whose descriptions contain the keyword,
+ignoring letter case and preserving the order of the matching tasks.
+
+### Input
+
+```text
+todo read book
+deadline return book /by 2019-06-06
+todo join sports club
+find BOOK
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] return book (by: Jun 06 2019)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] join sports club
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Jun 06 2019)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 27: Reject an empty find keyword
+
+### Aim
+
+Verify that `find` without a keyword shows an error and does not change the
+task list.
+
+### Input
+
+```text
+todo read book
+find
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error! The search keyword cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 28: Report when no tasks match a keyword
+
+### Aim
+
+Verify that a valid keyword with no matching task descriptions displays a
+clear no-match message.
+
+### Input
+
+```text
+todo read book
+find movie
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+No matching tasks found.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```

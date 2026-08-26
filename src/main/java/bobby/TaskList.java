@@ -2,6 +2,7 @@ package bobby;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /** Owns Bobby's ordered collection of tasks and its basic list operations. */
 public class TaskList {
@@ -71,5 +72,23 @@ public class TaskList {
      */
     public Task remove(int index) {
         return tasks.remove(index);
+    }
+
+    /**
+     * Returns tasks whose descriptions contain the keyword, ignoring letter case.
+     * The returned tasks retain their order in this list.
+     *
+     * @param keyword text to search for
+     * @return a new list containing the matching tasks
+     */
+    public List<Task> findByDescription(String keyword) {
+        String lowerCaseKeyword = keyword.toLowerCase(Locale.ROOT);
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase(Locale.ROOT).contains(lowerCaseKeyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 }

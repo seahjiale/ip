@@ -87,6 +87,7 @@ public class ParserTest {
 
         assertInstanceOf(ExitCommand.class, parser.parse("bye"));
         assertInstanceOf(ListCommand.class, parser.parse("list"));
+        assertInstanceOf(FindCommand.class, parser.parse("find book"));
         assertInstanceOf(MarkCommand.class, parser.parse("mark 1"));
         assertInstanceOf(UnmarkCommand.class, parser.parse("unmark 1"));
         assertInstanceOf(DeleteCommand.class, parser.parse("delete 1"));
@@ -106,6 +107,17 @@ public class ParserTest {
                 () -> parser.parse("archive old tasks"));
 
         assertEquals("No such task type available. Try again!", exception.getMessage());
+    }
+
+    /** Verifies that a find command without a keyword is rejected. */
+    @Test
+    public void parse_findWithoutKeyword_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class,
+                () -> parser.parse("find   "));
+
+        assertEquals("Error! The search keyword cannot be empty!", exception.getMessage());
     }
 
     /** Verifies that a to-do description is trimmed before the task is created. */

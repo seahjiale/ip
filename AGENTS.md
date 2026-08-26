@@ -24,6 +24,15 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 # Project-specific requirements
 
+## Git standard
+
+All future commits and branch names in this project MUST follow the project
+skill `.codex/skills/seedu-git-standard/SKILL.md`, which is based on the
+SE-EDU Git conventions. This includes imperative, capitalized, period-free
+commit subjects; subject length limits; 72-character-wrapped WHAT/WHY bodies
+for non-trivial commits; meaningful kebab-case branch names; and reviewing the
+staged diff before committing. Do not commit or push unless explicitly asked.
+
 ## Java coding standard
 
 All Java code in this project MUST follow the project skill

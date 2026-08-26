@@ -1,3 +1,5 @@
+package bobby;
+
 /** Adds a parsed task to the task list and persists the change. */
 public class AddCommand extends Command {
     /** Task to add and persist when this command executes. */

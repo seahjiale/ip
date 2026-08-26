@@ -1,3 +1,5 @@
+package bobby;
+
 /** Represents one executable command entered by a user. */
 public abstract class Command {
 

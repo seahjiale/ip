@@ -1,19 +1,21 @@
-/** Marks a selected task as done and persists the updated task list. */
-public class MarkCommand extends Command {
+package bobby;
+
+/** Marks a selected task as not done and persists the updated task list. */
+public class UnmarkCommand extends Command {
     /** Original user input, including the command and task number. */
     private final String command;
 
     /**
-     * Creates a mark command containing the user's original input.
+     * Creates an unmark command containing the user's original input.
      *
      * @param command original user input
      */
-    public MarkCommand(String command) {
+    public UnmarkCommand(String command) {
         this.command = command;
     }
 
     /**
-     * Marks the selected task, rolling back if saving fails.
+     * Marks the selected task as not done, rolling back if saving fails.
      *
      * @param tasks current task list to update
      * @param ui interface used to show the confirmation
@@ -23,17 +25,17 @@ public class MarkCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobbyException {
         Parser parser = new Parser();
-        int taskIndex = parser.parseTaskIndex(command, "mark", tasks.size());
+        int taskIndex = parser.parseTaskIndex(command, "unmark", tasks.size());
         Task task = tasks.get(taskIndex);
         boolean wasDone = task.isDone();
-        task.markAsDone();
+        task.unmarkAsDone();
         try {
             storage.save(tasks);
         } catch (BobbyException exception) {
             restoreTaskStatus(task, wasDone);
             throw exception;
         }
-        ui.showTaskMarkedDone(task);
+        ui.showTaskMarkedNotDone(task);
     }
 
     /**

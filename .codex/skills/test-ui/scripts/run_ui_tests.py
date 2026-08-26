@@ -65,9 +65,9 @@ def normalise(text: str) -> str:
 
 def compile_program(class_directory: Path) -> None:
     """Compile all Java source files into the supplied temporary directory."""
-    sources = sorted(str(source) for source in SOURCE_DIRECTORY.glob("*.java"))
+    sources = sorted(str(source) for source in SOURCE_DIRECTORY.rglob("*.java"))
     if not sources:
-        raise FileNotFoundError("No Java files were found in src/main/java")
+        raise FileNotFoundError("No Java files were found under src/main/java")
     result = subprocess.run(
         ["javac", "-encoding", "UTF-8", "-d", str(class_directory), *sources],
         capture_output=True,
@@ -113,7 +113,7 @@ def main() -> int:
                         "-Dstderr.encoding=UTF-8",
                         "-cp",
                         str(class_directory),
-                        "Bobby",
+                        "bobby.Bobby",
                     ],
                     input=test_input + "\n",
                     capture_output=True,

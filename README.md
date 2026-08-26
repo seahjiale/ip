@@ -23,3 +23,37 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Creating and running the fat JAR
+
+This project uses the [Shadow Gradle plugin](https://gradleup.com/shadow/) to
+package Bobby and its runtime dependencies into one executable fat JAR.
+
+1. Open PowerShell in the project root.
+1. Configure the terminal to use JDK 25. For example:
+
+   ```powershell
+   $env:JAVA_HOME = 'C:\Program Files\Java\jdk-25.0.4'
+   $env:Path = "$env:JAVA_HOME\bin;$env:Path"
+   ```
+
+1. Create the fat JAR:
+
+   ```powershell
+   .\gradlew.bat shadowJar
+   ```
+
+1. Gradle writes the executable JAR to:
+
+   ```text
+   build\libs\duke.jar
+   ```
+
+1. Run it from the project root:
+
+   ```powershell
+   java -jar .\build\libs\duke.jar
+   ```
+
+The JAR can also be copied elsewhere and run with a JDK 25 installation because
+the application code and its runtime dependencies are packaged inside it.

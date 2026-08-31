@@ -145,13 +145,13 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that the `event` command creates a task with its start and end text and
-displays it with the `[E]` type marker.
+Verify that the `event` command parses start and end ISO dates and displays the
+event with the `[E]` type marker.
 
 ### Input
 
 ```text
-event project meeting /from Mon 2pm /to 4pm
+event project meeting /from 2019-10-15 /to 2019-10-16
 list
 bye
 ```
@@ -170,12 +170,12 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[E][ ] project meeting (from: Mon 2pm to: 4pm)
+[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+1.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -328,7 +328,7 @@ program to crash.
 ### Input
 
 ```text
-event /from Mon 2pm /to 4pm
+event /from 2019-10-15 /to 2019-10-16
 bye
 ```
 
@@ -352,17 +352,17 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
-## Test Case 10: Reject an event without a start time
+## Test Case 10: Reject an event without a start date
 
 ### Aim
 
-Verify that an event with no `/from` start time is rejected without causing
+Verify that an event with no `/from` start date is rejected without causing
 the program to crash.
 
 ### Input
 
 ```text
-event project meeting /from /to 4pm
+event project meeting /from /to 2019-10-16
 bye
 ```
 
@@ -379,24 +379,24 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-Error! Start time of an event cannot be empty. Try again!
+Error! Start date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
-## Test Case 11: Reject an event without an end time
+## Test Case 11: Reject an event without an end date
 
 ### Aim
 
-Verify that an event with no `/to` end time is rejected without causing the
+Verify that an event with no `/to` end date is rejected without causing the
 program to crash.
 
 ### Input
 
 ```text
-event project meeting /from Mon 2pm /to
+event project meeting /from 2019-10-15 /to
 bye
 ```
 
@@ -413,7 +413,7 @@ Hello! I'm Bobby.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-Error! End time of an event cannot be empty. Try again!
+Error! End date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -538,16 +538,16 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that an event with no end time does not add a task or change the task
+Verify that an event with no end date does not add a task or change the task
 count, and that a later valid event is stored correctly.
 
 ### Input
 
 ```text
-event team meeting /from Mon /to Tue
-event planning /from Mon /to
+event team meeting /from 2019-10-15 /to 2019-10-16
+event planning /from 2019-11-01 /to
 list
-event planning /from Tue /to Wed
+event planning /from 2019-11-01 /to 2019-11-02
 list
 bye
 ```
@@ -567,25 +567,25 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[E][ ] team meeting (from: Mon to: Tue)
+[E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
-Error! End time of an event cannot be empty. Try again!
+Error! End date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] team meeting (from: Mon to: Tue)
+1.[E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[E][ ] planning (from: Tue to: Wed)
+[E][ ] planning (from: Nov 01 2019 to: Nov 02 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] team meeting (from: Mon to: Tue)
-2.[E][ ] planning (from: Tue to: Wed)
+1.[E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
+2.[E][ ] planning (from: Nov 01 2019 to: Nov 02 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -604,7 +604,7 @@ removed task, updates the task count, and renumbers the remaining tasks.
 ```text
 todo read book
 deadline return book /by 2019-06-06
-event project meeting /from Aug 6th 2pm /to 4pm
+event project meeting /from 2019-08-06 /to 2019-08-07
 todo join sports club
 todo borrow book
 mark 1
@@ -640,7 +640,7 @@ Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -669,13 +669,13 @@ ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2019)
-3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+3.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 4.[T][X] join sports club
 5.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this task:
-[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 Now you have 4 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -830,7 +830,7 @@ while exercising the automatic task-list save path.
 ```text
 todo read book
 deadline return book /by 2019-06-06
-event project meeting /from Aug 6th 2pm /to 4pm
+event project meeting /from 2019-08-06 /to 2019-08-07
 mark 1
 unmark 1
 delete 2
@@ -862,7 +862,7 @@ Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -881,7 +881,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+2.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -918,7 +918,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+2.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!

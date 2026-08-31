@@ -96,7 +96,11 @@ public class Storage {
                 throw new BobbyException("Error! Could not load tasks from disk.");
             }
         } else if (taskType.equals("E") && parts.length == 5) {
-            task = new Event(description, parts[3].trim(), parts[4].trim());
+            try {
+                task = Event.fromInput(description, parts[3].trim(), parts[4].trim());
+            } catch (DateTimeParseException exception) {
+                throw new BobbyException("Error! Could not load tasks from disk.");
+            }
         } else {
             throw new BobbyException("Error! Could not load tasks from disk.");
         }

@@ -172,11 +172,11 @@ public class Parser {
     }
 
     /**
-     * Parses an event command and validates its description, start, and end times.
+     * Parses an event command and validates its description, start, and end dates.
      *
      * @param command complete event command
      * @return parsed event task
-     * @throws BobbyException if any event field is empty or unsafe for storage
+     * @throws BobbyException if any event field is empty, invalid, or unsafe for storage
      */
     private Task parseEvent(String command) throws BobbyException {
         String eventDetails = getCommandArgument(command, "event");
@@ -205,15 +205,19 @@ public class Parser {
         if (description.isEmpty()) {
             throw new BobbyException("Error! The description of an event cannot be empty!");
         } else if (from.isEmpty()) {
-            throw new BobbyException("Error! Start time of an event cannot be empty. Try again!");
+            throw new BobbyException("Error! Start date of an event cannot be empty. Try again!");
         } else if (to.isEmpty()) {
-            throw new BobbyException("Error! End time of an event cannot be empty. Try again!");
+            throw new BobbyException("Error! End date of an event cannot be empty. Try again!");
         }
 
         validateStorageField(description);
         validateStorageField(from);
         validateStorageField(to);
-        return new Event(description, from, to);
+        try {
+            return Event.fromInput(description, from, to);
+        } catch (DateTimeParseException exception) {
+            throw new BobbyException("Error! Event dates must be valid dates. Use yyyy-MM-dd.");
+        }
     }
 
     /**

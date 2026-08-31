@@ -67,7 +67,7 @@ public class ParserTest {
 
         assertTrue(parser.isTaskCreationCommand("todo"));
         assertTrue(parser.isTaskCreationCommand("deadline return book /by 2026-08-25"));
-        assertTrue(parser.isTaskCreationCommand("event meeting /from 9am /to 10am"));
+        assertTrue(parser.isTaskCreationCommand("event meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that non-task commands are not classified as task creation commands. */
@@ -95,7 +95,7 @@ public class ParserTest {
         assertInstanceOf(AddCommand.class,
                 parser.parse("deadline return book /by 2026-08-25"));
         assertInstanceOf(AddCommand.class,
-                parser.parse("event project meeting /from 9am /to 10am"));
+                parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that an unsupported command produces a helpful error. */
@@ -103,8 +103,8 @@ public class ParserTest {
     public void parse_unsupportedCommand_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("archive old tasks"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("archive old tasks"));
 
         assertEquals("No such task type available. Try again!", exception.getMessage());
     }
@@ -114,8 +114,8 @@ public class ParserTest {
     public void parse_findWithoutKeyword_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("find   "));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("find   "));
 
         assertEquals("Error! The search keyword cannot be empty!", exception.getMessage());
     }
@@ -133,8 +133,8 @@ public class ParserTest {
     public void parse_todoWithoutDescription_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("todo   "));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("todo   "));
 
         assertEquals("Error! The description of a todo cannot be empty!", exception.getMessage());
     }
@@ -144,8 +144,8 @@ public class ParserTest {
     public void parse_todoWithStorageSeparator_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("todo read | book"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("todo read | book"));
 
         assertEquals("Error! Task details cannot contain the '|' character!",
                 exception.getMessage());
@@ -167,8 +167,8 @@ public class ParserTest {
     public void parse_deadlineWithoutDescription_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("deadline /by 2026-08-25"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("deadline /by 2026-08-25"));
 
         assertEquals("Error! The description of a deadline cannot be empty!",
                 exception.getMessage());
@@ -179,8 +179,8 @@ public class ParserTest {
     public void parse_deadlineWithoutDate_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("deadline return book /by"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("deadline return book /by"));
 
         assertEquals("Error! The date of a deadline cannot be empty!", exception.getMessage());
     }
@@ -190,20 +190,20 @@ public class ParserTest {
     public void parse_deadlineWithInvalidDate_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("deadline return book /by not-a-date"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("deadline return book /by not-a-date"));
 
         assertEquals("Error! The deadline must be a valid date. "
                 + "Use yyyy-MM-dd or d/M/yyyy HHmm.", exception.getMessage());
     }
 
-    /** Verifies that a valid event with start and end text is accepted. */
+    /** Verifies that a valid event with start and end dates is accepted. */
     @Test
     public void parse_validEvent_addCommandReturned() throws BobbyException {
         Parser parser = new Parser();
 
         assertInstanceOf(AddCommand.class,
-                parser.parse("event project meeting /from Monday /to Tuesday"));
+                parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that an event without a description is rejected. */
@@ -211,34 +211,34 @@ public class ParserTest {
     public void parse_eventWithoutDescription_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("event /from Monday /to Tuesday"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event /from 2026-08-25 /to 2026-08-26"));
 
         assertEquals("Error! The description of an event cannot be empty!",
                 exception.getMessage());
     }
 
-    /** Verifies that an event without a start time is rejected. */
+    /** Verifies that an event without a start date is rejected. */
     @Test
-    public void parse_eventWithoutStartTime_exceptionThrown() {
+    public void parse_eventWithoutStartDate_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("event project meeting /to Tuesday"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event project meeting /to 2026-08-26"));
 
-        assertEquals("Error! Start time of an event cannot be empty. Try again!",
+        assertEquals("Error! Start date of an event cannot be empty. Try again!",
                 exception.getMessage());
     }
 
-    /** Verifies that an event without an end time is rejected. */
+    /** Verifies that an event without an end date is rejected. */
     @Test
-    public void parse_eventWithoutEndTime_exceptionThrown() {
+    public void parse_eventWithoutEndDate_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("event project meeting /from Monday /to"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event project meeting /from 2026-08-25 /to"));
 
-        assertEquals("Error! End time of an event cannot be empty. Try again!",
+        assertEquals("Error! End date of an event cannot be empty. Try again!",
                 exception.getMessage());
     }
 
@@ -247,10 +247,22 @@ public class ParserTest {
     public void parse_eventWithStorageSeparator_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parse("event project | meeting /from Monday /to Tuesday"));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event project | meeting /from 2026-08-25 /to 2026-08-26"));
 
         assertEquals("Error! Task details cannot contain the '|' character!",
+                exception.getMessage());
+    }
+
+    /** Verifies that an event with an invalid date is rejected. */
+    @Test
+    public void parse_eventWithInvalidDate_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event project meeting /from not-a-date /to 2026-08-26"));
+
+        assertEquals("Error! Event dates must be valid dates. Use yyyy-MM-dd.",
                 exception.getMessage());
     }
 
@@ -271,8 +283,8 @@ public class ParserTest {
     public void parseTaskIndex_emptyTaskList_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete 1", "delete", 0));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete 1", "delete", 0));
 
         assertEquals("No tasks available to delete.", exception.getMessage());
     }
@@ -282,8 +294,8 @@ public class ParserTest {
     public void parseTaskIndex_missingTaskNumber_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete", "delete", 1));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete", "delete", 1));
 
         assertEquals("Error! The task number cannot be empty!", exception.getMessage());
     }
@@ -293,8 +305,8 @@ public class ParserTest {
     public void parseTaskIndex_nonNumericTaskNumber_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete abc", "delete", 1));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete abc", "delete", 1));
 
         assertEquals("Error! The task number must be a valid integer.", exception.getMessage());
     }
@@ -304,10 +316,10 @@ public class ParserTest {
     public void parseTaskIndex_nonPositiveTaskNumber_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException zeroException = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete 0", "delete", 3));
-        BobbyException negativeException = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete -1", "delete", 3));
+        BobbyException zeroException = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete 0", "delete", 3));
+        BobbyException negativeException = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete -1", "delete", 3));
 
         assertEquals("Error! The task number must be between 1 and 3.",
                 zeroException.getMessage());
@@ -320,8 +332,8 @@ public class ParserTest {
     public void parseTaskIndex_taskNumberBeyondList_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException exception = assertThrows(BobbyException.class,
-                () -> parser.parseTaskIndex("delete 4", "delete", 3));
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parseTaskIndex("delete 4", "delete", 3));
 
         assertEquals("Error! The task number must be between 1 and 3.", exception.getMessage());
     }

@@ -1,5 +1,6 @@
 package bobby;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,17 +18,26 @@ public class Ui {
     /** Input source for user commands. */
     private final Scanner scanner;
 
+    /** Output destination for messages shown by Bobby. */
+    private final PrintStream output;
+
     /** Creates a user interface that reads commands from standard input. */
     public Ui() {
+        this(System.out);
+    }
+
+    /** Creates a user interface that writes messages to the given destination. */
+    Ui(PrintStream output) {
         scanner = new Scanner(System.in);
+        this.output = output;
     }
 
     /** Shows Bobby's greeting and command prompt. */
     public void showWelcome() {
         showSeparator();
-        System.out.print(BANNER);
-        System.out.println("Hello! I'm Bobby.");
-        System.out.println("What can I do for you?");
+        output.print(BANNER);
+        output.println("Hello! I'm Bobby.");
+        output.println("What can I do for you?");
         showSeparator();
     }
 
@@ -45,7 +55,7 @@ public class Ui {
 
     /** Shows the visual separator used between interactions. */
     public void showSeparator() {
-        System.out.println(SEPARATOR);
+        output.println(SEPARATOR);
     }
 
     /**
@@ -54,7 +64,7 @@ public class Ui {
      * @param message error text to display
      */
     public void showError(String message) {
-        System.out.println(message);
+        output.println(message);
     }
 
     /**
@@ -63,9 +73,9 @@ public class Ui {
      * @param tasks tasks to display
      */
     public void showTaskList(TaskList tasks) {
-        System.out.println("Here are the tasks in your list:");
+        output.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
+            output.println((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -75,13 +85,13 @@ public class Ui {
      * @param matchingTasks tasks found by the search, in their original order
      */
     public void showMatchingTasks(List<Task> matchingTasks) {
-        System.out.println("Here are the matching tasks in your list:");
+        output.println("Here are the matching tasks in your list:");
         if (matchingTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
+            output.println("No matching tasks found.");
             return;
         }
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + "." + matchingTasks.get(i));
+            output.println((i + 1) + "." + matchingTasks.get(i));
         }
     }
 
@@ -92,9 +102,9 @@ public class Ui {
      * @param taskCount number of tasks after the addition
      */
     public void showTaskAdded(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        output.println("Got it. I've added this task:");
+        output.println(task);
+        output.println("Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -103,8 +113,8 @@ public class Ui {
      * @param task task that was marked done
      */
     public void showTaskMarkedDone(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + task);
+        output.println("Nice! I've marked this task as done:");
+        output.println("  " + task);
     }
 
     /**
@@ -113,8 +123,8 @@ public class Ui {
      * @param task task that was marked incomplete
      */
     public void showTaskMarkedNotDone(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + task);
+        output.println("OK, I've marked this task as not done yet:");
+        output.println("  " + task);
     }
 
     /**
@@ -124,14 +134,14 @@ public class Ui {
      * @param taskCount number of tasks after the removal
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        output.println("Noted. I've removed this task:");
+        output.println(task);
+        output.println("Now you have " + taskCount + " tasks in the list.");
     }
 
     /** Shows Bobby's farewell message. */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        output.println("Bye. Hope to see you again soon!");
         showSeparator();
     }
 }

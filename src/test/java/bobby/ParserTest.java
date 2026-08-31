@@ -67,7 +67,7 @@ public class ParserTest {
 
         assertTrue(parser.isTaskCreationCommand("todo"));
         assertTrue(parser.isTaskCreationCommand("deadline return book /by 2026-08-25"));
-        assertTrue(parser.isTaskCreationCommand("event meeting /from 9am /to 10am"));
+        assertTrue(parser.isTaskCreationCommand("event meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that non-task commands are not classified as task creation commands. */
@@ -95,7 +95,7 @@ public class ParserTest {
         assertInstanceOf(AddCommand.class,
                 parser.parse("deadline return book /by 2026-08-25"));
         assertInstanceOf(AddCommand.class,
-                parser.parse("event project meeting /from 9am /to 10am"));
+                parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that an unsupported command produces a helpful error. */
@@ -197,13 +197,13 @@ public class ParserTest {
                 + "Use yyyy-MM-dd or d/M/yyyy HHmm.", exception.getMessage());
     }
 
-    /** Verifies that a valid event with start and end text is accepted. */
+    /** Verifies that a valid event with start and end dates is accepted. */
     @Test
     public void parse_validEvent_addCommandReturned() throws BobbyException {
         Parser parser = new Parser();
 
         assertInstanceOf(AddCommand.class,
-                parser.parse("event project meeting /from Monday /to Tuesday"));
+                parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
     /** Verifies that an event without a description is rejected. */
@@ -212,33 +212,33 @@ public class ParserTest {
         Parser parser = new Parser();
 
         BobbyException exception = assertThrows(BobbyException.class, () ->
-                parser.parse("event /from Monday /to Tuesday"));
+                parser.parse("event /from 2026-08-25 /to 2026-08-26"));
 
         assertEquals("Error! The description of an event cannot be empty!",
                 exception.getMessage());
     }
 
-    /** Verifies that an event without a start time is rejected. */
+    /** Verifies that an event without a start date is rejected. */
     @Test
-    public void parse_eventWithoutStartTime_exceptionThrown() {
+    public void parse_eventWithoutStartDate_exceptionThrown() {
         Parser parser = new Parser();
 
         BobbyException exception = assertThrows(BobbyException.class, () ->
-                parser.parse("event project meeting /to Tuesday"));
+                parser.parse("event project meeting /to 2026-08-26"));
 
-        assertEquals("Error! Start time of an event cannot be empty. Try again!",
+        assertEquals("Error! Start date of an event cannot be empty. Try again!",
                 exception.getMessage());
     }
 
-    /** Verifies that an event without an end time is rejected. */
+    /** Verifies that an event without an end date is rejected. */
     @Test
-    public void parse_eventWithoutEndTime_exceptionThrown() {
+    public void parse_eventWithoutEndDate_exceptionThrown() {
         Parser parser = new Parser();
 
         BobbyException exception = assertThrows(BobbyException.class, () ->
-                parser.parse("event project meeting /from Monday /to"));
+                parser.parse("event project meeting /from 2026-08-25 /to"));
 
-        assertEquals("Error! End time of an event cannot be empty. Try again!",
+        assertEquals("Error! End date of an event cannot be empty. Try again!",
                 exception.getMessage());
     }
 
@@ -248,9 +248,21 @@ public class ParserTest {
         Parser parser = new Parser();
 
         BobbyException exception = assertThrows(BobbyException.class, () ->
-                parser.parse("event project | meeting /from Monday /to Tuesday"));
+                parser.parse("event project | meeting /from 2026-08-25 /to 2026-08-26"));
 
         assertEquals("Error! Task details cannot contain the '|' character!",
+                exception.getMessage());
+    }
+
+    /** Verifies that an event with an invalid date is rejected. */
+    @Test
+    public void parse_eventWithInvalidDate_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("event project meeting /from not-a-date /to 2026-08-26"));
+
+        assertEquals("Error! Event dates must be valid dates. Use yyyy-MM-dd.",
                 exception.getMessage());
     }
 

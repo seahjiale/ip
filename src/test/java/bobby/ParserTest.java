@@ -31,6 +31,16 @@ public class ParserTest {
         assertFalse(parser.isCommand("todo-read", "todo"));
     }
 
+    /** Verifies that command recognition accepts any matching name in a varargs group. */
+    @Test
+    public void isCommand_multipleNamesOrNoNames_expectedResultReturned() {
+        Parser parser = new Parser();
+
+        assertTrue(parser.isCommand("deadline task", "todo", "deadline", "event"));
+        assertFalse(parser.isCommand("list", "todo", "deadline", "event"));
+        assertFalse(parser.isCommand("todo"));
+    }
+
     /** Verifies that the text after a command is trimmed and returned as its argument. */
     @Test
     public void getCommandArgument_commandWithArgument_trimmedArgumentReturned() {

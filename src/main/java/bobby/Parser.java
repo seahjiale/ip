@@ -13,14 +13,19 @@ public class Parser {
      * Returns whether an input is a command or has whitespace-separated arguments.
      *
      * @param input complete user input to inspect
-     * @param commandName command name to match
-     * @return {@code true} when the input is exactly the command or starts with it
+     * @param commandNames command names to match
+     * @return {@code true} when the input is exactly one command or starts with it
      */
-    public boolean isCommand(String input, String commandName) {
-        return input.equals(commandName)
-                || (input.length() > commandName.length()
-                && input.startsWith(commandName)
-                && Character.isWhitespace(input.charAt(commandName.length())));
+    public boolean isCommand(String input, String... commandNames) {
+        for (String commandName : commandNames) {
+            if (input.equals(commandName)
+                    || (input.length() > commandName.length()
+                    && input.startsWith(commandName)
+                    && Character.isWhitespace(input.charAt(commandName.length())))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -54,9 +59,7 @@ public class Parser {
      * @return {@code true} for a supported task-creation command
      */
     public boolean isTaskCreationCommand(String command) {
-        return isCommand(command, "todo")
-                || isCommand(command, "deadline")
-                || isCommand(command, "event");
+        return isCommand(command, "todo", "deadline", "event");
     }
 
     /**

@@ -27,6 +27,7 @@ public class DeleteCommand extends Command {
         Parser parser = new Parser();
         int taskIndex = parser.parseTaskIndex(command, "delete", tasks.size());
         Task deletedTask = tasks.remove(taskIndex);
+        assert deletedTask != null : "A valid task index must refer to a task";
         try {
             storage.save(tasks);
         } catch (BobbyException exception) {

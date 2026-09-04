@@ -25,7 +25,7 @@ public class Deadline extends Task {
             DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
 
     /** Parsed deadline value, using midnight for date-only input. */
-    private final LocalDateTime by;
+    private final LocalDateTime dueDateTime;
     /** Whether the original input included an explicit time. */
     private final boolean includesTime;
 
@@ -33,11 +33,11 @@ public class Deadline extends Task {
      * Creates an incomplete deadline task for a date without a time.
      *
      * @param description text describing the task
-     * @param by date by which the task should be completed
+     * @param dueDate date by which the task should be completed
      */
-    public Deadline(String description, LocalDate by) {
+    public Deadline(String description, LocalDate dueDate) {
         super(description);
-        this.by = by.atStartOfDay();
+        this.dueDateTime = dueDate.atStartOfDay();
         this.includesTime = false;
     }
 
@@ -45,11 +45,11 @@ public class Deadline extends Task {
      * Creates an incomplete deadline task for a date and time.
      *
      * @param description text describing the task
-     * @param by date and time by which the task should be completed
+     * @param dueDateTime date and time by which the task should be completed
      */
-    public Deadline(String description, LocalDateTime by) {
+    public Deadline(String description, LocalDateTime dueDateTime) {
         super(description);
-        this.by = by;
+        this.dueDateTime = dueDateTime;
         this.includesTime = true;
     }
 
@@ -75,8 +75,8 @@ public class Deadline extends Task {
      *
      * @return the deadline, using midnight when the input contained only a date
      */
-    public LocalDateTime getBy() {
-        return by;
+    public LocalDateTime getDueDateTime() {
+        return dueDateTime;
     }
 
     /**
@@ -85,8 +85,8 @@ public class Deadline extends Task {
      * @return formatted deadline text for display
      */
     private String getDisplayDate() {
-        String date = by.format(DATE_DISPLAY_FORMAT);
-        return includesTime ? date + " " + by.format(TIME_DISPLAY_FORMAT) : date;
+        String date = dueDateTime.format(DATE_DISPLAY_FORMAT);
+        return includesTime ? date + " " + dueDateTime.format(TIME_DISPLAY_FORMAT) : date;
     }
 
     /**
@@ -96,8 +96,8 @@ public class Deadline extends Task {
      */
     private String getStorageDate() {
         return includesTime
-                ? by.format(DATE_TIME_INPUT_FORMAT)
-                : by.toLocalDate().format(DATE_INPUT_FORMAT);
+                ? dueDateTime.format(DATE_TIME_INPUT_FORMAT)
+                : dueDateTime.toLocalDate().format(DATE_INPUT_FORMAT);
     }
 
     /** Returns this deadline task in the format used by the command line interface. */

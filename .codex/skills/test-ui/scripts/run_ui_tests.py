@@ -63,11 +63,19 @@ def normalise(text: str) -> str:
     return text.replace("\r\n", "\n").rstrip("\n")
 
 
+def is_console_source(source: Path) -> bool:
+    """Return whether a Java source file can be compiled without JavaFX."""
+    source_text = source.read_text(encoding="utf-8")
+    return "import javafx." not in source_text
+
+
 def compile_program(class_directory: Path) -> None:
-    """Compile all Java source files into the supplied temporary directory."""
-    sources = sorted(str(source) for source in SOURCE_DIRECTORY.rglob("*.java"))
+    """Compile console Java sources into the supplied temporary directory."""
+    sources = sorted(
+        str(source) for source in SOURCE_DIRECTORY.rglob("*.java") if is_console_source(source)
+    )
     if not sources:
-        raise FileNotFoundError("No Java files were found under src/main/java")
+        raise FileNotFoundError("No console Java files were found under src/main/java")
     result = subprocess.run(
         ["javac", "-encoding", "UTF-8", "-d", str(class_directory), *sources],
         capture_output=True,

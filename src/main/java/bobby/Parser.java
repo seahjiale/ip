@@ -4,6 +4,25 @@ import java.time.format.DateTimeParseException;
 
 /** Parses command names, task commands, arguments, and task numbers from user input. */
 public class Parser {
+    /** Supported command names. */
+    private static final String COMMAND_BYE = "bye";
+    private static final String COMMAND_LIST = "list";
+    private static final String COMMAND_FIND = "find";
+    private static final String COMMAND_MARK = "mark";
+    private static final String COMMAND_UNMARK = "unmark";
+    private static final String COMMAND_DELETE = "delete";
+    private static final String COMMAND_TODO = "todo";
+    private static final String COMMAND_DEADLINE = "deadline";
+    private static final String COMMAND_EVENT = "event";
+
+    /** Markers used to separate task details from their dates. */
+    private static final String DEADLINE_DATE_MARKER = "/by";
+    private static final String DEADLINE_SEPARATOR = " " + DEADLINE_DATE_MARKER + " ";
+    private static final String EVENT_FROM_MARKER = "/from";
+    private static final String EVENT_TO_MARKER = "/to";
+
+    /** Maximum number of parts produced when separating a deadline description and date. */
+    private static final int MAX_DEADLINE_PARTS = 2;
 
     /** Creates a parser for Bobby commands. */
     public Parser() {
@@ -49,7 +68,7 @@ public class Parser {
      * @return {@code true} when the input is {@code bye}, ignoring case
      */
     public boolean isExitCommand(String command) {
-        return command.equalsIgnoreCase("bye");
+        return command.equalsIgnoreCase(COMMAND_BYE);
     }
 
     /**
@@ -59,7 +78,7 @@ public class Parser {
      * @return {@code true} for a supported task-creation command
      */
     public boolean isTaskCreationCommand(String command) {
-        return isCommand(command, "todo", "deadline", "event");
+        return isCommand(command, COMMAND_TODO, COMMAND_DEADLINE, COMMAND_EVENT);
     }
 
     /**
@@ -72,25 +91,25 @@ public class Parser {
     public Command parse(String command) throws BobbyException {
         if (isExitCommand(command)) {
             return new ExitCommand();
-        } else if (command.equals("list")) {
+        } else if (command.equals(COMMAND_LIST)) {
             return new ListCommand();
-        } else if (isCommand(command, "find")) {
-            String keyword = getCommandArgument(command, "find");
+        } else if (isCommand(command, COMMAND_FIND)) {
+            String keyword = getCommandArgument(command, COMMAND_FIND);
             if (keyword.isEmpty()) {
                 throw new BobbyException("Error! The search keyword cannot be empty!");
             }
             return new FindCommand(keyword);
-        } else if (isCommand(command, "mark")) {
+        } else if (isCommand(command, COMMAND_MARK)) {
             return new MarkCommand(command);
-        } else if (isCommand(command, "unmark")) {
+        } else if (isCommand(command, COMMAND_UNMARK)) {
             return new UnmarkCommand(command);
-        } else if (isCommand(command, "delete")) {
+        } else if (isCommand(command, COMMAND_DELETE)) {
             return new DeleteCommand(command);
-        } else if (isCommand(command, "todo")) {
+        } else if (isCommand(command, COMMAND_TODO)) {
             return new AddCommand(parseTodo(command));
-        } else if (isCommand(command, "deadline")) {
+        } else if (isCommand(command, COMMAND_DEADLINE)) {
             return new AddCommand(parseDeadline(command));
-        } else if (isCommand(command, "event")) {
+        } else if (isCommand(command, COMMAND_EVENT)) {
             return new AddCommand(parseEvent(command));
         }
         throw new BobbyException("No such task type available. Try again!");
@@ -140,7 +159,7 @@ public class Parser {
      * @throws BobbyException if the description is empty or unsafe for storage
      */
     private Task parseTodo(String command) throws BobbyException {
-        String description = getCommandArgument(command, "todo");
+        String description = getCommandArgument(command, COMMAND_TODO);
         if (description.trim().isEmpty()) {
             throw new BobbyException("Error! The description of a todo cannot be empty!");
         }
@@ -156,10 +175,10 @@ public class Parser {
      * @throws BobbyException if the description or date is invalid
      */
     private Task parseDeadline(String command) throws BobbyException {
-        String deadlineDetails = getCommandArgument(command, "deadline");
-        String[] deadlineParts = deadlineDetails.split(" /by ", 2);
+        String deadlineDetails = getCommandArgument(command, COMMAND_DEADLINE);
+        String[] deadlineParts = deadlineDetails.split(DEADLINE_SEPARATOR, MAX_DEADLINE_PARTS);
         boolean hasNoDescription = deadlineDetails.trim().isEmpty()
-                || deadlineDetails.trim().startsWith("/by")
+                || deadlineDetails.trim().startsWith(DEADLINE_DATE_MARKER)
                 || (deadlineParts.length > 1 && deadlineParts[0].trim().isEmpty());
         if (hasNoDescription) {
             throw new BobbyException("Error! The description of a deadline cannot be empty!");
@@ -185,9 +204,9 @@ public class Parser {
      * @throws BobbyException if any event field is empty, invalid, or unsafe for storage
      */
     private Task parseEvent(String command) throws BobbyException {
-        String eventDetails = getCommandArgument(command, "event");
-        int fromMarkerIndex = eventDetails.indexOf("/from");
-        int toMarkerIndex = eventDetails.indexOf("/to");
+        String eventDetails = getCommandArgument(command, COMMAND_EVENT);
+        int fromMarkerIndex = eventDetails.indexOf(EVENT_FROM_MARKER);
+        int toMarkerIndex = eventDetails.indexOf(EVENT_TO_MARKER);
 
         String description;
         String from = "";
@@ -195,9 +214,10 @@ public class Parser {
         if (fromMarkerIndex >= 0) {
             description = eventDetails.substring(0, fromMarkerIndex).trim();
             if (toMarkerIndex > fromMarkerIndex) {
-                from = eventDetails.substring(fromMarkerIndex + 5, toMarkerIndex).trim();
+                from = eventDetails.substring(fromMarkerIndex + EVENT_FROM_MARKER.length(),
+                        toMarkerIndex).trim();
             } else {
-                from = eventDetails.substring(fromMarkerIndex + 5).trim();
+                from = eventDetails.substring(fromMarkerIndex + EVENT_FROM_MARKER.length()).trim();
             }
         } else if (toMarkerIndex >= 0) {
             description = eventDetails.substring(0, toMarkerIndex).trim();
@@ -205,7 +225,7 @@ public class Parser {
             description = eventDetails;
         }
         if (toMarkerIndex >= 0) {
-            to = eventDetails.substring(toMarkerIndex + 3).trim();
+            to = eventDetails.substring(toMarkerIndex + EVENT_TO_MARKER.length()).trim();
         }
 
         if (description.isEmpty()) {

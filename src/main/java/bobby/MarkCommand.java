@@ -27,6 +27,7 @@ public class MarkCommand extends Command {
         Parser parser = new Parser();
         int taskIndex = parser.parseTaskIndex(commandInput, "mark", tasks.size());
         Task task = tasks.get(taskIndex);
+        assert task != null : "A valid task index must refer to a task";
         boolean wasDone = task.isDone();
         task.markAsDone();
         try {

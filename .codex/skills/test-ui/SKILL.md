@@ -27,9 +27,10 @@ From the repository root, run:
 python .codex/skills/test-ui/scripts/run_ui_tests.py
 ```
 
-The runner compiles every Java source file under `src/main/java`, then runs
-each test case in plan order. It prints the aim plus a record of the console
-input and actual output for every completed test session.
+The runner compiles the console Java source files under `src/main/java`,
+skipping files that import JavaFX, then runs each test case in plan order. It
+prints the aim plus a record of the console input and actual output for every
+completed test session.
 
 On the first mismatch, stop immediately. Report the failing test's aim, input,
 expected output, and actual output; do not run later test cases. Treat a

@@ -3,15 +3,15 @@ package bobby;
 /** Marks a selected task as not done and persists the updated task list. */
 public class UnmarkCommand extends Command {
     /** Original user input, including the command and task number. */
-    private final String command;
+    private final String commandInput;
 
     /**
      * Creates an unmark command containing the user's original input.
      *
-     * @param command original user input
+     * @param commandInput original user input
      */
-    public UnmarkCommand(String command) {
-        this.command = command;
+    public UnmarkCommand(String commandInput) {
+        this.commandInput = commandInput;
     }
 
     /**
@@ -25,7 +25,7 @@ public class UnmarkCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobbyException {
         Parser parser = new Parser();
-        int taskIndex = parser.parseTaskIndex(command, "unmark", tasks.size());
+        int taskIndex = parser.parseTaskIndex(commandInput, "unmark", tasks.size());
         Task task = tasks.get(taskIndex);
         assert task != null : "A valid task index must refer to a task";
         boolean wasDone = task.isDone();
@@ -37,19 +37,5 @@ public class UnmarkCommand extends Command {
             throw exception;
         }
         ui.showTaskMarkedNotDone(task);
-    }
-
-    /**
-     * Restores the task's previous completion state after a failed save.
-     *
-     * @param task task whose state should be restored
-     * @param wasDone whether the task was complete before the attempted update
-     */
-    private void restoreTaskStatus(Task task, boolean wasDone) {
-        if (wasDone) {
-            task.markAsDone();
-        } else {
-            task.unmarkAsDone();
-        }
     }
 }

@@ -26,4 +26,18 @@ public abstract class Command {
     public boolean isExit() {
         return false;
     }
+
+    /**
+     * Restores a task's completion state after a failed persistence operation.
+     *
+     * @param task task whose state should be restored
+     * @param wasDone whether the task was complete before the attempted update
+     */
+    protected void restoreTaskStatus(Task task, boolean wasDone) {
+        if (wasDone) {
+            task.markAsDone();
+        } else {
+            task.unmarkAsDone();
+        }
+    }
 }

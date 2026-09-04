@@ -3,6 +3,7 @@ package bobby;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /** Owns Bobby's ordered collection of tasks and its basic list operations. */
 public class TaskList {
@@ -90,12 +91,9 @@ public class TaskList {
     public List<Task> findByDescription(String keyword) {
         assert keyword != null : "Search keywords must not be null";
         String lowerCaseKeyword = keyword.toLowerCase(Locale.ROOT);
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase(Locale.ROOT).contains(lowerCaseKeyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription().toLowerCase(Locale.ROOT)
+                        .contains(lowerCaseKeyword))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

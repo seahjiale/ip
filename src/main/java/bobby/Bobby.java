@@ -52,6 +52,7 @@ public class Bobby {
                 throw new BobbyException("Error! The command cannot be empty!");
             }
             Command command = parser.parse(input);
+            assert command != null : "Parser must return a command for valid input";
             command.execute(tasks, responseUi, storage);
             commandType = command.getClass().getSimpleName();
         } catch (BobbyException exception) {

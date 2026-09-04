@@ -56,6 +56,7 @@ public class Storage {
      * @throws BobbyException if the file or its parent directory cannot be written
      */
     public void save(TaskList tasks) throws BobbyException {
+        assert tasks != null : "Storage must save a non-null task list";
         try {
             Files.createDirectories(taskFile.getParent());
             List<String> taskLines = new ArrayList<>();

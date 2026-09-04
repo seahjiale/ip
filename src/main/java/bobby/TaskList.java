@@ -20,6 +20,10 @@ public class TaskList {
      * @param tasks tasks to copy into the new list
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "Task source list must not be null";
+        for (Task task : tasks) {
+            assert task != null : "Task lists must not contain null tasks";
+        }
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -49,6 +53,7 @@ public class TaskList {
      * @param task task to append
      */
     public void add(Task task) {
+        assert task != null : "Task lists must not contain null tasks";
         tasks.add(task);
     }
 
@@ -60,6 +65,7 @@ public class TaskList {
      * @throws IndexOutOfBoundsException if {@code index} is outside the valid insertion range
      */
     public void add(int index, Task task) {
+        assert task != null : "Task lists must not contain null tasks";
         tasks.add(index, task);
     }
 
@@ -82,6 +88,7 @@ public class TaskList {
      * @return a new list containing the matching tasks
      */
     public List<Task> findByDescription(String keyword) {
+        assert keyword != null : "Search keywords must not be null";
         String lowerCaseKeyword = keyword.toLowerCase(Locale.ROOT);
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {

@@ -107,6 +107,7 @@ public class Parser {
      */
     public int parseTaskIndex(String command, String commandName, int taskCount)
             throws BobbyException {
+        assert taskCount >= 0 : "Task count cannot be negative";
         if (taskCount == 0) {
             throw new BobbyException("No tasks available to " + commandName + ".");
         }
@@ -126,6 +127,8 @@ public class Parser {
             throw new BobbyException("Error! The task number must be between 1 and "
                     + taskCount + ".");
         }
+        assert taskIndex >= 0 && taskIndex < taskCount
+                : "A parsed task index must refer to an existing task";
         return taskIndex;
     }
 

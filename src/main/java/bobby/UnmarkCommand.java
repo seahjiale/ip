@@ -27,6 +27,7 @@ public class UnmarkCommand extends Command {
         Parser parser = new Parser();
         int taskIndex = parser.parseTaskIndex(command, "unmark", tasks.size());
         Task task = tasks.get(taskIndex);
+        assert task != null : "A valid task index must refer to a task";
         boolean wasDone = task.isDone();
         task.unmarkAsDone();
         try {

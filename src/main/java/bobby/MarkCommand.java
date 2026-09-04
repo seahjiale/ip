@@ -3,15 +3,15 @@ package bobby;
 /** Marks a selected task as done and persists the updated task list. */
 public class MarkCommand extends Command {
     /** Original user input, including the command and task number. */
-    private final String command;
+    private final String commandInput;
 
     /**
      * Creates a mark command containing the user's original input.
      *
-     * @param command original user input
+     * @param commandInput original user input
      */
-    public MarkCommand(String command) {
-        this.command = command;
+    public MarkCommand(String commandInput) {
+        this.commandInput = commandInput;
     }
 
     /**
@@ -25,7 +25,7 @@ public class MarkCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobbyException {
         Parser parser = new Parser();
-        int taskIndex = parser.parseTaskIndex(command, "mark", tasks.size());
+        int taskIndex = parser.parseTaskIndex(commandInput, "mark", tasks.size());
         Task task = tasks.get(taskIndex);
         boolean wasDone = task.isDone();
         task.markAsDone();

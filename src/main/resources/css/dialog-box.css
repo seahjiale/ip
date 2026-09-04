@@ -1,12 +1,13 @@
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
-    -fx-border-width: 2px;
+    -fx-background-color: linear-gradient(to bottom right, #e9edff, #dceafe);
+    -fx-border-color: #c5d0ed;
+    -fx-border-width: 1px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
     -fx-padding: 6px;
     -fx-border-insets: 0px 7px 0px 7px;
     -fx-background-insets: 0px 7px 0px 7px;
+    -fx-text-fill: #26334d;
 }
 
 .reply-label {
@@ -15,15 +16,18 @@
 }
 
 .add-label {
-    -fx-background-color: yellow;
+    -fx-background-color: #fff3c4;
+    -fx-border-color: #f0d98a;
 }
 
 .marked-label {
-    -fx-background-color: palegreen;
+    -fx-background-color: #d9f4e5;
+    -fx-border-color: #9fd4b6;
 }
 
 .delete-label {
-    -fx-background-color: lightpink;
+    -fx-background-color: #ffe0e4;
+    -fx-border-color: #edabb7;
 }
 
 #displayPicture {

@@ -29,6 +29,7 @@ public class Main extends Application {
             fxmlLoader.<MainWindow>getController().setBobby(bobby);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
+            stage.setTitle("Bobby");
             stage.show();
         } catch (IOException exception) {
             exception.printStackTrace();

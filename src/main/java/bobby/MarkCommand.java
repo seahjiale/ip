@@ -37,18 +37,4 @@ public class MarkCommand extends Command {
         }
         ui.showTaskMarkedDone(task);
     }
-
-    /**
-     * Restores the task's previous completion state after a failed save.
-     *
-     * @param task task whose state should be restored
-     * @param wasDone whether the task was complete before the attempted update
-     */
-    private void restoreTaskStatus(Task task, boolean wasDone) {
-        if (wasDone) {
-            task.markAsDone();
-        } else {
-            task.unmarkAsDone();
-        }
-    }
 }

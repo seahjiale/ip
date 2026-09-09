@@ -11,6 +11,7 @@ public class Parser {
     private static final String COMMAND_MARK = "mark";
     private static final String COMMAND_UNMARK = "unmark";
     private static final String COMMAND_DELETE = "delete";
+    private static final String COMMAND_PRIORITY = "priority";
     private static final String COMMAND_TODO = "todo";
     private static final String COMMAND_DEADLINE = "deadline";
     private static final String COMMAND_EVENT = "event";
@@ -105,6 +106,8 @@ public class Parser {
             return new UnmarkCommand(command);
         } else if (isCommand(command, COMMAND_DELETE)) {
             return new DeleteCommand(command);
+        } else if (isCommand(command, COMMAND_PRIORITY)) {
+            return new PriorityCommand(command);
         } else if (isCommand(command, COMMAND_TODO)) {
             return new AddCommand(parseTodo(command));
         } else if (isCommand(command, COMMAND_DEADLINE)) {

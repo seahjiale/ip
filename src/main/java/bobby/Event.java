@@ -89,6 +89,7 @@ public class Event extends Task {
     @Override
     public String toStorageString() {
         return "E | " + getStorageStatus() + " | " + getDescription() + " | "
-                + from.format(DATE_INPUT_FORMAT) + " | " + to.format(DATE_INPUT_FORMAT);
+                + from.format(DATE_INPUT_FORMAT) + " | " + to.format(DATE_INPUT_FORMAT)
+                + " | " + getPriority();
     }
 }

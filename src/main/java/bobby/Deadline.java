@@ -109,6 +109,7 @@ public class Deadline extends Task {
     /** Returns this deadline in the format used when saving tasks to disk. */
     @Override
     public String toStorageString() {
-        return "D | " + getStorageStatus() + " | " + getDescription() + " | " + getStorageDate();
+        return "D | " + getStorageStatus() + " | " + getDescription() + " | "
+                + getStorageDate() + " | " + getPriority();
     }
 }

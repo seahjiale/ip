@@ -1275,3 +1275,177 @@ ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+## Test Case 29: Assign and change a task priority
+
+<!-- data-scope: priority-persistence -->
+
+### Aim
+
+Verify that a task priority can be assigned using a numeric alias and changed
+using a case-insensitive name without reordering the task list.
+
+### Input
+
+```text
+todo first task
+todo second task
+priority 2 1
+priority 2 MEDIUM
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] first task
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] second task
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've updated this task's priority:
+  [T][ ][P: HIGH] second task
+____________________________________________________________
+____________________________________________________________
+Got it. I've updated this task's priority:
+  [T][ ][P: MEDIUM] second task
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] first task
+2.[T][ ][P: MEDIUM] second task
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 30: Reload and clear a task priority
+
+<!-- data-scope: priority-persistence -->
+
+### Aim
+
+Verify that a saved priority loads in a new session and can be cleared without
+changing the task's position.
+
+### Input
+
+```text
+list
+priority 2 none
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] first task
+2.[T][ ][P: MEDIUM] second task
+____________________________________________________________
+____________________________________________________________
+Got it. I've updated this task's priority:
+  [T][ ] second task
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] first task
+2.[T][ ] second task
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test Case 31: Reject invalid priority commands
+
+### Aim
+
+Verify that missing, malformed, out-of-range, and unsupported priority
+arguments are rejected without changing the task.
+
+### Input
+
+```text
+todo read book
+priority
+priority 1
+priority abc high
+priority 2 high
+priority 1 urgent
+priority 1 high extra
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hello! I'm Bobby.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error! The task number cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Error! The priority level cannot be empty!
+____________________________________________________________
+____________________________________________________________
+Error! The task number must be a valid integer.
+____________________________________________________________
+____________________________________________________________
+Error! The task number must be between 1 and 1.
+____________________________________________________________
+____________________________________________________________
+Error! The priority level must be high, medium, low, none, 1, 2, or 3.
+____________________________________________________________
+____________________________________________________________
+Error! The priority command must follow: priority TASK_NUMBER LEVEL.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] read book
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```

@@ -88,20 +88,24 @@ public class Storage {
         String status = parts[1].trim();
         String description = parts[2].trim();
         Task task;
-        if (taskType.equals("T") && parts.length == 3) {
+        boolean hasStoredPriority;
+        if (taskType.equals("T") && (parts.length == 3 || parts.length == 4)) {
             task = new ToDo(description);
-        } else if (taskType.equals("D") && parts.length == 4) {
+            hasStoredPriority = parts.length == 4;
+        } else if (taskType.equals("D") && (parts.length == 4 || parts.length == 5)) {
             try {
                 task = Deadline.fromInput(description, parts[3].trim());
             } catch (DateTimeParseException exception) {
                 throw new BobbyException("Error! Could not load tasks from disk.");
             }
-        } else if (taskType.equals("E") && parts.length == 5) {
+            hasStoredPriority = parts.length == 5;
+        } else if (taskType.equals("E") && (parts.length == 5 || parts.length == 6)) {
             try {
                 task = Event.fromInput(description, parts[3].trim(), parts[4].trim());
             } catch (DateTimeParseException exception) {
                 throw new BobbyException("Error! Could not load tasks from disk.");
             }
+            hasStoredPriority = parts.length == 6;
         } else {
             throw new BobbyException("Error! Could not load tasks from disk.");
         }
@@ -110,6 +114,14 @@ public class Storage {
             task.markAsDone();
         } else if (!status.equals("0")) {
             throw new BobbyException("Error! Could not load tasks from disk.");
+        }
+
+        if (hasStoredPriority) {
+            try {
+                task.setPriority(Priority.valueOf(parts[parts.length - 1].trim()));
+            } catch (IllegalArgumentException exception) {
+                throw new BobbyException("Error! Could not load tasks from disk.");
+            }
         }
         return task;
     }

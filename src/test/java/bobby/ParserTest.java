@@ -101,6 +101,7 @@ public class ParserTest {
         assertInstanceOf(MarkCommand.class, parser.parse("mark 1"));
         assertInstanceOf(UnmarkCommand.class, parser.parse("unmark 1"));
         assertInstanceOf(DeleteCommand.class, parser.parse("delete 1"));
+        assertInstanceOf(PriorityCommand.class, parser.parse("priority 1 high"));
         assertInstanceOf(AddCommand.class, parser.parse("todo read book"));
         assertInstanceOf(AddCommand.class,
                 parser.parse("deadline return book /by 2026-08-25"));

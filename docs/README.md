@@ -1,30 +1,67 @@
 # Bobby User Guide
 
-// Update the title above to match the actual product name
+Bobby manages todos, deadlines, and events through text commands. Tasks are
+numbered in the order in which they were added.
 
-// Product screenshot goes here
+## Prioritizing tasks
 
-// Product intro goes here
+Use the `priority` command to assign or clear the priority of an existing task:
 
-## Adding deadlines
-
-// Describe the action and its outcome.
-
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
-```
-expected output
+```text
+priority TASK_NUMBER LEVEL
 ```
 
-## Feature ABC
+The supported levels and numeric aliases are:
 
-// Feature details
+| Priority | Numeric alias |
+| --- | --- |
+| `high` | `1` |
+| `medium` | `2` |
+| `low` | `3` |
+| `none` | None |
 
+Priority names are case-insensitive. The `priority` command name must remain
+lowercase, like Bobby's other command names.
 
-## Feature XYZ
+For example, this command assigns high priority to task 2:
 
-// Feature details
+```text
+priority 2 high
+```
+
+Bobby responds with:
+
+```text
+Got it. I've updated this task's priority:
+  [T][ ][P: HIGH] read book
+```
+
+The equivalent numeric command is:
+
+```text
+priority 2 1
+```
+
+Clear a task's priority by assigning `none`:
+
+```text
+priority 2 none
+```
+
+An unprioritized task does not display a priority badge:
+
+```text
+[T][ ] read book
+```
+
+Priorities are supported by todos, deadlines, and events. Marking or
+unmarking a task does not change its priority. Assigning a priority also does
+not reorder the task list, so task numbers remain stable.
+
+Tasks created without a priority use `none`. Existing Bobby data files that
+do not contain priority fields remain supported and their tasks load with
+`none`. Bobby saves priority values automatically after a successful update.
+
+Invalid task numbers and unsupported levels are rejected without changing
+the task or its saved data. Valid levels are `high`, `medium`, `low`, `none`,
+`1`, `2`, and `3`.

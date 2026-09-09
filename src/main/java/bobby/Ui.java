@@ -128,6 +128,16 @@ public class Ui {
     }
 
     /**
+     * Shows confirmation that a task's priority was updated.
+     *
+     * @param task task whose priority was updated
+     */
+    public void showTaskPriorityUpdated(Task task) {
+        output.println("Got it. I've updated this task's priority:");
+        output.println("  " + task);
+    }
+
+    /**
      * Shows confirmation that a task was deleted.
      *
      * @param task task that was removed

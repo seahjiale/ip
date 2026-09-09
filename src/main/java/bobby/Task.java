@@ -8,6 +8,8 @@ public class Task {
     private final String description;
     /** Whether the task has been marked complete. */
     private boolean isDone;
+    /** Priority assigned to the task. */
+    private Priority priority;
 
     /**
      * Creates an incomplete task with the given description.
@@ -17,6 +19,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.priority = Priority.NONE;
     }
 
     /**
@@ -55,6 +58,25 @@ public class Task {
         return isDone;
     }
 
+    /**
+     * Returns the priority assigned to this task.
+     *
+     * @return this task's priority
+     */
+    public Priority getPriority() {
+        return priority;
+    }
+
+    /**
+     * Assigns a priority to this task.
+     *
+     * @param priority priority to assign
+     */
+    public void setPriority(Priority priority) {
+        assert priority != null : "Task priority must not be null";
+        this.priority = priority;
+    }
+
     /** Marks this task as complete. */
     public void markAsDone() {
         isDone = true;
@@ -71,7 +93,7 @@ public class Task {
      * @return the line representing this task in storage
      */
     public String toStorageString() {
-        return "T | " + getStorageStatus() + " | " + description;
+        return "T | " + getStorageStatus() + " | " + description + " | " + priority;
     }
 
     /**
@@ -82,6 +104,7 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String priorityBadge = priority == Priority.NONE ? "" : "[P: " + priority + "]";
+        return "[" + getStatusIcon() + "]" + priorityBadge + " " + description;
     }
 }

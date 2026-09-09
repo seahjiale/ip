@@ -26,7 +26,7 @@ public class EventTest {
 
         assertEquals("[E][ ] project meeting (from: Aug 25 2026 to: Aug 26 2026)",
                 event.toString());
-        assertEquals("E | 0 | project meeting | 2026-08-25 | 2026-08-26",
+        assertEquals("E | 0 | project meeting | 2026-08-25 | 2026-08-26 | NONE",
                 event.toStorageString());
     }
 }

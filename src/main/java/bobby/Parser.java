@@ -195,7 +195,7 @@ public class Parser {
             return Deadline.fromInput(deadlineParts[0].trim(), deadlineParts[1].trim());
         } catch (DateTimeParseException exception) {
             throw new BobbyException("Error! The deadline must be a valid date. "
-                    + "Use yyyy-MM-dd or d/M/yyyy HHmm.");
+                    + "Use yyyy-MM-dd or yyyy-MM-dd HHmm.");
         }
     }
 

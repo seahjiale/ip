@@ -1,5 +1,7 @@
 package bobby;
 
+import javafx.application.Platform;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -11,6 +13,9 @@ import javafx.stage.Stage;
 
 /** Controller for the main GUI. */
 public class MainWindow extends AnchorPane {
+    /** Pseudo-class used to highlight an input that Bobby could not process. */
+    private static final PseudoClass INPUT_ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
+
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -23,16 +28,14 @@ public class MainWindow extends AnchorPane {
     /** Chatbot used to generate responses for user input. */
     private Bobby bobby;
 
-    /** Image used for user dialog boxes. */
-    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-
     /** Image used for Bobby dialog boxes. */
     private final Image bobbyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
-    /** Binds the scroll position to the height of the dialog container. */
+    /** Clears the input error highlight as soon as the user edits the command. */
     @FXML
-    public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+    private void initialize() {
+        userInput.textProperty().addListener((observable, oldValue, newValue) ->
+                userInput.pseudoClassStateChanged(INPUT_ERROR_PSEUDO_CLASS, false));
     }
 
     /** Injects the Bobby instance used by this controller. */
@@ -46,14 +49,40 @@ public class MainWindow extends AnchorPane {
         String input = userInput.getText();
         String response = bobby.getResponse(input);
         String commandType = bobby.getCommandType();
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getBobbyDialog(response, bobbyImage, commandType)
-        );
-        userInput.clear();
+        boolean wasResponseError = bobby.wasLastResponseError();
+        if (!input.isEmpty()) {
+            dialogContainer.getChildren().add(DialogBox.getUserDialog(input));
+        }
+        dialogContainer.getChildren().add(
+                DialogBox.getBobbyDialog(response, bobbyImage, commandType, wasResponseError));
+        scrollToLatestDialog();
+        updateInputAfterResponse(wasResponseError);
         if ("ExitCommand".equals(commandType)) {
             Stage stage = (Stage) userInput.getScene().getWindow();
             stage.close();
+        }
+    }
+
+    /** Scrolls to the latest dialog after JavaFX calculates the new content height. */
+    private void scrollToLatestDialog() {
+        Platform.runLater(() -> {
+            dialogContainer.applyCss();
+            dialogContainer.layout();
+            scrollPane.applyCss();
+            scrollPane.layout();
+
+            // Changing the value first ensures the final maximum value triggers a scroll refresh.
+            scrollPane.setVvalue(scrollPane.getVmin());
+            scrollPane.setVvalue(scrollPane.getVmax());
+        });
+    }
+
+    /** Clears submitted input and preserves its error highlight until the user types again. */
+    private void updateInputAfterResponse(boolean wasResponseError) {
+        userInput.clear();
+        userInput.pseudoClassStateChanged(INPUT_ERROR_PSEUDO_CLASS, wasResponseError);
+        if (wasResponseError) {
+            userInput.requestFocus();
         }
     }
 

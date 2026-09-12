@@ -1104,13 +1104,13 @@ ____________________________________________________________
 
 ### Aim
 
-Verify that a deadline in `d/M/yyyy HHmm` format is parsed as a real date and
+Verify that a deadline in `yyyy-MM-dd HHmm` format is parsed as a real date and
 time, then displayed as `MMM dd yyyy h:mm a`.
 
 ### Input
 
 ```text
-deadline return book /by 2/12/2019 1800
+deadline return book /by 2019-12-02 1800
 list
 bye
 ```

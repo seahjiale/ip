@@ -20,6 +20,9 @@ public class Bobby {
     /** Simple class name of the most recently executed command. */
     private String commandType;
 
+    /** Whether the most recent GUI response reports a command error. */
+    private boolean wasLastResponseError = false;
+
     /** Creates a Bobby application instance. */
     public Bobby() {
         this("data/duke.txt");
@@ -47,6 +50,7 @@ public class Bobby {
         PrintStream responseStream = new PrintStream(responseOutput, true, StandardCharsets.UTF_8);
         Ui responseUi = new Ui(responseStream);
         commandType = null;
+        wasLastResponseError = false;
         try {
             if (input.isEmpty()) {
                 throw new BobbyException("Error! The command cannot be empty!");
@@ -56,7 +60,10 @@ public class Bobby {
             command.execute(tasks, responseUi, storage);
             commandType = command.getClass().getSimpleName();
         } catch (BobbyException exception) {
-            responseUi.showError(exception.getMessage());
+            wasLastResponseError = true;
+            String errorWithUsage = exception.getMessage() + System.lineSeparator()
+                    + System.lineSeparator() + getUsageGuidance(input);
+            responseUi.showError(errorWithUsage);
         }
         responseStream.close();
         return responseOutput.toString(StandardCharsets.UTF_8)
@@ -70,6 +77,79 @@ public class Bobby {
      */
     public String getCommandType() {
         return commandType;
+    }
+
+    /**
+     * Returns whether the most recent GUI response reports a command error.
+     *
+     * @return {@code true} if the most recent command failed
+     */
+    public boolean wasLastResponseError() {
+        return wasLastResponseError;
+    }
+
+    /**
+     * Returns concise command guidance for an invalid GUI input.
+     *
+     * @param input invalid command entered by the user
+     * @return relevant format and example, or the list of available commands
+     */
+    private static String getUsageGuidance(String input) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            return getAvailableCommandsGuidance();
+        }
+
+        String commandName = trimmedInput.split("\\s+", 2)[0];
+        switch (commandName) {
+            case "todo":
+                return String.join(System.lineSeparator(),
+                        "Format: todo DESCRIPTION",
+                        "Example: todo read book");
+            case "deadline":
+                return String.join(System.lineSeparator(),
+                        "Format: deadline DESCRIPTION /by DATE",
+                        "Example: deadline return book /by 2026-09-20",
+                        "With time: deadline call client /by 2026-09-20 1800");
+            case "event":
+                return String.join(System.lineSeparator(),
+                        "Format: event DESCRIPTION /from DATE /to DATE",
+                        "Example: event meeting /from 2026-09-20 /to 2026-09-21",
+                        "Dates: yyyy-MM-dd");
+            case "mark":
+                return String.join(System.lineSeparator(),
+                        "Format: mark TASK_NUMBER",
+                        "Example: mark 1");
+            case "unmark":
+                return String.join(System.lineSeparator(),
+                        "Format: unmark TASK_NUMBER",
+                        "Example: unmark 1");
+            case "delete":
+                return String.join(System.lineSeparator(),
+                        "Format: delete TASK_NUMBER",
+                        "Example: delete 1");
+            case "find":
+                return String.join(System.lineSeparator(),
+                        "Format: find KEYWORD",
+                        "Example: find book");
+            case "priority":
+                return String.join(System.lineSeparator(),
+                        "Format: priority TASK_NUMBER LEVEL",
+                        "Example: priority 1 high",
+                        "Levels: high, medium, low, none, 1, 2, or 3");
+            case "list":
+                return "Format: list";
+            case "bye":
+                return "Format: bye";
+            default:
+                return getAvailableCommandsGuidance();
+        }
+    }
+
+    /** Returns a compact list of commands for empty or unknown input. */
+    private static String getAvailableCommandsGuidance() {
+        return "Available commands: todo, deadline, event, list, mark, unmark,"
+                + System.lineSeparator() + "delete, find, priority, bye";
     }
 
     /**

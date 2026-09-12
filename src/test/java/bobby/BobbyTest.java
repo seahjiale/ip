@@ -5,7 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -14,6 +18,22 @@ import org.junit.jupiter.api.io.TempDir;
 public class BobbyTest {
     @TempDir
     private Path temporaryDirectory;
+
+    /** Verifies a healthy instance returns the shared welcome message without a warning. */
+    @Test
+    public void getWelcomeMessage_validStorage_plainWelcomeReturned() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("welcome.txt").toString());
+
+        assertEquals(Ui.WELCOME_MESSAGE, bobby.getWelcomeMessage());
+    }
+
+    /** Verifies the public constructor creates a usable application instance. */
+    @Test
+    public void constructor_defaultPath_instanceCreated() {
+        Bobby bobby = new Bobby();
+
+        assertEquals(Bobby.class, bobby.getClass());
+    }
 
     /** Verifies that a GUI response uses the existing add-command behavior. */
     @Test
@@ -103,6 +123,74 @@ public class BobbyTest {
         assertTrue(response.contains("Example: deadline return book /by 2026-09-20"));
         assertTrue(response.contains("With time: deadline call client /by 2026-09-20 1800"));
         assertTrue(bobby.wasLastResponseError());
+    }
+
+    /** Verifies every recognized invalid command receives command-specific usage guidance. */
+    @Test
+    public void getResponse_invalidRecognizedCommands_relevantGuidanceReturned() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("guidance.txt").toString());
+        Map<String, String> invalidInputsAndGuidance = new LinkedHashMap<>();
+        invalidInputsAndGuidance.put("todo", "Format: todo DESCRIPTION");
+        invalidInputsAndGuidance.put("deadline", "Format: deadline DESCRIPTION /by DATE");
+        invalidInputsAndGuidance.put("event", "Format: event DESCRIPTION /from DATE /to DATE");
+        invalidInputsAndGuidance.put("mark", "Format: mark TASK_NUMBER");
+        invalidInputsAndGuidance.put("unmark", "Format: unmark TASK_NUMBER");
+        invalidInputsAndGuidance.put("delete", "Format: delete TASK_NUMBER");
+        invalidInputsAndGuidance.put("find", "Format: find KEYWORD");
+        invalidInputsAndGuidance.put("priority", "Format: priority TASK_NUMBER LEVEL");
+        invalidInputsAndGuidance.put("list unexpected", "Format: list");
+        invalidInputsAndGuidance.put("bye unexpected", "Format: bye");
+
+        for (Map.Entry<String, String> inputAndGuidance : invalidInputsAndGuidance.entrySet()) {
+            String response = bobby.getResponse(inputAndGuidance.getKey());
+
+            assertTrue(response.contains(inputAndGuidance.getValue()), inputAndGuidance.getKey());
+            assertTrue(bobby.wasLastResponseError(), inputAndGuidance.getKey());
+            assertNull(bobby.getCommandType(), inputAndGuidance.getKey());
+        }
+    }
+
+    /** Verifies null and blank input return general guidance without throwing an exception. */
+    @Test
+    public void getResponse_nullAndBlankInput_availableCommandsReturned() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("empty-input.txt").toString());
+
+        String nullResponse = bobby.getResponse(null);
+        String blankResponse = bobby.getResponse("   ");
+
+        assertTrue(nullResponse.contains("Available commands:"));
+        assertTrue(blankResponse.contains("Available commands:"));
+        assertTrue(bobby.wasLastResponseError());
+    }
+
+    /** Verifies tasks loaded during construction are available to later commands. */
+    @Test
+    public void getResponse_existingStorage_loadedTaskListed() throws Exception {
+        Path taskFile = temporaryDirectory.resolve("existing.txt");
+        Files.writeString(taskFile, "T | 1 | saved task | HIGH", StandardCharsets.UTF_8);
+        Bobby bobby = new Bobby(taskFile.toString());
+
+        String response = bobby.getResponse("list");
+
+        assertTrue(response.contains("1.[T][X][P: HIGH] saved task"));
+        assertEquals("ListCommand", bobby.getCommandType());
+        assertFalse(bobby.wasLastResponseError());
+    }
+
+    /** Verifies failed startup loading also protects the malformed file from later writes. */
+    @Test
+    public void getResponse_storageLoadFailed_additionRejectedAndFilePreserved() throws Exception {
+        Path taskFile = temporaryDirectory.resolve("protected.txt");
+        String malformedData = "invalid";
+        Files.writeString(taskFile, malformedData, StandardCharsets.UTF_8);
+        Bobby bobby = new Bobby(taskFile.toString());
+
+        String response = bobby.getResponse("todo replacement");
+
+        assertTrue(response.contains("Bobby will not overwrite task data that failed to load"));
+        assertTrue(response.contains("Format: todo DESCRIPTION"));
+        assertTrue(bobby.wasLastResponseError());
+        assertEquals(malformedData, Files.readString(taskFile, StandardCharsets.UTF_8));
     }
 
     /** Verifies that equivalent tasks are rejected after whitespace and case normalization. */

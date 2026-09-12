@@ -274,7 +274,7 @@ public class Parser {
         } catch (DateTimeParseException exception) {
             throw new BobbyException("Error! Event dates must be valid dates. Use yyyy-MM-dd.");
         } catch (IllegalArgumentException exception) {
-            throw new BobbyException("Error! An event must start before it ends.");
+            throw new BobbyException("Error! An event cannot end before it starts.");
         }
     }
 

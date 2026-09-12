@@ -190,6 +190,17 @@ public class ParserTest {
                 exception.getMessage());
     }
 
+    /** Verifies control characters that survive whitespace normalization are rejected. */
+    @Test
+    public void parse_todoWithControlCharacter_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("todo read\u0001book"));
+
+        assertEquals("Error! Task details cannot contain control characters!", exception.getMessage());
+    }
+
     /** Verifies that valid ISO date-only and date-time deadlines are accepted. */
     @Test
     public void parse_validDeadline_addCommandReturned() throws BobbyException {
@@ -267,6 +278,8 @@ public class ParserTest {
 
         assertInstanceOf(AddCommand.class,
                 parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
+        assertInstanceOf(AddCommand.class,
+                parser.parse("event same-day meeting /from 2026-08-25 /to 2026-08-25"));
     }
 
     /** Verifies that an event without a description is rejected. */
@@ -329,19 +342,15 @@ public class ParserTest {
                 exception.getMessage());
     }
 
-    /** Verifies that an event cannot end before or on its start date. */
+    /** Verifies that an event cannot end before its start date. */
     @Test
     public void parse_eventWithInvalidDateOrder_exceptionThrown() {
         Parser parser = new Parser();
 
-        BobbyException sameDateException = assertThrows(BobbyException.class, () ->
-                parser.parse("event meeting /from 2026-08-25 /to 2026-08-25"));
         BobbyException reversedDateException = assertThrows(BobbyException.class, () ->
                 parser.parse("event meeting /from 2026-08-26 /to 2026-08-25"));
 
-        assertEquals("Error! An event must start before it ends.",
-                sameDateException.getMessage());
-        assertEquals("Error! An event must start before it ends.",
+        assertEquals("Error! An event cannot end before it starts.",
                 reversedDateException.getMessage());
     }
 
@@ -449,5 +458,13 @@ public class ParserTest {
                 parser.parseTaskIndex("delete 4", "delete", 3));
 
         assertEquals("Error! The task number must be between 1 and 3.", exception.getMessage());
+    }
+
+    /** Verifies a negative task count violates the parser contract. */
+    @Test
+    public void parseTaskIndex_negativeTaskCount_assertionErrorThrown() {
+        Parser parser = new Parser();
+
+        assertThrows(AssertionError.class, () -> parser.parseTaskIndex("mark 1", "mark", -1));
     }
 }

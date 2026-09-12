@@ -27,12 +27,12 @@ public class Event extends Task {
      * @param description text describing the event
      * @param from date on which the event starts
      * @param to date on which the event ends
-     * @throws IllegalArgumentException if the start date is not before the end date
+     * @throws IllegalArgumentException if the start date is after the end date
      */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
-        if (!from.isBefore(to)) {
-            throw new IllegalArgumentException("An event must start before it ends.");
+        if (from.isAfter(to)) {
+            throw new IllegalArgumentException("An event cannot end before it starts.");
         }
         this.from = from;
         this.to = to;
@@ -46,7 +46,7 @@ public class Event extends Task {
      * @param toInput end date in {@code yyyy-MM-dd} format
      * @return an event containing the parsed start and end dates
      * @throws DateTimeParseException if either input is not a valid ISO date
-     * @throws IllegalArgumentException if the start date is not before the end date
+     * @throws IllegalArgumentException if the start date is after the end date
      */
     public static Event fromInput(String description, String fromInput, String toInput)
             throws DateTimeParseException {

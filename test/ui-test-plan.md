@@ -1464,7 +1464,7 @@ arguments are rejected without changing the task list.
    todo    Read   Book
 todo read book
 deadline return book    /by   2026-02-30
-event meeting /from 2026-10-02 /to 2026-10-02
+event meeting /from 2026-10-03 /to 2026-10-02
 event meeting /from 2026-10-01 /from 2026-10-02 /to 2026-10-03
 list all
 list
@@ -1495,7 +1495,7 @@ ____________________________________________________________
 Error! The deadline must be a valid date. Use yyyy-MM-dd or yyyy-MM-dd HHmm.
 ____________________________________________________________
 ____________________________________________________________
-Error! An event must start before it ends.
+Error! An event cannot end before it starts.
 ____________________________________________________________
 ____________________________________________________________
 Error! The /from parameter can only be specified once!
@@ -1506,6 +1506,47 @@ ____________________________________________________________
 ____________________________________________________________
 Ta-da! Here's your task parade:
 1.[T][ ] Read Book
+____________________________________________________________
+____________________________________________________________
+Toodles! Bobby is off to recharge the silly batteries.
+____________________________________________________________
+```
+
+## Test Case 33: Add a same-day event
+
+### Aim
+
+Verify that an event whose start and end dates are the same is accepted,
+displayed, and stored like any other event.
+
+### Input
+
+```text
+event workshop /from 2026-10-02 /to 2026-10-02
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
+____________________________________________________________
+____________________________________________________________
+Boop! I've tucked this task into the list:
+[E][ ] workshop (from: Oct 02 2026 to: Oct 02 2026)
+Bobby's task count is now 1.
+____________________________________________________________
+____________________________________________________________
+Ta-da! Here's your task parade:
+1.[E][ ] workshop (from: Oct 02 2026 to: Oct 02 2026)
 ____________________________________________________________
 ____________________________________________________________
 Toodles! Bobby is off to recharge the silly batteries.

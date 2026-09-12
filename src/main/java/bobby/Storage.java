@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,14 +167,14 @@ public class Storage {
         } else if (taskType.equals("D") && (parts.length == 4 || parts.length == 5)) {
             try {
                 task = Deadline.fromInput(description, parts[3].trim());
-            } catch (IllegalArgumentException exception) {
+            } catch (DateTimeParseException exception) {
                 throw new BobbyException("Error! Could not load tasks from disk.");
             }
             hasStoredPriority = parts.length == 5;
         } else if (taskType.equals("E") && (parts.length == 5 || parts.length == 6)) {
             try {
                 task = Event.fromInput(description, parts[3].trim(), parts[4].trim());
-            } catch (IllegalArgumentException exception) {
+            } catch (DateTimeParseException | IllegalArgumentException exception) {
                 throw new BobbyException("Error! Could not load tasks from disk.");
             }
             hasStoredPriority = parts.length == 6;

@@ -1,19 +1,29 @@
 .root {
-    main-color: #f5f7fb;
-    -fx-background-color: main-color;
+    -fx-background-color: #f4f7fb;
+    -fx-font-family: "System";
+    -fx-font-size: 14px;
+}
+
+.composer {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe6f1 transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 10px 12px;
 }
 
 .text-field {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d9e1f0;
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #cfd8e7;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-font: 20px "Arial";
+    -fx-font-size: 14px;
+    -fx-padding: 8px 11px;
     -fx-text-fill: #26334d;
-    -fx-prompt-text-fill: #8b97ad;
+    -fx-prompt-text-fill: #7c879c;
 }
 
 .text-field:focused {
+    -fx-background-color: #ffffff;
     -fx-border-color: #6366d9;
     -fx-effect: dropshadow(gaussian, rgba(99, 102, 217, 0.2), 8, 0.3, 0, 0);
 }
@@ -26,7 +36,10 @@
 .button {
     -fx-background-color: #6366d9;
     -fx-background-radius: 8px;
-    -fx-font: bold 16px "Arial";
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 14px;
     -fx-text-fill: white;
 }
 
@@ -38,23 +51,42 @@
     -fx-background-color: #4338a8;
 }
 
+.button:focused {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 217, 0.28), 8, 0.35, 0, 0);
+}
+
 .scroll-pane,
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
-.scroll-bar {
-    -fx-font-size: 10px;
-    -fx-background-color: main-color;
+.scroll-pane {
+    -fx-padding: 4px 0;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+    -fx-pref-width: 9px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #b8c2d9;
-    -fx-background-radius: 1em;
+    -fx-background-color: #c2cada;
+    -fx-background-radius: 999px;
 }
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
     -fx-pref-height: 0;
+    -fx-pref-width: 0;
     -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-color: transparent;
 }

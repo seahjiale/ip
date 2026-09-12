@@ -4,8 +4,8 @@
 }
 
 .message-label {
-    -fx-background-color: linear-gradient(to bottom right, #e9edff, #dceafe);
-    -fx-border-color: #c5d0ed;
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #d8e1ee;
     -fx-border-width: 1px;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
@@ -43,18 +43,33 @@
 }
 
 .add-label {
-    -fx-background-color: #fff3c4;
-    -fx-border-color: #f0d98a;
+    -fx-background-color: #eef2ff;
+    -fx-border-color: #818cf8;
+    -fx-border-width: 1px 1px 1px 4px;
 }
 
 .marked-label {
-    -fx-background-color: #d9f4e5;
-    -fx-border-color: #9fd4b6;
+    -fx-background-color: #ecfdf5;
+    -fx-border-color: #34d399;
+    -fx-border-width: 1px 1px 1px 4px;
+}
+
+.unmarked-label {
+    -fx-background-color: #fffbeb;
+    -fx-border-color: #f59e0b;
+    -fx-border-width: 1px 1px 1px 4px;
 }
 
 .delete-label {
-    -fx-background-color: #ffe0e4;
-    -fx-border-color: #edabb7;
+    -fx-background-color: #fff1f2;
+    -fx-border-color: #fb7185;
+    -fx-border-width: 1px 1px 1px 4px;
+}
+
+.priority-label {
+    -fx-background-color: #faf5ff;
+    -fx-border-color: #c084fc;
+    -fx-border-width: 1px 1px 1px 4px;
 }
 
 #displayPicture {

@@ -76,8 +76,14 @@ public class DialogBox extends HBox {
             case "MarkCommand":
                 dialog.getStyleClass().add("marked-label");
                 break;
+            case "UnmarkCommand":
+                dialog.getStyleClass().add("unmarked-label");
+                break;
             case "DeleteCommand":
                 dialog.getStyleClass().add("delete-label");
+                break;
+            case "PriorityCommand":
+                dialog.getStyleClass().add("priority-label");
                 break;
             default:
                 // Do nothing

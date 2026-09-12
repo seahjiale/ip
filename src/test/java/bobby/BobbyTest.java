@@ -30,6 +30,9 @@ public class BobbyTest {
         bobby.getResponse("mark 1");
         assertEquals("MarkCommand", bobby.getCommandType());
 
+        bobby.getResponse("unmark 1");
+        assertEquals("UnmarkCommand", bobby.getCommandType());
+
         bobby.getResponse("delete 1");
         assertEquals("DeleteCommand", bobby.getCommandType());
 

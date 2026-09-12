@@ -24,9 +24,6 @@ public class MainWindow extends AnchorPane {
     /** Chatbot used to generate responses for user input. */
     private Bobby bobby;
 
-    /** Image used for user dialog boxes. */
-    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-
     /** Image used for Bobby dialog boxes. */
     private final Image bobbyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
@@ -42,7 +39,7 @@ public class MainWindow extends AnchorPane {
         String response = bobby.getResponse(input);
         String commandType = bobby.getCommandType();
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getUserDialog(input),
                 DialogBox.getBobbyDialog(response, bobbyImage, commandType)
         );
         Platform.runLater(() -> scrollPane.setVvalue(1.0));

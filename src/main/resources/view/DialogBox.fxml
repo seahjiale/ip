@@ -8,7 +8,7 @@
 <fx:root alignment="TOP_RIGHT"
          maxHeight="1.7976931348623157E308"
          maxWidth="1.7976931348623157E308"
-         prefWidth="400.0"
+         styleClass="dialog-box"
          type="javafx.scene.layout.HBox"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
@@ -16,10 +16,14 @@
         <URL value="@../css/dialog-box.css" />
     </stylesheets>
     <children>
-        <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity" />
+        <Label fx:id="dialog"
+               minHeight="-Infinity"
+               minWidth="0.0"
+               text="Label"
+               wrapText="true" />
         <ImageView fx:id="displayPicture"
-                   fitHeight="99.0"
-                   fitWidth="99.0"
+                   fitHeight="40.0"
+                   fitWidth="40.0"
                    pickOnBounds="true"
                    preserveRatio="true" />
     </children>

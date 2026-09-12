@@ -32,7 +32,7 @@ priority 2 high
 Bobby responds with:
 
 ```text
-Got it. I've updated this task's priority:
+Beep boop! I've updated this task's priority:
   [T][ ][P: HIGH] read book
 ```
 

@@ -36,7 +36,7 @@ public class PriorityCommandTest {
         assertEquals(firstTask, tasks.get(0));
         assertEquals(secondTask, tasks.get(1));
         assertEquals(Priority.HIGH, secondTask.getPriority());
-        assertEquals("Got it. I've updated this task's priority:" + System.lineSeparator()
+        assertEquals("Beep boop! I've updated this task's priority:" + System.lineSeparator()
                 + "  [T][ ][P: HIGH] second task" + System.lineSeparator(),
                 output.toString(StandardCharsets.UTF_8));
     }

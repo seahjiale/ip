@@ -18,8 +18,8 @@
     </stylesheets>
     <children>
         <ImageView fx:id="displayPicture"
-                   fitHeight="40.0"
-                   fitWidth="40.0"
+                   fitHeight="54.0"
+                   fitWidth="54.0"
                    pickOnBounds="true"
                    preserveRatio="true" />
         <VBox fx:id="messageContainer" alignment="TOP_LEFT" spacing="4.0">

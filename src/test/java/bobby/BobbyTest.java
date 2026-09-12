@@ -22,7 +22,7 @@ public class BobbyTest {
 
         String response = bobby.getResponse("todo learn Java");
 
-        assertTrue(response.contains("Got it. I've added this task:"));
+        assertTrue(response.contains("Boop! I've tucked this task into the list:"));
         assertTrue(response.contains("[T][ ] learn Java"));
         assertEquals("AddCommand", bobby.getCommandType());
         assertFalse(bobby.wasLastResponseError());
@@ -49,7 +49,7 @@ public class BobbyTest {
 
         String updateResponse = bobby.getResponse("priority 2 1");
 
-        assertEquals("Got it. I've updated this task's priority:" + System.lineSeparator()
+        assertEquals("Beep boop! I've updated this task's priority:" + System.lineSeparator()
                 + "  [T][ ][P: HIGH] second task" + System.lineSeparator(), updateResponse);
         assertEquals("PriorityCommand", bobby.getCommandType());
         String listResponse = bobby.getResponse("list");

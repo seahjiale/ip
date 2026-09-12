@@ -34,28 +34,28 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Woohoo! This task is officially done:
   [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
-OK, I've marked this task as not done yet:
+Plot twist! This task is back in action:
   [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -83,20 +83,20 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] borrow book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -124,20 +124,20 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] return book (by: Oct 15 2019)
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[D][ ] return book (by: Oct 15 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -165,20 +165,20 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -205,14 +205,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 No such task type available. Try again!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -239,14 +239,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! The description of a todo cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -273,14 +273,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! The description of a deadline cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -307,14 +307,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! The date of a deadline cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -341,14 +341,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! The description of an event cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -375,14 +375,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! Start date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -409,14 +409,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! End date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -447,33 +447,33 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] write report
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The description of a todo cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] write report
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] submit report
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] write report
 2.[T][ ] submit report
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -504,33 +504,33 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] submit report (by: Nov 29 2019)
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The date of a deadline cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[D][ ] submit report (by: Nov 29 2019)
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] submit slides (by: Dec 02 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[D][ ] submit report (by: Nov 29 2019)
 2.[D][ ] submit slides (by: Dec 02 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -562,33 +562,33 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! End date of an event cannot be empty. Try again!
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [E][ ] planning (from: Nov 01 2019 to: Nov 02 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[E][ ] team meeting (from: Oct 15 2019 to: Oct 16 2019)
 2.[E][ ] planning (from: Nov 01 2019 to: Nov 02 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -625,48 +625,48 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] return book (by: Jun 06 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
-Now you have 3 tasks in the list.
+Bobby's task count is now 3.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] join sports club
-Now you have 4 tasks in the list.
+Bobby's task count is now 4.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] borrow book
-Now you have 5 tasks in the list.
+Bobby's task count is now 5.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Woohoo! This task is officially done:
   [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Woohoo! This task is officially done:
   [D][X] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Woohoo! This task is officially done:
   [T][X] join sports club
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2019)
 3.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
@@ -674,19 +674,19 @@ Here are the tasks in your list:
 5.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Poof! This task has left the building:
 [E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
-Now you have 4 tasks in the list.
+Bobby's task count is now 4.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2019)
 3.[T][X] join sports club
 4.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -714,19 +714,19 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The task number cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -757,13 +757,13 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The task number must be between 1 and 1.
@@ -775,11 +775,11 @@ ____________________________________________________________
 Error! The task number must be a valid integer.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -806,14 +806,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 No tasks available to delete.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -847,44 +847,44 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] return book (by: Jun 06 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
-Now you have 3 tasks in the list.
+Bobby's task count is now 3.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Woohoo! This task is officially done:
   [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
-OK, I've marked this task as not done yet:
+Plot twist! This task is back in action:
   [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Poof! This task has left the building:
 [D][ ] return book (by: Jun 06 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 2.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -912,16 +912,16 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 2.[E][ ] project meeting (from: Aug 06 2019 to: Aug 07 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -957,13 +957,13 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The task number cannot be empty!
@@ -990,11 +990,11 @@ ____________________________________________________________
 Error! The task number must be between 1 and 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1021,14 +1021,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! The command cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1055,14 +1055,14 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
 Error! Task details cannot contain the '|' character!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1087,16 +1087,16 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1124,20 +1124,20 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] return book (by: Dec 02 2019 6:00 PM)
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[D][ ] return book (by: Dec 02 2019 6:00 PM)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1167,31 +1167,31 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [D][ ] return book (by: Jun 06 2019)
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] join sports club
-Now you have 3 tasks in the list.
+Bobby's task count is now 3.
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Detective Bobby found these matching tasks:
 1.[T][ ] read book
 2.[D][ ] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1219,19 +1219,19 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The search keyword cannot be empty!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1259,20 +1259,20 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
-No matching tasks found.
+Detective Bobby found these matching tasks:
+I checked under the couch. No matching tasks found!
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1305,34 +1305,34 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] first task
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] second task
-Now you have 2 tasks in the list.
+Bobby's task count is now 2.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've updated this task's priority:
+Beep boop! I've updated this task's priority:
   [T][ ][P: HIGH] second task
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've updated this task's priority:
+Beep boop! I've updated this task's priority:
   [T][ ][P: MEDIUM] second task
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] first task
 2.[T][ ][P: MEDIUM] second task
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1363,25 +1363,25 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] first task
 2.[T][ ][P: MEDIUM] second task
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've updated this task's priority:
+Beep boop! I've updated this task's priority:
   [T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] first task
 2.[T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
 
@@ -1415,13 +1415,13 @@ ____________________________________________________________
 |  _ \| |  | |  _ \|  _ \  \ V /
 | |_) | |__| | |_) | |_) |   | |
 |____/ \____/|____/|____/    |_|
-Hello! I'm Bobby.
-What can I do for you?
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Boop! I've tucked this task into the list:
 [T][ ] read book
-Now you have 1 tasks in the list.
+Bobby's task count is now 1.
 ____________________________________________________________
 ____________________________________________________________
 Error! The task number cannot be empty!
@@ -1442,10 +1442,10 @@ ____________________________________________________________
 Error! The priority command must follow: priority TASK_NUMBER LEVEL.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Ta-da! Here's your task parade:
 1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```

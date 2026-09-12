@@ -18,6 +18,11 @@
     -fx-effect: dropshadow(gaussian, rgba(99, 102, 217, 0.2), 8, 0.3, 0, 0);
 }
 
+.text-field:error {
+    -fx-border-color: #e05260;
+    -fx-effect: dropshadow(gaussian, rgba(224, 82, 96, 0.2), 8, 0.3, 0, 0);
+}
+
 .button {
     -fx-background-color: #6366d9;
     -fx-background-radius: 8px;

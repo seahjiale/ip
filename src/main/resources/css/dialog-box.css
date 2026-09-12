@@ -3,7 +3,7 @@
     -fx-spacing: 8px;
 }
 
-.label {
+.message-label {
     -fx-background-color: linear-gradient(to bottom right, #e9edff, #dceafe);
     -fx-border-color: #c5d0ed;
     -fx-border-width: 1px;
@@ -24,6 +24,22 @@
 .reply-label {
     -fx-background-radius: 12px 12px 12px 3px;
     -fx-border-radius: 12px 12px 12px 3px;
+}
+
+.error-status {
+    -fx-background-color: #b42318;
+    -fx-background-radius: 4px;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 6px;
+    -fx-text-fill: white;
+}
+
+.error-label {
+    -fx-background-color: #fff1f2;
+    -fx-border-color: #e05260;
+    -fx-border-width: 1px 1px 1px 4px;
+    -fx-text-fill: #8f1d2c;
 }
 
 .add-label {

@@ -15,7 +15,7 @@ public class Deadline extends Task {
                     .withResolverStyle(ResolverStyle.STRICT);
     /** Strict parser for deadline input containing a date and time. */
     private static final DateTimeFormatter DATE_TIME_INPUT_FORMAT =
-            DateTimeFormatter.ofPattern("d/M/uuuu HHmm")
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
                     .withResolverStyle(ResolverStyle.STRICT);
     /** Formatter for displaying the date portion of a deadline. */
     private static final DateTimeFormatter DATE_DISPLAY_FORMAT =
@@ -57,7 +57,7 @@ public class Deadline extends Task {
      * Creates a deadline by parsing one of Bobby's supported input formats.
      *
      * @param description text describing the task
-     * @param input date in {@code yyyy-MM-dd} or {@code d/M/yyyy HHmm} format
+     * @param input date in {@code yyyy-MM-dd} or {@code yyyy-MM-dd HHmm} format
      * @return a deadline containing the parsed date and optional time
      * @throws DateTimeParseException if {@code input} is not a supported date
      *         or date-time value

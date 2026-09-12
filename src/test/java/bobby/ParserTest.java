@@ -162,7 +162,7 @@ public class ParserTest {
                 exception.getMessage());
     }
 
-    /** Verifies that a valid date-only and date-time deadline are accepted. */
+    /** Verifies that valid ISO date-only and date-time deadlines are accepted. */
     @Test
     public void parse_validDeadline_addCommandReturned() throws BobbyException {
         Parser parser = new Parser();
@@ -170,7 +170,7 @@ public class ParserTest {
         assertInstanceOf(AddCommand.class,
                 parser.parse("deadline return book /by 2026-08-25"));
         assertInstanceOf(AddCommand.class,
-                parser.parse("deadline call client /by 25/8/2026 0930"));
+                parser.parse("deadline call client /by 2026-08-25 0930"));
     }
 
     /** Verifies that a deadline without a description is rejected. */
@@ -205,7 +205,19 @@ public class ParserTest {
                 parser.parse("deadline return book /by not-a-date"));
 
         assertEquals("Error! The deadline must be a valid date. "
-                + "Use yyyy-MM-dd or d/M/yyyy HHmm.", exception.getMessage());
+                + "Use yyyy-MM-dd or yyyy-MM-dd HHmm.", exception.getMessage());
+    }
+
+    /** Verifies that a deadline date-time using slashes is rejected. */
+    @Test
+    public void parse_deadlineWithSlashedDateTime_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("deadline call client /by 25/8/2026 0930"));
+
+        assertEquals("Error! The deadline must be a valid date. "
+                + "Use yyyy-MM-dd or yyyy-MM-dd HHmm.", exception.getMessage());
     }
 
     /** Verifies that a valid event with start and end dates is accepted. */

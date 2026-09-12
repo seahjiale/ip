@@ -1,6 +1,7 @@
 package bobby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,6 +25,7 @@ public class BobbyTest {
         assertTrue(response.contains("Got it. I've added this task:"));
         assertTrue(response.contains("[T][ ] learn Java"));
         assertEquals("AddCommand", bobby.getCommandType());
+        assertFalse(bobby.wasLastResponseError());
 
         bobby.getResponse("mark 1");
         assertEquals("MarkCommand", bobby.getCommandType());
@@ -65,8 +67,38 @@ public class BobbyTest {
         String response = bobby.getResponse("priority 1 urgent");
 
         assertEquals("Error! The priority level must be high, medium, low, none, 1, 2, or 3."
-                + System.lineSeparator(), response);
+                + System.lineSeparator() + System.lineSeparator()
+                + "Format: priority TASK_NUMBER LEVEL" + System.lineSeparator()
+                + "Example: priority 1 high" + System.lineSeparator()
+                + "Levels: high, medium, low, none, 1, 2, or 3" + System.lineSeparator(), response);
         assertNull(bobby.getCommandType());
+        assertTrue(bobby.wasLastResponseError());
+
         assertTrue(bobby.getResponse("list").contains("1.[T][ ] read book"));
+        assertFalse(bobby.wasLastResponseError());
+    }
+
+    /** Verifies that unknown GUI commands return a concise list of valid commands. */
+    @Test
+    public void getResponse_unknownCommand_availableCommandsReturned() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("unknown-command.txt").toString());
+
+        String response = bobby.getResponse("blah");
+
+        assertTrue(response.contains("Available commands: todo, deadline, event, list, mark, unmark,"));
+        assertTrue(response.contains("delete, find, priority, bye"));
+        assertTrue(bobby.wasLastResponseError());
+    }
+
+    /** Verifies that invalid deadlines return concrete date and date-time examples. */
+    @Test
+    public void getResponse_invalidDeadline_concreteExamplesReturned() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("invalid-deadline.txt").toString());
+
+        String response = bobby.getResponse("deadline return book /by");
+
+        assertTrue(response.contains("Example: deadline return book /by 2026-09-20"));
+        assertTrue(response.contains("With time: deadline call client /by 2026-09-20 1800"));
+        assertTrue(bobby.wasLastResponseError());
     }
 }

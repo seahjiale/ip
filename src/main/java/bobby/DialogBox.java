@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /** Represents a user command or a Bobby response in the conversation. */
 public class DialogBox extends HBox {
@@ -17,6 +18,10 @@ public class DialogBox extends HBox {
     private Label dialog;
     @FXML
     private ImageView displayPicture;
+    @FXML
+    private Label errorStatus;
+    @FXML
+    private VBox messageContainer;
 
     /** Creates a dialog box from its FXML view. */
     private DialogBox(String text) {
@@ -37,23 +42,30 @@ public class DialogBox extends HBox {
         displayPicture.setManaged(false);
         displayPicture.setVisible(false);
         getStyleClass().add("user-dialog");
+        messageContainer.setAlignment(Pos.TOP_RIGHT);
         dialog.getStyleClass().add("user-label");
-        dialog.maxWidthProperty().bind(widthProperty().multiply(0.75));
+        messageContainer.maxWidthProperty().bind(widthProperty().multiply(0.75));
     }
 
     /** Formats this box as a wide, left-aligned Bobby response. */
     private void formatAsBobbyDialog(Image image) {
         displayPicture.setImage(image);
-        getChildren().setAll(displayPicture, dialog);
         setAlignment(Pos.TOP_LEFT);
         getStyleClass().add("bobby-dialog");
         dialog.getStyleClass().add("reply-label");
         dialog.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(dialog, Priority.ALWAYS);
+        messageContainer.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(messageContainer, Priority.ALWAYS);
     }
 
     /** Applies a command-specific style to the chatbot's response label. */
-    private void changeDialogStyle(String commandType) {
+    private void changeDialogStyle(String commandType, boolean isError) {
+        if (isError) {
+            errorStatus.setManaged(true);
+            errorStatus.setVisible(true);
+            dialog.getStyleClass().add("error-label");
+            return;
+        }
         if (commandType == null) {
             return;
         }
@@ -90,12 +102,13 @@ public class DialogBox extends HBox {
      * @param text response text to display
      * @param image Bobby's profile image
      * @param commandType simple class name of the executed command, or {@code null} after an error
+     * @param isError whether the response reports a command error
      * @return left-aligned Bobby response dialog
      */
-    public static DialogBox getBobbyDialog(String text, Image image, String commandType) {
+    public static DialogBox getBobbyDialog(String text, Image image, String commandType, boolean isError) {
         DialogBox dialogBox = new DialogBox(text);
         dialogBox.formatAsBobbyDialog(image);
-        dialogBox.changeDialogStyle(commandType);
+        dialogBox.changeDialogStyle(commandType, isError);
         return dialogBox;
     }
 }

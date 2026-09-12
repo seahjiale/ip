@@ -17,6 +17,9 @@ public class Bobby {
     /** Tasks used by the GUI-backed chatbot instance. */
     private TaskList tasks;
 
+    /** Storage error to include in the GUI welcome message, if loading failed. */
+    private final String storageLoadError;
+
     /** Simple class name of the most recently executed command. */
     private String commandType;
 
@@ -32,11 +35,14 @@ public class Bobby {
     Bobby(String filePath) {
         storage = new Storage(filePath);
         parser = new Parser();
+        String loadError = null;
         try {
             tasks = storage.load();
         } catch (BobbyException exception) {
             tasks = new TaskList();
+            loadError = exception.getMessage();
         }
+        storageLoadError = loadError;
     }
 
     /**
@@ -52,9 +58,6 @@ public class Bobby {
         commandType = null;
         wasLastResponseError = false;
         try {
-            if (input.isEmpty()) {
-                throw new BobbyException("Error! The command cannot be empty!");
-            }
             Command command = parser.parse(input);
             assert command != null : "Parser must return a command for valid input";
             command.execute(tasks, responseUi, storage);
@@ -89,12 +92,28 @@ public class Bobby {
     }
 
     /**
+     * Returns the GUI greeting, including a storage warning when saved tasks could not be loaded.
+     *
+     * @return startup text to display before the first command
+     */
+    public String getWelcomeMessage() {
+        if (storageLoadError == null) {
+            return Ui.WELCOME_MESSAGE;
+        }
+        return Ui.WELCOME_MESSAGE + System.lineSeparator() + System.lineSeparator()
+                + storageLoadError;
+    }
+
+    /**
      * Returns concise command guidance for an invalid GUI input.
      *
      * @param input invalid command entered by the user
      * @return relevant format and example, or the list of available commands
      */
     private static String getUsageGuidance(String input) {
+        if (input == null) {
+            return getAvailableCommandsGuidance();
+        }
         String trimmedInput = input.trim();
         if (trimmedInput.isEmpty()) {
             return getAvailableCommandsGuidance();

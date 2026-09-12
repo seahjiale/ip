@@ -42,7 +42,7 @@ public class MainWindow extends AnchorPane {
     public void setBobby(Bobby bobby) {
         this.bobby = bobby;
         dialogContainer.getChildren().add(DialogBox.getBobbyDialog(
-                Ui.WELCOME_MESSAGE, bobbyImage, null, false));
+                bobby.getWelcomeMessage(), bobbyImage, null, false));
         scrollToLatestDialog();
     }
 

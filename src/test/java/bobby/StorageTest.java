@@ -74,7 +74,8 @@ public class StorageTest {
         BobbyException exception = assertThrows(BobbyException.class, () ->
                 new Storage(taskFile.toString()).load());
 
-        assertEquals("Error! Could not load tasks from disk.", exception.getMessage());
+        assertEquals("Error! Could not load tasks because line 1 contains invalid data.",
+                exception.getMessage());
     }
 
     /** Verifies that legacy and priority-aware records can coexist in one file. */
@@ -95,5 +96,89 @@ public class StorageTest {
         assertEquals(Priority.NONE, tasks.get(1).getPriority());
         assertEquals(Priority.HIGH, tasks.get(2).getPriority());
         assertTrue(tasks.get(2).isDone());
+    }
+
+    /** Verifies that an empty description is rejected with its storage line number. */
+    @Test
+    public void load_emptyDescription_exceptionIdentifiesLine() throws IOException {
+        Path taskFile = temporaryDirectory.resolve("empty-description.txt");
+        Files.write(taskFile, List.of(
+                "T | 0 | valid task",
+                "T | 0 |   | NONE"), StandardCharsets.UTF_8);
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                new Storage(taskFile.toString()).load());
+
+        assertEquals("Error! Could not load tasks because line 2 contains invalid data.",
+                exception.getMessage());
+    }
+
+    /** Verifies that duplicate stored task details are rejected. */
+    @Test
+    public void load_duplicateTasks_exceptionIdentifiesDuplicateLine() throws IOException {
+        Path taskFile = temporaryDirectory.resolve("duplicates.txt");
+        Files.write(taskFile, List.of(
+                "T | 0 | Read Book | NONE",
+                "T | 1 | read book | HIGH"), StandardCharsets.UTF_8);
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                new Storage(taskFile.toString()).load());
+
+        assertEquals("Error! Could not load tasks because line 2 duplicates an earlier task.",
+                exception.getMessage());
+    }
+
+    /** Verifies that a failed load prevents later commands from overwriting the data file. */
+    @Test
+    public void save_afterFailedLoad_originalFilePreserved() throws IOException {
+        Path taskFile = temporaryDirectory.resolve("protected.txt");
+        String malformedData = "T | invalid | read book | NONE";
+        Files.writeString(taskFile, malformedData, StandardCharsets.UTF_8);
+        Storage storage = new Storage(taskFile.toString());
+        assertThrows(BobbyException.class, storage::load);
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                storage.save(new TaskList(List.of(new ToDo("replacement")))));
+
+        assertEquals("Error! Bobby will not overwrite task data that failed to load. "
+                + "Fix or move the data file, then restart Bobby.", exception.getMessage());
+        assertEquals(malformedData, Files.readString(taskFile, StandardCharsets.UTF_8));
+    }
+
+    /** Verifies that a directory used as the data file produces a controlled load error. */
+    @Test
+    public void load_dataPathIsDirectory_controlledExceptionThrown() {
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                new Storage(temporaryDirectory.toString()).load());
+
+        assertEquals("Error! Could not load tasks from disk. "
+                + "Check that the file exists and is readable.", exception.getMessage());
+    }
+
+    /** Verifies that a stored event with an invalid date range is rejected. */
+    @Test
+    public void load_eventWithNonIncreasingDates_exceptionThrown() throws IOException {
+        Path taskFile = temporaryDirectory.resolve("invalid-event.txt");
+        Files.writeString(taskFile,
+                "E | 0 | meeting | 2026-10-02 | 2026-10-01 | NONE",
+                StandardCharsets.UTF_8);
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                new Storage(taskFile.toString()).load());
+
+        assertEquals("Error! Could not load tasks because line 1 contains invalid data.",
+                exception.getMessage());
+    }
+
+    /** Verifies that atomic saving also supports filenames shorter than three characters. */
+    @Test
+    public void save_shortFilename_tasksSaved() throws BobbyException, IOException {
+        Path taskFile = temporaryDirectory.resolve("db");
+        Storage storage = new Storage(taskFile.toString());
+
+        storage.save(new TaskList(List.of(new ToDo("read book"))));
+
+        assertEquals("T | 0 | read book | NONE" + System.lineSeparator(),
+                Files.readString(taskFile, StandardCharsets.UTF_8));
     }
 }

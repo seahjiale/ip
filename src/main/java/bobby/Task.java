@@ -1,5 +1,7 @@
 package bobby;
 
+import java.util.Locale;
+
 /**
  * Represents a task and whether it has been completed.
  */
@@ -85,6 +87,24 @@ public class Task {
     /** Marks this task as incomplete. */
     public void unmarkAsDone() {
         isDone = false;
+    }
+
+    /**
+     * Returns whether another task has the same type and normalized description.
+     * Completion state and priority are intentionally not part of a task's identity.
+     *
+     * @param other task to compare
+     * @return {@code true} when both tasks represent the same user-facing details
+     */
+    public boolean hasSameDetails(Task other) {
+        return other != null
+                && getClass().equals(other.getClass())
+                && normalizeDescription(description).equals(normalizeDescription(other.description));
+    }
+
+    /** Returns the canonical form used to compare task descriptions. */
+    private String normalizeDescription(String input) {
+        return input.strip().replaceAll("\\s+", " ").toLowerCase(Locale.ROOT);
     }
 
     /**

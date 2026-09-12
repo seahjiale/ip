@@ -1,6 +1,7 @@
 package bobby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
@@ -28,5 +29,14 @@ public class EventTest {
                 event.toString());
         assertEquals("E | 0 | project meeting | 2026-08-25 | 2026-08-26 | NONE",
                 event.toStorageString());
+    }
+
+    /** Verifies that event construction enforces a strictly increasing date range. */
+    @Test
+    public void constructor_nonIncreasingDates_exceptionThrown() {
+        assertThrows(IllegalArgumentException.class, () -> new Event("same day",
+                LocalDate.of(2026, 8, 25), LocalDate.of(2026, 8, 25)));
+        assertThrows(IllegalArgumentException.class, () -> Event.fromInput("reversed",
+                "2026-08-26", "2026-08-25"));
     }
 }

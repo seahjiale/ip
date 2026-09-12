@@ -1,6 +1,8 @@
 package bobby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -31,5 +33,20 @@ public class TaskListTest {
         tasks.add(new ToDo("read book"));
 
         assertEquals(0, tasks.findByDescription("movie").size());
+    }
+
+    /** Verifies that duplicate checks compare type, normalized description, and date details. */
+    @Test
+    public void containsTaskWithSameDetails_variedCandidates_expectedResultReturned() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("Read Book"));
+        tasks.add(new Deadline("return book", java.time.LocalDate.of(2026, 6, 6)));
+
+        assertTrue(tasks.containsTaskWithSameDetails(new ToDo("  read   book ")));
+        assertTrue(tasks.containsTaskWithSameDetails(
+                new Deadline("RETURN BOOK", java.time.LocalDate.of(2026, 6, 6))));
+        assertFalse(tasks.containsTaskWithSameDetails(
+                new Deadline("return book", java.time.LocalDate.of(2026, 6, 7))));
+        assertFalse(tasks.containsTaskWithSameDetails(new ToDo("return book")));
     }
 }

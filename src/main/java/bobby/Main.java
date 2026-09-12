@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /** A GUI for Bobby using FXML. */
@@ -30,7 +31,8 @@ public class Main extends Application {
             stage.setMinHeight(320);
             stage.setMinWidth(360);
             stage.setResizable(true);
-            stage.setTitle("Bobby");
+            stage.setTitle("Bobby's Task Playground");
+            stage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/Bobby.png")));
             stage.show();
         } catch (IOException exception) {
             exception.printStackTrace();

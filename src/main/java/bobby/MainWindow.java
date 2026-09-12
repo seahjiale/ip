@@ -29,7 +29,7 @@ public class MainWindow extends AnchorPane {
     private Bobby bobby;
 
     /** Image used for Bobby dialog boxes. */
-    private final Image bobbyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private final Image bobbyImage = new Image(this.getClass().getResourceAsStream("/images/Bobby.png"));
 
     /** Clears the input error highlight as soon as the user edits the command. */
     @FXML
@@ -41,6 +41,9 @@ public class MainWindow extends AnchorPane {
     /** Injects the Bobby instance used by this controller. */
     public void setBobby(Bobby bobby) {
         this.bobby = bobby;
+        dialogContainer.getChildren().add(DialogBox.getBobbyDialog(
+                Ui.WELCOME_MESSAGE, bobbyImage, null, false));
+        scrollToLatestDialog();
     }
 
     /** Creates user and chatbot dialog boxes for the submitted input. */

@@ -6,6 +6,11 @@ import java.util.Scanner;
 
 /** Handles all console input and output for Bobby. */
 public class Ui {
+    /** Greeting shared by the console and graphical interfaces. */
+    static final String WELCOME_MESSAGE = "Hiya! I'm Bobby, your cheerfully goofy task buddy."
+            + System.lineSeparator()
+            + "Throw me a task and I'll keep it from wandering off!";
+
     /** Separator printed between chatbot interactions. */
     private static final String SEPARATOR = "____________________________________________________________";
     /** ASCII-art banner printed at startup. */
@@ -36,8 +41,7 @@ public class Ui {
     public void showWelcome() {
         showSeparator();
         output.print(BANNER);
-        output.println("Hello! I'm Bobby.");
-        output.println("What can I do for you?");
+        output.println(WELCOME_MESSAGE);
         showSeparator();
     }
 
@@ -73,7 +77,7 @@ public class Ui {
      * @param tasks tasks to display
      */
     public void showTaskList(TaskList tasks) {
-        output.println("Here are the tasks in your list:");
+        output.println("Ta-da! Here's your task parade:");
         for (int i = 0; i < tasks.size(); i++) {
             output.println((i + 1) + "." + tasks.get(i));
         }
@@ -85,9 +89,9 @@ public class Ui {
      * @param matchingTasks tasks found by the search, in their original order
      */
     public void showMatchingTasks(List<Task> matchingTasks) {
-        output.println("Here are the matching tasks in your list:");
+        output.println("Detective Bobby found these matching tasks:");
         if (matchingTasks.isEmpty()) {
-            output.println("No matching tasks found.");
+            output.println("I checked under the couch. No matching tasks found!");
             return;
         }
         for (int i = 0; i < matchingTasks.size(); i++) {
@@ -102,9 +106,9 @@ public class Ui {
      * @param taskCount number of tasks after the addition
      */
     public void showTaskAdded(Task task, int taskCount) {
-        output.println("Got it. I've added this task:");
+        output.println("Boop! I've tucked this task into the list:");
         output.println(task);
-        output.println("Now you have " + taskCount + " tasks in the list.");
+        output.println("Bobby's task count is now " + taskCount + ".");
     }
 
     /**
@@ -113,7 +117,7 @@ public class Ui {
      * @param task task that was marked done
      */
     public void showTaskMarkedDone(Task task) {
-        output.println("Nice! I've marked this task as done:");
+        output.println("Woohoo! This task is officially done:");
         output.println("  " + task);
     }
 
@@ -123,7 +127,7 @@ public class Ui {
      * @param task task that was marked incomplete
      */
     public void showTaskMarkedNotDone(Task task) {
-        output.println("OK, I've marked this task as not done yet:");
+        output.println("Plot twist! This task is back in action:");
         output.println("  " + task);
     }
 
@@ -133,7 +137,7 @@ public class Ui {
      * @param task task whose priority was updated
      */
     public void showTaskPriorityUpdated(Task task) {
-        output.println("Got it. I've updated this task's priority:");
+        output.println("Beep boop! I've updated this task's priority:");
         output.println("  " + task);
     }
 
@@ -144,14 +148,14 @@ public class Ui {
      * @param taskCount number of tasks after the removal
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        output.println("Noted. I've removed this task:");
+        output.println("Poof! This task has left the building:");
         output.println(task);
-        output.println("Now you have " + taskCount + " tasks in the list.");
+        output.println("Bobby's task count is now " + taskCount + ".");
     }
 
     /** Shows Bobby's farewell message. */
     public void showGoodbye() {
-        output.println("Bye. Hope to see you again soon!");
+        output.println("Toodles! Bobby is off to recharge the silly batteries.");
         showSeparator();
     }
 }

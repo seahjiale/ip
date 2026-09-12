@@ -1,32 +1,32 @@
 .dialog-box {
-    -fx-padding: 4px 12px;
-    -fx-spacing: 8px;
+    -fx-padding: 6px 14px;
+    -fx-spacing: 10px;
 }
 
 .message-label {
-    -fx-background-color: #f8fafc;
-    -fx-border-color: #d8e1ee;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ead5e2;
     -fx-border-width: 1px;
-    -fx-background-radius: 12px;
-    -fx-border-radius: 12px;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
     -fx-font-size: 14px;
     -fx-line-spacing: 2px;
     -fx-padding: 8px 11px;
-    -fx-text-fill: #26334d;
+    -fx-text-fill: #392d4f;
 }
 
 .user-label {
-    -fx-background-color: #6366d9;
-    -fx-background-radius: 12px 12px 3px 12px;
-    -fx-border-color: #6366d9;
-    -fx-border-radius: 12px 12px 3px 12px;
+    -fx-background-color: #7c3aed;
+    -fx-background-radius: 16px 16px 4px 16px;
+    -fx-border-color: #7c3aed;
+    -fx-border-radius: 16px 16px 4px 16px;
     -fx-font-size: 13px;
     -fx-text-fill: white;
 }
 
 .reply-label {
-    -fx-background-radius: 12px 12px 12px 3px;
-    -fx-border-radius: 12px 12px 12px 3px;
+    -fx-background-radius: 16px 16px 16px 4px;
+    -fx-border-radius: 16px 16px 16px 4px;
 }
 
 .error-status {
@@ -46,35 +46,35 @@
 }
 
 .add-label {
-    -fx-background-color: #eef2ff;
-    -fx-border-color: #818cf8;
+    -fx-background-color: #fdf2f8;
+    -fx-border-color: #f472b6;
     -fx-border-width: 1px 1px 1px 4px;
 }
 
 .marked-label {
     -fx-background-color: #ecfdf5;
-    -fx-border-color: #34d399;
+    -fx-border-color: #10b981;
     -fx-border-width: 1px 1px 1px 4px;
 }
 
 .unmarked-label {
     -fx-background-color: #fffbeb;
-    -fx-border-color: #f59e0b;
+    -fx-border-color: #fbbf24;
     -fx-border-width: 1px 1px 1px 4px;
 }
 
 .delete-label {
     -fx-background-color: #fff1f2;
-    -fx-border-color: #fb7185;
+    -fx-border-color: #f43f5e;
     -fx-border-width: 1px 1px 1px 4px;
 }
 
 .priority-label {
-    -fx-background-color: #faf5ff;
-    -fx-border-color: #c084fc;
+    -fx-background-color: #f5f3ff;
+    -fx-border-color: #8b5cf6;
     -fx-border-width: 1px 1px 1px 4px;
 }
 
 #displayPicture {
-    -fx-effect: dropshadow(gaussian, rgba(38, 51, 77, 0.18), 6, 0.25, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(219, 39, 119, 0.28), 8, 0.3, 0, 2);
 }

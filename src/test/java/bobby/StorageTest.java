@@ -9,7 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -18,6 +20,30 @@ import org.junit.jupiter.api.io.TempDir;
 public class StorageTest {
     @TempDir
     private Path temporaryDirectory;
+
+    /** Verifies that a missing data file is treated as an empty task list. */
+    @Test
+    public void load_missingFile_emptyTaskListReturned() throws BobbyException {
+        TaskList tasks = new Storage(temporaryDirectory.resolve("missing.txt").toString()).load();
+
+        assertEquals(0, tasks.size());
+    }
+
+    /** Verifies blank lines are ignored and description whitespace is normalized. */
+    @Test
+    public void load_blankLinesAndIrregularWhitespace_validTasksLoaded() throws IOException, BobbyException {
+        Path taskFile = temporaryDirectory.resolve("whitespace.txt");
+        Files.write(taskFile, List.of(
+                "",
+                "   ",
+                "T | 0 |   read    book   | LOW"), StandardCharsets.UTF_8);
+
+        TaskList tasks = new Storage(taskFile.toString()).load();
+
+        assertEquals(1, tasks.size());
+        assertEquals("read book", tasks.get(0).getDescription());
+        assertEquals(Priority.LOW, tasks.get(0).getPriority());
+    }
 
     /** Verifies that legacy records load with no priority. */
     @Test
@@ -76,6 +102,30 @@ public class StorageTest {
 
         assertEquals("Error! Could not load tasks because line 1 contains invalid data.",
                 exception.getMessage());
+    }
+
+    /** Verifies malformed record shapes, task types, statuses, dates, and descriptions are rejected. */
+    @Test
+    public void load_variedMalformedRecords_exceptionIdentifiesLine() throws IOException {
+        Map<String, String> malformedRecords = new LinkedHashMap<>();
+        malformedRecords.put("too few fields", "T | 0");
+        malformedRecords.put("unknown task type", "X | 0 | read book");
+        malformedRecords.put("invalid status", "T | 2 | read book");
+        malformedRecords.put("extra todo field", "T | 0 | read book | NONE | extra");
+        malformedRecords.put("invalid deadline", "D | 0 | return book | 2026-02-29");
+        malformedRecords.put("invalid event date", "E | 0 | meeting | bad-date | 2026-10-02");
+        malformedRecords.put("control character", "T | 0 | read\u0001book");
+        Path taskFile = temporaryDirectory.resolve("malformed.txt");
+
+        for (Map.Entry<String, String> malformedRecord : malformedRecords.entrySet()) {
+            Files.writeString(taskFile, malformedRecord.getValue(), StandardCharsets.UTF_8);
+
+            BobbyException exception = assertThrows(BobbyException.class, () ->
+                    new Storage(taskFile.toString()).load(), malformedRecord.getKey());
+
+            assertEquals("Error! Could not load tasks because line 1 contains invalid data.",
+                    exception.getMessage(), malformedRecord.getKey());
+        }
     }
 
     /** Verifies that legacy and priority-aware records can coexist in one file. */
@@ -170,6 +220,21 @@ public class StorageTest {
                 exception.getMessage());
     }
 
+    /** Verifies that a stored same-day event loads successfully. */
+    @Test
+    public void load_sameDayEvent_eventLoaded() throws IOException, BobbyException {
+        Path taskFile = temporaryDirectory.resolve("same-day-event.txt");
+        Files.writeString(taskFile,
+                "E | 0 | workshop | 2026-10-02 | 2026-10-02 | NONE",
+                StandardCharsets.UTF_8);
+
+        TaskList tasks = new Storage(taskFile.toString()).load();
+
+        assertEquals(1, tasks.size());
+        assertEquals("[E][ ] workshop (from: Oct 02 2026 to: Oct 02 2026)",
+                tasks.get(0).toString());
+    }
+
     /** Verifies that atomic saving also supports filenames shorter than three characters. */
     @Test
     public void save_shortFilename_tasksSaved() throws BobbyException, IOException {
@@ -180,5 +245,54 @@ public class StorageTest {
 
         assertEquals("T | 0 | read book | NONE" + System.lineSeparator(),
                 Files.readString(taskFile, StandardCharsets.UTF_8));
+    }
+
+    /** Verifies saving creates missing parent directories and supports an empty task list. */
+    @Test
+    public void save_nestedPathAndEmptyList_parentCreatedAndEmptyFileWritten()
+            throws BobbyException, IOException {
+        Path taskFile = temporaryDirectory.resolve("nested").resolve("folder").resolve("tasks.txt");
+        Storage storage = new Storage(taskFile.toString());
+
+        storage.save(new TaskList());
+
+        assertTrue(Files.isRegularFile(taskFile));
+        assertEquals("", Files.readString(taskFile, StandardCharsets.UTF_8));
+    }
+
+    /** Verifies a null task list violates the storage contract. */
+    @Test
+    public void save_nullTaskList_assertionErrorThrown() {
+        Storage storage = new Storage(temporaryDirectory.resolve("null.txt").toString());
+
+        assertThrows(AssertionError.class, () -> storage.save(null));
+    }
+
+    /** Verifies an existing directory at the file path produces a controlled save error. */
+    @Test
+    public void save_dataPathIsDirectory_controlledExceptionThrown() {
+        Storage storage = new Storage(temporaryDirectory.toString());
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                storage.save(new TaskList(List.of(new ToDo("read book")))));
+
+        assertEquals("Error! Could not save tasks to disk. "
+                + "Check that the folder is writable and has enough space.", exception.getMessage());
+    }
+
+    /** Verifies a successful reload re-enables saving after malformed data is repaired. */
+    @Test
+    public void load_repairedAfterFailure_laterSaveAllowed() throws IOException, BobbyException {
+        Path taskFile = temporaryDirectory.resolve("repaired.txt");
+        Files.writeString(taskFile, "invalid", StandardCharsets.UTF_8);
+        Storage storage = new Storage(taskFile.toString());
+        assertThrows(BobbyException.class, storage::load);
+        Files.writeString(taskFile, "T | 0 | repaired task | NONE", StandardCharsets.UTF_8);
+
+        TaskList tasks = storage.load();
+        tasks.add(new ToDo("new task"));
+        storage.save(tasks);
+
+        assertEquals(2, new Storage(taskFile.toString()).load().size());
     }
 }

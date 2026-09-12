@@ -1,5 +1,6 @@
 package bobby;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -29,12 +30,6 @@ public class MainWindow extends AnchorPane {
     /** Image used for Bobby dialog boxes. */
     private final Image bobbyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
-    /** Binds the scroll position to the height of the dialog container. */
-    @FXML
-    public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-    }
-
     /** Injects the Bobby instance used by this controller. */
     public void setBobby(Bobby bobby) {
         this.bobby = bobby;
@@ -50,6 +45,7 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getBobbyDialog(response, bobbyImage, commandType)
         );
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
         userInput.clear();
         if ("ExitCommand".equals(commandType)) {
             Stage stage = (Stage) userInput.getScene().getWindow();

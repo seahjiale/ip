@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /** A GUI for Bobby using FXML. */
@@ -23,12 +23,13 @@ public class Main extends Application {
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
-            AnchorPane anchorPane = fxmlLoader.load();
-            Scene scene = new Scene(anchorPane);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setBobby(bobby);
-            stage.setMinHeight(220);
-            stage.setMinWidth(417);
+            stage.setMinHeight(320);
+            stage.setMinWidth(360);
+            stage.setResizable(true);
             stage.setTitle("Bobby");
             stage.show();
         } catch (IOException exception) {

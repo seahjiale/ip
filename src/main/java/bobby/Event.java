@@ -27,9 +27,13 @@ public class Event extends Task {
      * @param description text describing the event
      * @param from date on which the event starts
      * @param to date on which the event ends
+     * @throws IllegalArgumentException if the start date is not before the end date
      */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
+        if (!from.isBefore(to)) {
+            throw new IllegalArgumentException("An event must start before it ends.");
+        }
         this.from = from;
         this.to = to;
     }
@@ -42,6 +46,7 @@ public class Event extends Task {
      * @param toInput end date in {@code yyyy-MM-dd} format
      * @return an event containing the parsed start and end dates
      * @throws DateTimeParseException if either input is not a valid ISO date
+     * @throws IllegalArgumentException if the start date is not before the end date
      */
     public static Event fromInput(String description, String fromInput, String toInput)
             throws DateTimeParseException {
@@ -58,6 +63,17 @@ public class Event extends Task {
     /** Returns the date on which this event ends. */
     public LocalDate getTo() {
         return to;
+    }
+
+    /** Returns whether another task has the same type, description, and event dates. */
+    @Override
+    public boolean hasSameDetails(Task other) {
+        if (!(other instanceof Event otherEvent)) {
+            return false;
+        }
+        return super.hasSameDetails(other)
+                && from.equals(otherEvent.from)
+                && to.equals(otherEvent.to);
     }
 
     /**

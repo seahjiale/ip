@@ -109,6 +109,34 @@ public class ParserTest {
                 parser.parse("event project meeting /from 2026-08-25 /to 2026-08-26"));
     }
 
+    /** Verifies that leading, trailing, and repeated whitespace is accepted and normalized. */
+    @Test
+    public void parse_irregularWhitespace_validCommandsReturned() throws BobbyException {
+        Parser parser = new Parser();
+
+        assertInstanceOf(AddCommand.class, parser.parse("  todo   read   book  "));
+        assertInstanceOf(AddCommand.class,
+                parser.parse(" deadline return book   /by   2026-08-25 "));
+        assertInstanceOf(AddCommand.class,
+                parser.parse(" event meeting  /from   2026-08-25   /to  2026-08-26 "));
+    }
+
+    /** Verifies that commands without parameters reject unexpected arguments. */
+    @Test
+    public void parse_noArgumentCommandWithArguments_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException listException = assertThrows(BobbyException.class, () ->
+                parser.parse("list all"));
+        BobbyException byeException = assertThrows(BobbyException.class, () ->
+                parser.parse("bye now"));
+
+        assertEquals("Error! The list command does not accept arguments.",
+                listException.getMessage());
+        assertEquals("Error! The bye command does not accept arguments.",
+                byeException.getMessage());
+    }
+
     /** Verifies that an unsupported command produces a helpful error. */
     @Test
     public void parse_unsupportedCommand_exceptionThrown() {
@@ -220,6 +248,18 @@ public class ParserTest {
                 + "Use yyyy-MM-dd or yyyy-MM-dd HHmm.", exception.getMessage());
     }
 
+    /** Verifies that repeating the deadline parameter is rejected explicitly. */
+    @Test
+    public void parse_deadlineWithRepeatedByParameter_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException exception = assertThrows(BobbyException.class, () ->
+                parser.parse("deadline return book /by 2026-08-25 /by 2026-08-26"));
+
+        assertEquals("Error! The /by parameter can only be specified once!",
+                exception.getMessage());
+    }
+
     /** Verifies that a valid event with start and end dates is accepted. */
     @Test
     public void parse_validEvent_addCommandReturned() throws BobbyException {
@@ -287,6 +327,56 @@ public class ParserTest {
 
         assertEquals("Error! Event dates must be valid dates. Use yyyy-MM-dd.",
                 exception.getMessage());
+    }
+
+    /** Verifies that an event cannot end before or on its start date. */
+    @Test
+    public void parse_eventWithInvalidDateOrder_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException sameDateException = assertThrows(BobbyException.class, () ->
+                parser.parse("event meeting /from 2026-08-25 /to 2026-08-25"));
+        BobbyException reversedDateException = assertThrows(BobbyException.class, () ->
+                parser.parse("event meeting /from 2026-08-26 /to 2026-08-25"));
+
+        assertEquals("Error! An event must start before it ends.",
+                sameDateException.getMessage());
+        assertEquals("Error! An event must start before it ends.",
+                reversedDateException.getMessage());
+    }
+
+    /** Verifies that repeated or reversed event parameters are rejected explicitly. */
+    @Test
+    public void parse_eventWithMalformedParameters_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException repeatedFromException = assertThrows(BobbyException.class, () ->
+                parser.parse("event meeting /from 2026-08-25 /from 2026-08-26 /to 2026-08-27"));
+        BobbyException repeatedToException = assertThrows(BobbyException.class, () ->
+                parser.parse("event meeting /from 2026-08-25 /to 2026-08-26 /to 2026-08-27"));
+        BobbyException reversedMarkersException = assertThrows(BobbyException.class, () ->
+                parser.parse("event meeting /to 2026-08-26 /from 2026-08-25"));
+
+        assertEquals("Error! The /from parameter can only be specified once!",
+                repeatedFromException.getMessage());
+        assertEquals("Error! The /to parameter can only be specified once!",
+                repeatedToException.getMessage());
+        assertEquals("Error! Event parameters must place /from before /to.",
+                reversedMarkersException.getMessage());
+    }
+
+    /** Verifies that null and whitespace-only input produce the empty-command error. */
+    @Test
+    public void parse_emptyInput_exceptionThrown() {
+        Parser parser = new Parser();
+
+        BobbyException nullException = assertThrows(BobbyException.class, () ->
+                parser.parse(null));
+        BobbyException whitespaceException = assertThrows(BobbyException.class, () ->
+                parser.parse("   "));
+
+        assertEquals("Error! The command cannot be empty!", nullException.getMessage());
+        assertEquals("Error! The command cannot be empty!", whitespaceException.getMessage());
     }
 
     /**

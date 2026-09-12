@@ -104,4 +104,31 @@ public class BobbyTest {
         assertTrue(response.contains("With time: deadline call client /by 2026-09-20 1800"));
         assertTrue(bobby.wasLastResponseError());
     }
+
+    /** Verifies that equivalent tasks are rejected after whitespace and case normalization. */
+    @Test
+    public void getResponse_duplicateTask_errorReturnedAndOriginalPreserved() {
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("duplicates.txt").toString());
+        bobby.getResponse("todo Read   Book");
+
+        String response = bobby.getResponse("  todo read book  ");
+
+        assertTrue(response.contains("Error! This task already exists in the list."));
+        assertTrue(bobby.wasLastResponseError());
+        String listResponse = bobby.getResponse("list");
+        assertTrue(listResponse.contains("1.[T][ ] Read Book"));
+        assertFalse(listResponse.contains("2.[T]"));
+    }
+
+    /** Verifies that a GUI instance reports a malformed data file at startup. */
+    @Test
+    public void getWelcomeMessage_invalidStorage_warningIncluded() throws Exception {
+        Path taskFile = temporaryDirectory.resolve("malformed.txt");
+        java.nio.file.Files.writeString(taskFile, "not valid task data");
+
+        Bobby bobby = new Bobby(taskFile.toString());
+
+        assertTrue(bobby.getWelcomeMessage().contains(
+                "Error! Could not load tasks because line 1 contains invalid data."));
+    }
 }

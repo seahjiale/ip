@@ -79,6 +79,17 @@ public class Deadline extends Task {
         return dueDateTime;
     }
 
+    /** Returns whether another task has the same type, description, deadline, and time precision. */
+    @Override
+    public boolean hasSameDetails(Task other) {
+        if (!(other instanceof Deadline otherDeadline)) {
+            return false;
+        }
+        return super.hasSameDetails(other)
+                && dueDateTime.equals(otherDeadline.dueDateTime)
+                && includesTime == otherDeadline.includesTime;
+    }
+
     /**
      * Returns the date in the display format, including a time when one was supplied.
      *

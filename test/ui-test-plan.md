@@ -1449,3 +1449,65 @@ ____________________________________________________________
 Toodles! Bobby is off to recharge the silly batteries.
 ____________________________________________________________
 ```
+
+## Test Case 32: Handle malformed task input safely
+
+### Aim
+
+Verify that irregular whitespace is normalized while duplicate tasks,
+non-existent dates, invalid event ranges, repeated parameters, and unexpected
+arguments are rejected without changing the task list.
+
+### Input
+
+```text
+   todo    Read   Book
+todo read book
+deadline return book    /by   2026-02-30
+event meeting /from 2026-10-02 /to 2026-10-02
+event meeting /from 2026-10-01 /from 2026-10-02 /to 2026-10-03
+list all
+list
+bye
+```
+
+### Expected Output
+
+```text
+____________________________________________________________
+ ____   ____  ____  ____  __   __
+| __ ) / __ \| __ )| __ ) \ \ / /
+|  _ \| |  | |  _ \|  _ \  \ V /
+| |_) | |__| | |_) | |_) |   | |
+|____/ \____/|____/|____/    |_|
+Hiya! I'm Bobby, your cheerfully goofy task buddy.
+Throw me a task and I'll keep it from wandering off!
+____________________________________________________________
+____________________________________________________________
+Boop! I've tucked this task into the list:
+[T][ ] Read Book
+Bobby's task count is now 1.
+____________________________________________________________
+____________________________________________________________
+Error! This task already exists in the list.
+____________________________________________________________
+____________________________________________________________
+Error! The deadline must be a valid date. Use yyyy-MM-dd or yyyy-MM-dd HHmm.
+____________________________________________________________
+____________________________________________________________
+Error! An event must start before it ends.
+____________________________________________________________
+____________________________________________________________
+Error! The /from parameter can only be specified once!
+____________________________________________________________
+____________________________________________________________
+Error! The list command does not accept arguments.
+____________________________________________________________
+____________________________________________________________
+Ta-da! Here's your task parade:
+1.[T][ ] Read Book
+____________________________________________________________
+____________________________________________________________
+Toodles! Bobby is off to recharge the silly batteries.
+____________________________________________________________
+```

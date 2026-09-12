@@ -1,6 +1,8 @@
 package bobby;
 
 import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Parses command names, task commands, arguments, and task numbers from user input. */
 public class Parser {
@@ -17,13 +19,9 @@ public class Parser {
     private static final String COMMAND_EVENT = "event";
 
     /** Markers used to separate task details from their dates. */
-    private static final String DEADLINE_DATE_MARKER = "/by";
-    private static final String DEADLINE_SEPARATOR = " " + DEADLINE_DATE_MARKER + " ";
-    private static final String EVENT_FROM_MARKER = "/from";
-    private static final String EVENT_TO_MARKER = "/to";
-
-    /** Maximum number of parts produced when separating a deadline description and date. */
-    private static final int MAX_DEADLINE_PARTS = 2;
+    private static final Pattern DEADLINE_DATE_MARKER = createMarkerPattern("/by");
+    private static final Pattern EVENT_FROM_MARKER = createMarkerPattern("/from");
+    private static final Pattern EVENT_TO_MARKER = createMarkerPattern("/to");
 
     /** Creates a parser for Bobby commands. */
     public Parser() {
@@ -37,6 +35,9 @@ public class Parser {
      * @return {@code true} when the input is exactly one command or starts with it
      */
     public boolean isCommand(String input, String... commandNames) {
+        if (input == null) {
+            return false;
+        }
         for (String commandName : commandNames) {
             if (input.equals(commandName)
                     || (input.length() > commandName.length()
@@ -59,7 +60,7 @@ public class Parser {
         if (command.length() <= commandName.length()) {
             return "";
         }
-        return command.substring(commandName.length()).trim();
+        return command.substring(commandName.length()).strip();
     }
 
     /**
@@ -69,7 +70,7 @@ public class Parser {
      * @return {@code true} when the input is {@code bye}, ignoring case
      */
     public boolean isExitCommand(String command) {
-        return command.equalsIgnoreCase(COMMAND_BYE);
+        return command != null && command.equalsIgnoreCase(COMMAND_BYE);
     }
 
     /**
@@ -90,10 +91,19 @@ public class Parser {
      * @throws BobbyException if the input does not begin with a supported command
      */
     public Command parse(String command) throws BobbyException {
+        if (command == null || command.strip().isEmpty()) {
+            throw new BobbyException("Error! The command cannot be empty!");
+        }
+        command = command.strip();
+
         if (isExitCommand(command)) {
             return new ExitCommand();
+        } else if (isCommand(command, COMMAND_BYE)) {
+            throw new BobbyException("Error! The bye command does not accept arguments.");
         } else if (command.equals(COMMAND_LIST)) {
             return new ListCommand();
+        } else if (isCommand(command, COMMAND_LIST)) {
+            throw new BobbyException("Error! The list command does not accept arguments.");
         } else if (isCommand(command, COMMAND_FIND)) {
             String keyword = getCommandArgument(command, COMMAND_FIND);
             if (keyword.isEmpty()) {
@@ -162,12 +172,12 @@ public class Parser {
      * @throws BobbyException if the description is empty or unsafe for storage
      */
     private Task parseTodo(String command) throws BobbyException {
-        String description = getCommandArgument(command, COMMAND_TODO);
-        if (description.trim().isEmpty()) {
+        String description = normalizeWhitespace(getCommandArgument(command, COMMAND_TODO));
+        if (description.isEmpty()) {
             throw new BobbyException("Error! The description of a todo cannot be empty!");
         }
         validateStorageField(description);
-        return new ToDo(description.trim());
+        return new ToDo(description);
     }
 
     /**
@@ -179,20 +189,32 @@ public class Parser {
      */
     private Task parseDeadline(String command) throws BobbyException {
         String deadlineDetails = getCommandArgument(command, COMMAND_DEADLINE);
-        String[] deadlineParts = deadlineDetails.split(DEADLINE_SEPARATOR, MAX_DEADLINE_PARTS);
-        boolean hasNoDescription = deadlineDetails.trim().isEmpty()
-                || deadlineDetails.trim().startsWith(DEADLINE_DATE_MARKER)
-                || (deadlineParts.length > 1 && deadlineParts[0].trim().isEmpty());
-        if (hasNoDescription) {
-            throw new BobbyException("Error! The description of a deadline cannot be empty!");
-        } else if (deadlineParts.length < 2 || deadlineParts[1].trim().isEmpty()) {
+        Matcher markerMatcher = DEADLINE_DATE_MARKER.matcher(deadlineDetails);
+        if (!markerMatcher.find()) {
+            if (deadlineDetails.isBlank()) {
+                throw new BobbyException("Error! The description of a deadline cannot be empty!");
+            }
             throw new BobbyException("Error! The date of a deadline cannot be empty!");
         }
 
-        validateStorageField(deadlineParts[0]);
-        validateStorageField(deadlineParts[1]);
+        int markerStart = markerMatcher.start();
+        int markerEnd = markerMatcher.end();
+        if (markerMatcher.find()) {
+            throw new BobbyException("Error! The /by parameter can only be specified once!");
+        }
+
+        String description = normalizeWhitespace(deadlineDetails.substring(0, markerStart));
+        String dueDate = normalizeWhitespace(deadlineDetails.substring(markerEnd));
+        if (description.isEmpty()) {
+            throw new BobbyException("Error! The description of a deadline cannot be empty!");
+        } else if (dueDate.isEmpty()) {
+            throw new BobbyException("Error! The date of a deadline cannot be empty!");
+        }
+
+        validateStorageField(description);
+        validateStorageField(dueDate);
         try {
-            return Deadline.fromInput(deadlineParts[0].trim(), deadlineParts[1].trim());
+            return Deadline.fromInput(description, dueDate);
         } catch (DateTimeParseException exception) {
             throw new BobbyException("Error! The deadline must be a valid date. "
                     + "Use yyyy-MM-dd or yyyy-MM-dd HHmm.");
@@ -208,28 +230,33 @@ public class Parser {
      */
     private Task parseEvent(String command) throws BobbyException {
         String eventDetails = getCommandArgument(command, COMMAND_EVENT);
-        int fromMarkerIndex = eventDetails.indexOf(EVENT_FROM_MARKER);
-        int toMarkerIndex = eventDetails.indexOf(EVENT_TO_MARKER);
+        Matcher fromMatcher = EVENT_FROM_MARKER.matcher(eventDetails);
+        Matcher toMatcher = EVENT_TO_MARKER.matcher(eventDetails);
+        boolean hasFromMarker = fromMatcher.find();
+        boolean hasToMarker = toMatcher.find();
+        int fromMarkerStart = hasFromMarker ? fromMatcher.start() : -1;
+        int fromMarkerEnd = hasFromMarker ? fromMatcher.end() : -1;
+        int toMarkerStart = hasToMarker ? toMatcher.start() : -1;
+        int toMarkerEnd = hasToMarker ? toMatcher.end() : -1;
 
-        String description;
-        String from = "";
-        String to = "";
-        if (fromMarkerIndex >= 0) {
-            description = eventDetails.substring(0, fromMarkerIndex).trim();
-            if (toMarkerIndex > fromMarkerIndex) {
-                from = eventDetails.substring(fromMarkerIndex + EVENT_FROM_MARKER.length(),
-                        toMarkerIndex).trim();
-            } else {
-                from = eventDetails.substring(fromMarkerIndex + EVENT_FROM_MARKER.length()).trim();
-            }
-        } else if (toMarkerIndex >= 0) {
-            description = eventDetails.substring(0, toMarkerIndex).trim();
-        } else {
-            description = eventDetails;
+        if (hasFromMarker && fromMatcher.find()) {
+            throw new BobbyException("Error! The /from parameter can only be specified once!");
+        } else if (hasToMarker && toMatcher.find()) {
+            throw new BobbyException("Error! The /to parameter can only be specified once!");
         }
-        if (toMarkerIndex >= 0) {
-            to = eventDetails.substring(toMarkerIndex + EVENT_TO_MARKER.length()).trim();
+
+        if (hasFromMarker && hasToMarker && toMarkerStart < fromMarkerStart) {
+            throw new BobbyException("Error! Event parameters must place /from before /to.");
         }
+
+        int descriptionEnd = hasFromMarker ? fromMarkerStart
+                : hasToMarker ? toMarkerStart : eventDetails.length();
+        String description = normalizeWhitespace(eventDetails.substring(0, descriptionEnd));
+        String from = hasFromMarker
+                ? normalizeWhitespace(eventDetails.substring(fromMarkerEnd,
+                        hasToMarker ? toMarkerStart : eventDetails.length())) : "";
+        String to = hasToMarker
+                ? normalizeWhitespace(eventDetails.substring(toMarkerEnd)) : "";
 
         if (description.isEmpty()) {
             throw new BobbyException("Error! The description of an event cannot be empty!");
@@ -246,7 +273,19 @@ public class Parser {
             return Event.fromInput(description, from, to);
         } catch (DateTimeParseException exception) {
             throw new BobbyException("Error! Event dates must be valid dates. Use yyyy-MM-dd.");
+        } catch (IllegalArgumentException exception) {
+            throw new BobbyException("Error! An event must start before it ends.");
         }
+    }
+
+    /** Creates a pattern that recognises a parameter only as a whitespace-delimited token. */
+    private static Pattern createMarkerPattern(String marker) {
+        return Pattern.compile("(?<!\\S)" + Pattern.quote(marker) + "(?=\\s|$)");
+    }
+
+    /** Trims a field and collapses all runs of whitespace to a single space. */
+    private static String normalizeWhitespace(String input) {
+        return input.strip().replaceAll("\\s+", " ");
     }
 
     /**
@@ -258,6 +297,11 @@ public class Parser {
     private void validateStorageField(String field) throws BobbyException {
         if (field.contains("|")) {
             throw new BobbyException("Error! Task details cannot contain the '|' character!");
+        }
+        for (int i = 0; i < field.length(); i++) {
+            if (Character.isISOControl(field.charAt(i))) {
+                throw new BobbyException("Error! Task details cannot contain control characters!");
+            }
         }
     }
 }

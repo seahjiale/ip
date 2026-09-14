@@ -27,7 +27,7 @@ public class Deadline extends Task {
     /** Parsed deadline value, using midnight for date-only input. */
     private final LocalDateTime dueDateTime;
     /** Whether the original input included an explicit time. */
-    private final boolean includesTime;
+    private final boolean hasExplicitTime;
 
     /**
      * Creates an incomplete deadline task for a date without a time.
@@ -38,7 +38,7 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDate dueDate) {
         super(description);
         this.dueDateTime = dueDate.atStartOfDay();
-        this.includesTime = false;
+        this.hasExplicitTime = false;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDateTime dueDateTime) {
         super(description);
         this.dueDateTime = dueDateTime;
-        this.includesTime = true;
+        this.hasExplicitTime = true;
     }
 
     /**
@@ -87,7 +87,7 @@ public class Deadline extends Task {
         }
         return super.hasSameDetails(other)
                 && dueDateTime.equals(otherDeadline.dueDateTime)
-                && includesTime == otherDeadline.includesTime;
+                && hasExplicitTime == otherDeadline.hasExplicitTime;
     }
 
     /**
@@ -97,7 +97,7 @@ public class Deadline extends Task {
      */
     private String getDisplayDate() {
         String date = dueDateTime.format(DATE_DISPLAY_FORMAT);
-        return includesTime ? date + " " + dueDateTime.format(TIME_DISPLAY_FORMAT) : date;
+        return hasExplicitTime ? date + " " + dueDateTime.format(TIME_DISPLAY_FORMAT) : date;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Deadline extends Task {
      * @return formatted deadline text for storage
      */
     private String getStorageDate() {
-        return includesTime
+        return hasExplicitTime
                 ? dueDateTime.format(DATE_TIME_INPUT_FORMAT)
                 : dueDateTime.toLocalDate().format(DATE_INPUT_FORMAT);
     }

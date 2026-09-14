@@ -31,7 +31,7 @@ public class DialogBox extends HBox {
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            throw new IllegalStateException("Unable to load the dialog box layout.", exception);
         }
 
         dialog.setText(text);

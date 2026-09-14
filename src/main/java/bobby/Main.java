@@ -35,7 +35,7 @@ public class Main extends Application {
             stage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/Bobby.png")));
             stage.show();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            throw new IllegalStateException("Unable to load the main window layout.", exception);
         }
     }
 }

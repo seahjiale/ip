@@ -147,55 +147,102 @@ public class Storage {
      * @throws BobbyException if the line does not follow the storage format
      */
     private Task parseTask(String taskLine) throws BobbyException {
-        String[] parts = taskLine.split("\\s*\\|\\s*", -1);
-        if (parts.length < 3) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-
+        String[] parts = splitTaskLine(taskLine);
         String taskType = parts[0].trim();
         String status = parts[1].trim();
-        String description = parts[2].trim();
-        if (description.isEmpty() || containsControlCharacter(description)) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
-        description = description.replaceAll("\\s+", " ");
-        Task task;
-        boolean hasStoredPriority;
-        if (taskType.equals("T") && (parts.length == 3 || parts.length == 4)) {
-            task = new ToDo(description);
-            hasStoredPriority = parts.length == 4;
-        } else if (taskType.equals("D") && (parts.length == 4 || parts.length == 5)) {
-            try {
-                task = Deadline.fromInput(description, parts[3].trim());
-            } catch (DateTimeParseException exception) {
-                throw new BobbyException("Error! Could not load tasks from disk.");
-            }
-            hasStoredPriority = parts.length == 5;
-        } else if (taskType.equals("E") && (parts.length == 5 || parts.length == 6)) {
-            try {
-                task = Event.fromInput(description, parts[3].trim(), parts[4].trim());
-            } catch (DateTimeParseException | IllegalArgumentException exception) {
-                throw new BobbyException("Error! Could not load tasks from disk.");
-            }
-            hasStoredPriority = parts.length == 6;
-        } else {
-            throw new BobbyException("Error! Could not load tasks from disk.");
-        }
+        String description = parseDescription(parts[2]);
+        int fieldCountWithoutPriority = getFieldCountWithoutPriority(taskType);
+        validateFieldCount(parts.length, fieldCountWithoutPriority);
 
+        Task task = createTask(taskType, description, parts);
+        restoreCompletionStatus(task, status);
+        if (parts.length > fieldCountWithoutPriority) {
+            restorePriority(task, parts[parts.length - 1]);
+        }
+        return task;
+    }
+
+    /** Splits a stored task into its fields and checks that essential fields exist. */
+    private String[] splitTaskLine(String taskLine) throws BobbyException {
+        String[] parts = taskLine.split("\\s*\\|\\s*", -1);
+        if (parts.length < 3) {
+            throw invalidStoredTaskException();
+        }
+        return parts;
+    }
+
+    /** Validates and normalizes a task description read from storage. */
+    private String parseDescription(String description) throws BobbyException {
+        description = description.trim();
+        if (description.isEmpty() || containsControlCharacter(description)) {
+            throw invalidStoredTaskException();
+        }
+        return description.replaceAll("\\s+", " ");
+    }
+
+    /** Returns the number of fields used by a task type before an optional priority. */
+    private int getFieldCountWithoutPriority(String taskType) throws BobbyException {
+        if (taskType.equals("T")) {
+            return 3;
+        } else if (taskType.equals("D")) {
+            return 4;
+        } else if (taskType.equals("E")) {
+            return 5;
+        }
+        throw invalidStoredTaskException();
+    }
+
+    /** Checks that a stored task contains exactly the required fields and optional priority. */
+    private void validateFieldCount(int fieldCount, int fieldCountWithoutPriority)
+            throws BobbyException {
+        if (fieldCount != fieldCountWithoutPriority
+                && fieldCount != fieldCountWithoutPriority + 1) {
+            throw invalidStoredTaskException();
+        }
+    }
+
+    /** Creates the task subtype represented by validated storage fields. */
+    private Task createTask(String taskType, String description, String[] parts)
+            throws BobbyException {
+        if (taskType.equals("T")) {
+            return new ToDo(description);
+        } else if (taskType.equals("D")) {
+            try {
+                return Deadline.fromInput(description, parts[3].trim());
+            } catch (DateTimeParseException exception) {
+                throw invalidStoredTaskException();
+            }
+        } else if (taskType.equals("E")) {
+            try {
+                return Event.fromInput(description, parts[3].trim(), parts[4].trim());
+            } catch (DateTimeParseException | IllegalArgumentException exception) {
+                throw invalidStoredTaskException();
+            }
+        }
+        throw invalidStoredTaskException();
+    }
+
+    /** Restores the completion status stored for a task. */
+    private void restoreCompletionStatus(Task task, String status) throws BobbyException {
         if (status.equals("1")) {
             task.markAsDone();
         } else if (!status.equals("0")) {
-            throw new BobbyException("Error! Could not load tasks from disk.");
+            throw invalidStoredTaskException();
         }
+    }
 
-        if (hasStoredPriority) {
-            try {
-                task.setPriority(Priority.valueOf(parts[parts.length - 1].trim()));
-            } catch (IllegalArgumentException exception) {
-                throw new BobbyException("Error! Could not load tasks from disk.");
-            }
+    /** Restores the priority stored for a task. */
+    private void restorePriority(Task task, String storedPriority) throws BobbyException {
+        try {
+            task.setPriority(Priority.valueOf(storedPriority.trim()));
+        } catch (IllegalArgumentException exception) {
+            throw invalidStoredTaskException();
         }
-        return task;
+    }
+
+    /** Creates the general error used for an invalid stored task. */
+    private BobbyException invalidStoredTaskException() {
+        return new BobbyException("Error! Could not load tasks from disk.");
     }
 
     /** Returns whether a stored description contains an unsafe control character. */

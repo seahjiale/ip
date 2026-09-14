@@ -4,9 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-/**
- * A minimal chatbot that echoes commands until the user says goodbye.
- */
+/** Coordinates command parsing, task management, persistence, and responses for Bobby. */
 public class Bobby {
     /** Storage used by the GUI-backed chatbot instance. */
     private final Storage storage;

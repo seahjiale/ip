@@ -1,59 +1,54 @@
-# Bobby project template
+# Bobby
 
-This is a project template for a greenfield Java project. Given below are instructions on how to use it.
+Bobby is a cheerfully goofy desktop task manager for tracking to-dos,
+deadlines, and events through simple text commands.
 
-## Setting up in Intellij
+![Bobby's graphical interface](docs/Ui.png)
 
-Prerequisites: JDK 25, update Intellij to the most recent version.
+## User guide
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/bobby/Bobby.java` file, right-click it, and choose `Run Bobby.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-    ____   ____  ____  ____  __   __
-   | __ ) / __ \| __ )| __ ) \ \ / /
-   |  _ \| |  | |  _ \|  _ \  \ V /
-   | |_) | |__| | |_) | |_) |   | |
-   |____/ \____/|____/|____/    |_|
-   ```
+The [Bobby User Guide](https://seahjiale.github.io/ip/) explains every command,
+accepted input format, and common input error.
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+## Developer setup
 
-## Creating and running the fat JAR
+Bobby requires JDK 25 and uses Gradle for building and testing.
 
-This project uses the [Shadow Gradle plugin](https://gradleup.com/shadow/) to
-package Bobby and its runtime dependencies into one executable fat JAR.
+1. Clone the repository.
+2. Open the project root in IntelliJ IDEA.
+3. Configure the project SDK and Gradle JVM to use JDK 25.
+4. Run `bobby.Launcher` to start the JavaFX interface.
 
-1. Open PowerShell in the project root.
-1. Configure the terminal to use JDK 25. For example:
+Keep `src/main/java` as the Java source root so Gradle and IntelliJ can locate
+the application classes correctly.
 
-   ```powershell
-   $env:JAVA_HOME = 'C:\Program Files\Java\jdk-25.0.4'
-   $env:Path = "$env:JAVA_HOME\bin;$env:Path"
-   ```
+## Build and test
 
-1. Create the fat JAR:
+On Windows, run:
 
-   ```powershell
-   .\gradlew.bat shadowJar
-   ```
+```powershell
+.\gradlew.bat clean check
+```
 
-1. Gradle writes the executable JAR to:
+On macOS or Linux, run:
 
-   ```text
-   build\libs\bobby.jar
-   ```
+```bash
+./gradlew clean check
+```
 
-1. Run it from the project root:
+The `check` task compiles Bobby, runs the JUnit suite, applies Checkstyle, and
+verifies the configured JaCoCo coverage thresholds.
 
-   ```powershell
-   java -jar .\build\libs\bobby.jar
-   ```
+## Create the executable JAR
 
-The JAR can also be copied elsewhere and run with a JDK 25 installation because
-the application code and its runtime dependencies are packaged inside it.
+Build Bobby's cross-platform fat JAR with:
+
+```powershell
+.\gradlew.bat clean shadowJar
+```
+
+Gradle creates `build/libs/bobby.jar`. Run it using Java 25:
+
+```powershell
+java -jar .\build\libs\bobby.jar
+```

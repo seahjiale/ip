@@ -14,6 +14,9 @@ import javafx.scene.layout.VBox;
 
 /** Represents a user command or a Bobby response in the conversation. */
 public class DialogBox extends HBox {
+    /** Maximum width of a Bobby response when the application window is expanded. */
+    private static final double MAX_BOBBY_DIALOG_WIDTH = 720.0;
+
     @FXML
     private Label dialog;
     @FXML
@@ -54,7 +57,7 @@ public class DialogBox extends HBox {
         getStyleClass().add("bobby-dialog");
         dialog.getStyleClass().add("reply-label");
         dialog.setMaxWidth(Double.MAX_VALUE);
-        messageContainer.setMaxWidth(Double.MAX_VALUE);
+        messageContainer.setMaxWidth(MAX_BOBBY_DIALOG_WIDTH);
         HBox.setHgrow(messageContainer, Priority.ALWAYS);
     }
 

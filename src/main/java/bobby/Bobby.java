@@ -28,7 +28,7 @@ public class Bobby {
 
     /** Creates a Bobby application instance. */
     public Bobby() {
-        this("data/duke.txt");
+        this("data/bobby.txt");
     }
 
     /** Creates a Bobby chatbot instance backed by the given task file. */
@@ -179,7 +179,7 @@ public class Bobby {
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
-        Storage storage = new Storage("data/duke.txt");
+        Storage storage = new Storage("data/bobby.txt");
         Parser parser = new Parser();
         ui.showWelcome();
 

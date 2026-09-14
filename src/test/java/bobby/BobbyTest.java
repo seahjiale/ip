@@ -38,7 +38,7 @@ public class BobbyTest {
     /** Verifies that a GUI response uses the existing add-command behavior. */
     @Test
     public void getResponse_addCommand_returnsExistingCommandResponse() {
-        Bobby bobby = new Bobby(temporaryDirectory.resolve("duke.txt").toString());
+        Bobby bobby = new Bobby(temporaryDirectory.resolve("bobby.txt").toString());
 
         String response = bobby.getResponse("todo learn Java");
 

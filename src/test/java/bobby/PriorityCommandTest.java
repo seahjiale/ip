@@ -29,7 +29,7 @@ public class PriorityCommandTest {
         tasks.add(secondTask);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         Ui ui = new Ui(new PrintStream(output, true, StandardCharsets.UTF_8));
-        Storage storage = new Storage(temporaryDirectory.resolve("duke.txt").toString());
+        Storage storage = new Storage(temporaryDirectory.resolve("bobby.txt").toString());
 
         new PriorityCommand("priority 2 HIGH").execute(tasks, ui, storage);
 
@@ -49,7 +49,7 @@ public class PriorityCommandTest {
         TaskList tasks = new TaskList();
         tasks.add(task);
         Ui ui = new Ui(new PrintStream(new ByteArrayOutputStream()));
-        Storage storage = new FailingStorage(temporaryDirectory.resolve("duke.txt").toString());
+        Storage storage = new FailingStorage(temporaryDirectory.resolve("bobby.txt").toString());
 
         assertThrows(BobbyException.class, () ->
                 new PriorityCommand("priority 1 high").execute(tasks, ui, storage));
@@ -61,7 +61,7 @@ public class PriorityCommandTest {
     @Test
     public void execute_emptyListAndSamePriority_expectedValidationAndSuccess()
             throws BobbyException, IOException {
-        Path taskFile = temporaryDirectory.resolve("duke.txt");
+        Path taskFile = temporaryDirectory.resolve("bobby.txt");
         Storage storage = new Storage(taskFile.toString());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         Ui ui = new Ui(new PrintStream(output, true, StandardCharsets.UTF_8));

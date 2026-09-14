@@ -48,7 +48,7 @@ public class StorageTest {
     /** Verifies that legacy records load with no priority. */
     @Test
     public void load_legacyRecords_nonePriorityAssigned() throws IOException, BobbyException {
-        Path taskFile = temporaryDirectory.resolve("duke.txt");
+        Path taskFile = temporaryDirectory.resolve("bobby.txt");
         Files.write(taskFile, List.of(
                 "T | 0 | read book",
                 "D | 1 | return book | 2026-10-01",
@@ -67,7 +67,7 @@ public class StorageTest {
     @Test
     public void saveAndLoad_prioritizedTasks_prioritiesRoundTrip()
             throws IOException, BobbyException {
-        Path taskFile = temporaryDirectory.resolve("duke.txt");
+        Path taskFile = temporaryDirectory.resolve("bobby.txt");
         Task todo = new ToDo("read book");
         todo.setPriority(Priority.HIGH);
         Task deadline = new Deadline("return book", LocalDate.of(2026, 10, 1));
@@ -94,7 +94,7 @@ public class StorageTest {
     /** Verifies that an invalid stored priority causes the complete load to fail. */
     @Test
     public void load_invalidStoredPriority_exceptionThrown() throws IOException {
-        Path taskFile = temporaryDirectory.resolve("duke.txt");
+        Path taskFile = temporaryDirectory.resolve("bobby.txt");
         Files.writeString(taskFile, "T | 0 | read book | URGENT", StandardCharsets.UTF_8);
 
         BobbyException exception = assertThrows(BobbyException.class, () ->
@@ -132,7 +132,7 @@ public class StorageTest {
     @Test
     public void load_mixedLegacyAndNewRecords_prioritiesLoadedCorrectly()
             throws IOException, BobbyException {
-        Path taskFile = temporaryDirectory.resolve("duke.txt");
+        Path taskFile = temporaryDirectory.resolve("bobby.txt");
         Files.write(taskFile, List.of(
                 "T | 0 | legacy task",
                 "D | 0 | explicit none | 2026-10-01 | NONE",
